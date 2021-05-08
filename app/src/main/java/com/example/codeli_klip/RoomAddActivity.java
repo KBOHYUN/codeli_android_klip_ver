@@ -91,7 +91,8 @@ public class RoomAddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //값 넣어서 새로운 room item 생성 후 추가
                 Toast.makeText(getApplicationContext(), "방이 생성이 취소되었습니다", Toast.LENGTH_SHORT).show();
-                finish();
+                Intent intent=new Intent(RoomAddActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
         add_room_bt=findViewById(R.id.add_room_bt);

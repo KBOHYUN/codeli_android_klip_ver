@@ -41,22 +41,15 @@ public class KlayDlgFragment extends DialogFragment {
         final EditText from = view.findViewById(R.id.from);
         final EditText klay = view.findViewById(R.id.klay);
         final EditText bappName = view.findViewById(R.id.bappName);
-        final EditText bappSuccessURL = view.findViewById(R.id.bappSuccessURL);
-        final EditText bappFailURL = view.findViewById(R.id.bappFailURL);
 
         builder.setView(view);
-        builder.setTitle("Send KLAY")
-                .setPositiveButton("Execute", new DialogInterface.OnClickListener() {
+        builder.setTitle("Codeli - Send KLAY")
+                .setMessage("클레이튼 결제를 시작합니다. \n확인을 누르면 결제가 시작됩니다.")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         // BApp 정보
-                        BAppInfo bAppInfo = new BAppInfo(bappName.getText().toString());
-                        String successURL = bappSuccessURL.getText().toString();
-                        String failURL = bappFailURL.getText().toString();
-                        if(successURL.length()!=0 || failURL.length()!=0) {
-                            BAppDeepLinkCB bAppCB = new BAppDeepLinkCB(successURL, failURL);
-                            bAppInfo.setCallback(bAppCB);
-                        }
+                        BAppInfo bAppInfo = new BAppInfo("Codeli");
 
                         // Klay 정보
                         KlayTxRequest req = new KlayTxRequest.Builder()
@@ -72,7 +65,7 @@ public class KlayDlgFragment extends DialogFragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }

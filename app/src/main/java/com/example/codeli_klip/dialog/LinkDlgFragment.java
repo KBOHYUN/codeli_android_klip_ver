@@ -34,15 +34,9 @@ public class LinkDlgFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dlg_link, null);
-        final EditText bappName = view.findViewById(R.id.bappName);
-        final EditText bappSuccessURL = view.findViewById(R.id.bappSuccessURL);
-        final EditText bappFailURL = view.findViewById(R.id.bappFailURL);
-
-        builder.setView(view);
-        builder.setTitle("Auth")
-                .setPositiveButton("Execute", new DialogInterface.OnClickListener() {
+        builder.setTitle("Codeli - Auth")
+                .setMessage("사용자 인증 절차를 시작합니다.\n확인을 누르면 인증이 시작됩니다.")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         // BApp 정보
@@ -58,8 +52,9 @@ public class LinkDlgFragment extends DialogFragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
                         dialog.dismiss();
                     }
                 });

@@ -36,11 +36,8 @@ public class RoomActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private Button room_ready_button; //준비 버튼
+    private Button room_ready_cancel_button; //준비 취소 버튼
     private Button room_pay_button; //결제 버튼
-
-    private TextView qr_button;
-    private TextView qr_scan_button;
-
 
     private ImageButton room_chat_button; //채팅 전송 버튼
 
@@ -141,6 +138,9 @@ public class RoomActivity extends AppCompatActivity {
         room_my_nickname.setText(LoginActivity.nickname);
         room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
 
+        //나의 주문 목록 초기화
+        my_menu_item=new PeopleItem(LoginActivity.nickname,false, "", 0,"", 0,0,false,0,false);
+
         chat_user_Ref= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         //결제 버튼
@@ -154,7 +154,20 @@ public class RoomActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        my_menu_item=new PeopleItem(LoginActivity.nickname,false, "", 0,"", 0,0,false,0,false);
+
+        room_ready_cancel_button=findViewById(R.id.room_ready_cancel_button);
+        room_ready_cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //준비 취소하기
+                room_ready_cancel_button.setVisibility(View.INVISIBLE); //준비취소버튼 안보이기
+                room_ready_button.setVisibility(View.VISIBLE); //준비버튼 보이기
+                room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+
+                my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getVerification(), my_menu_item.getUid(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus(),my_menu_item.getTx_hash(),my_menu_item.getVerification_status());
+                chat_user_Ref.setValue(my_menu_item);
+            }
+        });
 
         //준비하기 버튼
         room_ready_button=findViewById(R.id.room_ready_button);
@@ -168,12 +181,13 @@ public class RoomActivity extends AppCompatActivity {
 
                 my_menu_item=new PeopleItem(LoginActivity.nickname,true, menu, price,my_menu_item.getVerification(), my_menu_item.getUid(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus(),my_menu_item.getTx_hash(),my_menu_item.getVerification_status());
 
-
                 room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비돰 - 파랑
 
                 chat_user_Ref.setValue(my_menu_item);
 
+                //버튼 보이기 유무
                 room_ready_button.setVisibility(View.INVISIBLE);
+                room_ready_cancel_button.setVisibility(View.VISIBLE);
                 room_pay_button.setVisibility(View.VISIBLE);
             }
         });
