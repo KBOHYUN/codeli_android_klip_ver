@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="platform">
+        <item>배달의민족</item>
+        <item>요기요</item>
+        <item>쿠팡이츠</item>
+    </string-array>
+</resources>
+
+
+

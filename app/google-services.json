@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "574116505872",
+    "firebase_url": "https://codeli-default-rtdb.firebaseio.com",
+    "project_id": "codeli",
+    "storage_bucket": "codeli.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574116505872:android:30c3ed1869929d87f49d95",
+        "android_client_info": {
+          "package_name": "com.example.codeli_klip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574116505872-35e474sriuc2aogt8dpendqqtlr60cd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.codeli_klip",
+            "certificate_hash": "dd7bae5091a66e1722197da7b66204aa18898867"
+          }
+        },
+        {
+          "client_id": "574116505872-n1e7rosnd0nk8migfu9051ltcbo724em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP0XGqSTSXDj6tW44Fc3C80UaNWUCuv6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574116505872-n1e7rosnd0nk8migfu9051ltcbo724em.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "574116505872-kr57l7cf0ammv0ptk5k4ks0r3klk869j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cslim.CoDeli"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

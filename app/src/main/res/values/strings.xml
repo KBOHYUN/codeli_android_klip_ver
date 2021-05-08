@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">codeli</string>
+
+    <!-- common -->
+    <string name="bapp_name_hint">my app</string>
+    <string name="bapp_name_hint_success">myApp://service-success-url</string>
+    <string name="bapp_name_hint_fail">myApp://service-fail-url</string>
+
+    <!-- prepare (klay) -->
+    <string name="send_klay_to_address_hint">0x2d9aea5038ca7efac0ebe1b627104c7ece1a3d1a</string>
+    <string name="send_klay_amount_hint">1</string>
+
+
+</resources>

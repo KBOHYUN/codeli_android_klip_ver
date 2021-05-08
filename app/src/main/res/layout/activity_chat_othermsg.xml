@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="35dp"
+        android:layout_height="40dp"
+        android:src="@drawable/app_logo"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textColor="#333333"
+        android:layout_toRightOf="@+id/user_image"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:id="@+id/user_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello android"
+        android:textColor="@color/black"
+        android:layout_below="@+id/user_name"
+        android:layout_toRightOf="@id/user_image"
+        android:layout_marginRight="16dp"
+        android:padding="10dp"
+        android:maxWidth="250dp"
+        android:background="@drawable/bg_lighgray_round" />
+    <TextView
+        android:id="@+id/current_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01:56"
+        android:textSize="12sp"
+        android:layout_toRightOf="@+id/user_message"
+        android:layout_marginRight="8dp"
+        android:layout_alignBottom="@id/user_message"/>
+</RelativeLayout>
