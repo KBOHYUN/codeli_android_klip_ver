@@ -13,6 +13,7 @@ public class RoomItem {
     private String r_specific_address; //세부 주소
     private int r_cur_people; //현재 인원
     private int r_tot_people; //목표 인원
+    private String r_owner; //방장
 
     public RoomItem(){
 
@@ -28,6 +29,20 @@ public class RoomItem {
         this.r_specific_address=specific_address;
         this.r_cur_people=cur_people;
         this.r_tot_people=tot_people;
+    }
+
+
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner){
+        this.r_name=name;
+        this.r_platform=platform;
+        this.r_cur_order_price=cur_order_price;
+        this.r_order_price=order_price;
+        this.r_delivery_price=deliver_price;
+        this.r_address=address;
+        this.r_specific_address=specific_address;
+        this.r_cur_people=cur_people;
+        this.r_tot_people=tot_people;
+        this.r_owner=owner;
     }
 
     public String getName(){
@@ -55,6 +70,9 @@ public class RoomItem {
     public int getTotalPeople(){
         return this.r_tot_people;
     }
+    public String getOwner(){
+        return this.r_owner;
+    }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -67,6 +85,7 @@ public class RoomItem {
         result.put("deliveryDetailAddress",r_specific_address);
         result.put("participantsNum", r_cur_people);
         result.put("participantsMax", r_tot_people);
+        result.put("owner",r_owner);
         //방장 정보, 참여 인원 id 정보도 추가
 
         return result;

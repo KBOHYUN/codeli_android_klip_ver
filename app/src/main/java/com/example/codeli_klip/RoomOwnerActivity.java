@@ -26,24 +26,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.snapshot.DoubleNode;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomOwnerActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
-    private Button room_ready_button; //준비 버튼
-    private Button room_ready_cancel_button; //준비 취소 버튼
-    private Button room_pay_button; //결제 버튼
-    private Button room_verfity_button;//검증 버튼
+    private Button verfity_trigger_button;//검증 버튼
 
     private ImageButton room_chat_button; //채팅 전송 버튼
 
@@ -54,10 +47,6 @@ public class RoomActivity extends AppCompatActivity {
     private TextView room_delivery_place; //배달 장소
     private TextView room_delivery_time; //배달 시간
 
-    private ImageView room_my_status;
-    private TextView room_my_nickname;
-    private TextView room_my_menu;
-    private TextView room_my_price;
 
     private EditText room_chat_text; //채팅 메세지 입력
 
@@ -71,7 +60,7 @@ public class RoomActivity extends AppCompatActivity {
     private int cur_people;
     private int price_per_person;
 
-    private MyItem my_menu_item;
+    PeopleItem my_menu_item;
     private PeopleListAdapter peopleListAdapter;
     private ArrayList<PeopleItem> peopleItemArrayList = new ArrayList<PeopleItem>();
 
@@ -83,14 +72,11 @@ public class RoomActivity extends AppCompatActivity {
 
     //'chat'노드의 참조객체 참조변수
     private DatabaseReference chatRef;
-    //'partition'노드 참조객체 변수
+    //'partition'노드 참조객체 변
     private DatabaseReference partitionRef;
     private DatabaseReference chat_user_Ref;
 
-
-    private DatabaseReference klay_Ref; //클레이 시세 받아오는 참조변수
-    private ArrayList<KlayData> klayDataArrayList=new ArrayList<KlayData>();
-    private double klay_flow;
+    private DatabaseReference verification_ref;
 
     private String room_id="";
 
@@ -99,7 +85,7 @@ public class RoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room);
+        setContentView(R.layout.activity_room_owner);
 
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설
 
@@ -121,7 +107,7 @@ public class RoomActivity extends AppCompatActivity {
         room_delivery_place=findViewById(R.id.room_delivery_place);
         room_delivery_time=findViewById(R.id.room_delivery_time);
 
-        //방 정보 받
+        //방 정보 받기
         Intent data=getIntent();
         name=data.getStringExtra("name");
         platform=data.getStringExtra("platform");
@@ -141,122 +127,25 @@ public class RoomActivity extends AppCompatActivity {
         room_delivery_price.setText("배달팁: "+delivery_price+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+delivery_place+" "+specific_address);
 
-        room_my_status=findViewById(R.id.room_my_status);
-        room_my_nickname=findViewById(R.id.room_my_nickname);
-        room_my_menu=findViewById(R.id.room_my_menu);
-        room_my_price=findViewById(R.id.room_my_price);
-
-        room_my_nickname.setText(LoginActivity.nickname);
-        room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
-
-        //나의 주문 목록 초기화
-        my_menu_item=new MyItem(LoginActivity.nickname,false, "",0,0,"","",false);
-
         chat_user_Ref= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
-        klay_Ref=firebaseDatabase.getReference("/klay_value/"); //클레이 reference
-
-        //결제 버튼
-        room_pay_button=findViewById(R.id.room_pay_button);
-        room_pay_button.setOnClickListener(new View.OnClickListener() {
+        //송금 요청 버튼
+        verfity_trigger_button=findViewById(R.id.verify_trigger_button);
+        verfity_trigger_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KlayData trigger=new KlayData(true);
-                klay_Ref.setValue(trigger);
-//                klay_Ref.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-//                        //데이터가 쌓이기 때문에  clear()
-//                        klayDataArrayList.clear();
-//                        for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
-//                        {
-//                            KlayData klayData=ds.getValue(KlayData.class);
-//                            if(klayData.getTrigger()==false){
-//                                klay_flow= Double.parseDouble(klayData.getValue());
-//
-//                                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
-//                                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-//                                intent.putExtra("delivery_price",price_per_person);
-//                                intent.putExtra("room_id",room_id); //방 번호
-//                                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-//                                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) { }
-//                });
+                verification_ref= firebaseDatabase.getReference("/Chat/"+room_id+"/verification/"); //방장 송금 요청 verification reference
 
-                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
-                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-                intent.putExtra("delivery_price",price_per_person);
-                intent.putExtra("room_id",room_id); //방 번호
-                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-                startActivity(intent);
-                finish();
+                VerificationData verification=new VerificationData(LoginActivity.klip_address,true);
+                verification_ref.setValue(verification);
 
-            }
-        });
 
-        room_ready_cancel_button=findViewById(R.id.room_ready_cancel_button);
-        room_ready_cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //준비 취소하기
-                room_ready_cancel_button.setVisibility(View.INVISIBLE); //준비취소버튼 안보이기
-                room_ready_button.setVisibility(View.VISIBLE); //준비버튼 보이기
-                room_pay_button.setVisibility(View.INVISIBLE); //결제버튼 안보이기
-
-                room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
-                //my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus());
-                my_menu_item=new MyItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),0,"","",false);
-                chat_user_Ref.setValue(my_menu_item);
-            }
-        });
-
-        //준비하기 버튼
-        room_ready_button=findViewById(R.id.room_ready_button);
-        room_ready_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //준비 완료 확인 -> 데이터 db 전송!
-                //Toast.makeText(getApplicationContext(), "준비 버튼", Toast.LENGTH_SHORT).show();
-                String menu=room_my_menu.getText().toString().trim();
-                int price=Integer.parseInt(room_my_price.getText().toString().trim());
-
-                my_menu_item=new MyItem(LoginActivity.nickname,true, menu, price);
-
-                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비돰 - 파랑
-
-                chat_user_Ref.setValue(my_menu_item);
-
-                //버튼 보이기 유무
-                room_ready_button.setVisibility(View.INVISIBLE);
-                room_ready_cancel_button.setVisibility(View.VISIBLE);
-                room_pay_button.setVisibility(View.VISIBLE);
-            }
-        });
-
-        room_verfity_button=findViewById(R.id.verify_button);
-        room_verfity_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //my_menu_item.setVerification_status(true);
-
-                //MyItem data=new MyItem(my_menu_item.getId(),my_menu_item.getStatus(),my_menu_item.getMenu_name(),my_menu_item.getMenu_price(),0,"","",true);
-                my_menu_item.setVerification_status(true);
-                chat_user_Ref.setValue(my_menu_item);
-                Toast.makeText(getApplicationContext(), "배달 주문 검증이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                //한 번 더 확인하는 alert창 띄우기
-                //room_verfity_button.setVisibility(View.INVISIBLE);
             }
         });
 
         partitionRef= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions"); //ref 맞는지 확인!
         //'partitions'노드에 저장되어 있는 데이터들을 읽어오기
+        peopleItemArrayList.clear();
         partitionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
@@ -269,7 +158,7 @@ public class RoomActivity extends AppCompatActivity {
 
                     if(partition.getId()!=null&&!partition.getId().equals(LoginActivity.nickname)) {
 
-                        //새로운 메세지를 리스뷰에 추가하기 위해 ArrayList에 추가
+                        //새로운 참여자 정보를 리스뷰에 추가하기 위해 ArrayList에 추가
                         peopleItemArrayList.add(partition);
 
                         cur_people = peopleItemArrayList.size()+1;
@@ -279,39 +168,11 @@ public class RoomActivity extends AppCompatActivity {
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
                     }
-                    if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){
-                        my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
-                        if(my_menu_item.getId()!=null){
-                            if(my_menu_item.getStatus()==false){
-                                room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
-                            }
-                            else{
-                                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
-                            }
-                            //Toast.makeText(getApplicationContext(), "** sending status: "+my_menu_item.getSendingStatus(), Toast.LENGTH_SHORT).show();
-                            if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("prepared")){
-                                room_verfity_button.setVisibility(View.VISIBLE);
-                                room_ready_button.setVisibility(View.INVISIBLE);
-                                room_pay_button.setVisibility(View.INVISIBLE);
-                                room_ready_cancel_button.setVisibility(View.INVISIBLE);
-                            }
-//                            if(my_menu_item.getVerification_status()==true){
-//                                room_verfity_button.setVisibility(View.VISIBLE);
-//                            }
-                            room_my_menu.setText(my_menu_item.getMenu_name());
-                            room_my_price.setText(""+my_menu_item.getMenu_price());
-
-                        }
-                    }
-
-
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
         //Firebase DB관리 객체와 'caht'노드 참조객체 얻어오기
@@ -348,6 +209,7 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+
 
         //chat message send
         room_chat_text=findViewById(R.id.room_chat_text);

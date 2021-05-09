@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:backgroundTint="@color/yellow_primary"
-        android:text="닫기"
+        android:text="결제완료"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:layout_margin="40dp"

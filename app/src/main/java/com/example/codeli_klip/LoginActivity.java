@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public static String email;
     public static String nickname;
     public static String name;
+    public static String klip_address="0xc1CBD5011fCe8A36Ce92122F223010E06cc6C182"; //현재 수통이 주소
 
     private String pw;
 

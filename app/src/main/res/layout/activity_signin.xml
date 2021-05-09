@@ -79,20 +79,44 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="비밀번호"
-            android:visibility="gone"
+            android:text="Klip 지갑주소"
             android:layout_marginTop="30dp"/>
-        <EditText
-            android:id="@+id/sign_password"
-            android:hint="password"
-            android:visibility="gone"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/sign_requst_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인증요청"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_blue_button"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/sign_result_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Klip 주소"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_blue_button"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/sign_klip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_room_list"
             android:padding="10dp"
+            android:layout_weight="7"
             />
+
     </LinearLayout>
 
     <Button

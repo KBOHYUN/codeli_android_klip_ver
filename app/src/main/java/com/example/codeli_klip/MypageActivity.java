@@ -52,6 +52,7 @@ public class MypageActivity extends AppCompatActivity {
 
         email.setText(LoginActivity.email);
         id.setText(LoginActivity.nickname);
+        klip.setText(LoginActivity.klip_address);
 
         chat_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                             roomIdArrayList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 roomIdArrayList.add(document.getId());
-                                RoomItem roomItem= new RoomItem(document.getData().get("restaurant").toString(),document.getData().get("deliveryApp").toString(),Integer.parseInt(document.getData().get("currentValue").toString()),Integer.parseInt(document.getData().get("minOrderAmount").toString()),Integer.parseInt(document.getData().get("deliveryCost").toString()),document.getData().get("deliveryAddress").toString(),document.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(document.getData().get("participantsNum").toString()),Integer.parseInt(document.getData().get("participantsMax").toString()));
+
+                                RoomItem roomItem= new RoomItem(document.getData().get("restaurant").toString(),document.getData().get("deliveryApp").toString(),Integer.parseInt(document.getData().get("currentValue").toString()),Integer.parseInt(document.getData().get("minOrderAmount").toString()),Integer.parseInt(document.getData().get("deliveryCost").toString()),document.getData().get("deliveryAddress").toString(),document.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(document.getData().get("participantsNum").toString()),Integer.parseInt(document.getData().get("participantsMax").toString()),document.getData().get("owner").toString());
                                 roomItemArrayList.add(roomItem);
                                 roomLIstAdapter.notifyDataSetChanged();
                             }
@@ -102,17 +103,34 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), roomLIstAdapter.getItem(position).getName(),Toast.LENGTH_SHORT).show();
                 //선택한 방으로 이동
                 String room_id=roomIdArrayList.get(position);
-                Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
-                intent.putExtra("room_id",room_id); //room id
-                intent.putExtra("name",roomLIstAdapter.getItem(position).getName()); //가게 이름
-                intent.putExtra("platform",roomLIstAdapter.getItem(position).getPlatform()); //플랫폼
-                intent.putExtra("order_price",roomLIstAdapter.getItem(position).getOrderPrice());//최소주문금액
-                intent.putExtra("delivery_price",roomLIstAdapter.getItem(position).getDeliveryPrice());//배달 금액
-                intent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
-                intent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
-                intent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
 
-                startActivity(intent);
+                if(roomLIstAdapter.getItem(position).getOwner()!=null&&roomLIstAdapter.getItem(position).getOwner().equals(LoginActivity.nickname)) {
+                    //방장 페이지로 이동
+                    select_room_num=position;
+                    Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerActivity.class);
+                    ownerintent.putExtra("room_id",room_id); //room id
+                    ownerintent.putExtra("name",roomLIstAdapter.getItem(position).getName()); //가게 이름
+                    ownerintent.putExtra("platform",roomLIstAdapter.getItem(position).getPlatform()); //플랫폼
+                    ownerintent.putExtra("order_price",roomLIstAdapter.getItem(position).getOrderPrice());//최소주문금액
+                    ownerintent.putExtra("delivery_price",roomLIstAdapter.getItem(position).getDeliveryPrice());//배달 금액
+                    ownerintent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
+                    ownerintent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
+                    ownerintent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
+                    startActivity(ownerintent);
+                }
+                else{
+                    Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                    intent.putExtra("room_id",room_id); //room id
+                    intent.putExtra("name",roomLIstAdapter.getItem(position).getName()); //가게 이름
+                    intent.putExtra("platform",roomLIstAdapter.getItem(position).getPlatform()); //플랫폼
+                    intent.putExtra("order_price",roomLIstAdapter.getItem(position).getOrderPrice());//최소주문금액
+                    intent.putExtra("delivery_price",roomLIstAdapter.getItem(position).getDeliveryPrice());//배달 금액
+                    intent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
+                    intent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
+                    intent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
+                    //owner - 방장 정보 추가
+                    startActivity(intent);
+                }
             }
         });
 
@@ -163,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("order_price",roomLIstAdapter.getItem(select_room_num).getOrderPrice());//최소주문금액
                         intent.putExtra("delivery_price",roomLIstAdapter.getItem(select_room_num).getDeliveryPrice());//배달 금액
                         intent.putExtra("address",roomLIstAdapter.getItem(select_room_num).getAddress());//배달 주소
+                        intent.putExtra("specific_address",roomLIstAdapter.getItem(select_room_num).getSpecificAddress());//세부주소
                         intent.putExtra("cur_people",roomLIstAdapter.getItem(select_room_num).getCurrentPeople()); //현재 인원
                         startActivity(intent);
                         return true;

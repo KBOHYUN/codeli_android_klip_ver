@@ -2,7 +2,8 @@ package com.example.codeli_klip;
 
 import java.io.Serializable;
 
-public class PeopleItem implements Serializable {
+public class MyItem implements Serializable {
+
     private int expiration_time;
     private String id;
     private boolean status=false;
@@ -12,14 +13,27 @@ public class PeopleItem implements Serializable {
     private String sendingStatus;
     private boolean verification_status;
 
-    public PeopleItem(String id, boolean status, String name, int price){
+    MyItem(){
+
+    }
+
+    public MyItem(String id, boolean status, String name, int price){
         this.id=id;
         this.status=status;
         this.menu_name=name;
         this.menu_price=price;
     }
 
-    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status){
+
+    public MyItem(String id, boolean status, String name, int price,boolean verification_status){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.verification_status=verification_status;
+    }
+
+    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -29,9 +43,7 @@ public class PeopleItem implements Serializable {
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
     }
-    public PeopleItem(){
 
-    }
 
     public String getId(){return id;}
     public boolean getStatus(){return status;}
@@ -40,14 +52,14 @@ public class PeopleItem implements Serializable {
     public int getExpiration_time(){
         return expiration_time;
     }
-    public String getTx_hash(){
-        return this.tx_hash;
-    }
     public String getSendingStatus(){
         return sendingStatus;
     }
     public boolean getVerification_status(){
         return verification_status;
+    }
+    public String getTx_hash(){
+        return this.tx_hash;
     }
     public void setMenu_name(String menu_name){
         this.menu_name=menu_name;

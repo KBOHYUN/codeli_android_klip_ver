@@ -103,7 +103,7 @@ public class RoomAddActivity extends AppCompatActivity {
                 RoomItem item=null;
 
                 if(name.getText().toString()!=null){
-                    item=new RoomItem(name.getText().toString(), platform.getSelectedItem().toString(),0,Integer.parseInt(minimum_price.getText().toString()),Integer.parseInt(delivery_price.getText().toString()),address.getText().toString(),specific_address.getText().toString(),1,people_num);
+                    item=new RoomItem(name.getText().toString(), platform.getSelectedItem().toString(),0,Integer.parseInt(minimum_price.getText().toString()),Integer.parseInt(delivery_price.getText().toString()),address.getText().toString(),specific_address.getText().toString(),1,people_num,LoginActivity.nickname);
                     roomValue=item.toMap();
                 }
 
