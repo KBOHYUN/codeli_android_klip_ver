@@ -129,20 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
         //현재 위치(위도, 경도) 찾아 주소로 변환하여 텍스트 출력
         cur_location=findViewById(R.id.location_tv);
-        gpsTracker = new GpsTracker(MainActivity.this);
 
         //위치서비스 상태 확인
-        if (!checkLocationServicesStatus()) {
+        if(checkRunTimePermission()){
+            gpsTracker = new GpsTracker(MainActivity.this);
 
-            showDialogForLocationServiceSetting();
-
-        }else {
-            if(checkRunTimePermission()){
-                latitude = gpsTracker.getLatitude(); // 위도
-                longtitude = gpsTracker.getLongitude(); //경도
-                String addr=getCurrentAddress(latitude,longtitude);
-                cur_location.setText(addr);
-            }
+            latitude = gpsTracker.getLatitude(); // 위도
+            longtitude = gpsTracker.getLongitude(); //경도
+            String addr=getCurrentAddress(latitude,longtitude);
+            cur_location.setText(addr);
         }
 
         bottomNavigationView=findViewById(R.id.bottom_navigation);
@@ -219,23 +214,6 @@ public class MainActivity extends AppCompatActivity {
         return addr;
     }
     //여기부터는 GPS 활성화를 위한 메소드들
-    private void showDialogForLocationServiceSetting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("위치 서비스"); builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" + "위치 설정을 확인해 주세요");
-        builder.setCancelable(true);
-        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int id) {
-                Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
-            }
-        });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        builder.create().show();
-    }
 
     public boolean checkLocationServicesStatus() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -260,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, REQUIRED_PERMISSIONS[0])) {
 
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                Toast.makeText(MainActivity.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "앱을 사용하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
                 // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
                 ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
                 return true;
@@ -281,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
             //사용자가 GPS 활성 시켰는지 검사
             if (checkLocationServicesStatus()) {
                 if (checkLocationServicesStatus()) {
+
                     Log.d("@@@", "onActivityResult : GPS 활성화 되있음");
                     return;
                 }
@@ -316,6 +295,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_SHORT).show();
                 }
                 return;
+            }
+            else{
+                gpsTracker = new GpsTracker(MainActivity.this);
+                latitude = gpsTracker.getLatitude(); // 위도
+                longtitude = gpsTracker.getLongitude(); //경도
+                String addr=getCurrentAddress(latitude,longtitude);
+                cur_location.setText(addr);
             }
 
         }

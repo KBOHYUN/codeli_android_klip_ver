@@ -131,6 +131,7 @@ public class PayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //결제하기 - 성공시
                 klipAction.getResult(requestKey,klipCallback); //결과 요청
+
                 Toast.makeText(getApplicationContext(), "결제가 완료되었습니다", Toast.LENGTH_SHORT).show();
                 MainActivity.select_room_num=room_position;
                 MainActivity.is_payment=true;
@@ -140,6 +141,7 @@ public class PayActivity extends AppCompatActivity {
 
 
                 finish(); //종료
+
             }
         });
 
@@ -163,10 +165,12 @@ public class PayActivity extends AppCompatActivity {
 
             // save user address
             KlipResult result = res.getResult();
-            if (result != null) {
+            if (result != null && res.getStatus().equals("completed")) {
                 userAddress = result.getKlaytnAddress();
 
                 System.out.println("*****result 성공 - user klip address : "+userAddress);
+
+
 
             }
 
