@@ -38,6 +38,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     public static int select_room_num=0;
+    public static boolean is_payment=false;
 
     public static String email="";
 
@@ -110,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
                 intent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
                 intent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
-                select_room_num=position;
 
                 startActivity(intent);
             }

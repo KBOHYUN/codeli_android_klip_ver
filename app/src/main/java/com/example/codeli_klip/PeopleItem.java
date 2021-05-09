@@ -1,6 +1,8 @@
 package com.example.codeli_klip;
 
-public class PeopleItem {
+import java.io.Serializable;
+
+public class PeopleItem implements Serializable {
     private int UID;
     private String id;
     private boolean status=false;
@@ -62,5 +64,11 @@ public class PeopleItem {
     }
     public void setMenu_price(int menu_price){
         this.menu_price=menu_price;
+    }
+    public void setSending_status(boolean status){
+        this.sending_status=status;
+    }
+    public void setVerfication_status(boolean status){
+        this.verfication_status=status;
     }
 }

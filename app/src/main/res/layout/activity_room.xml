@@ -39,14 +39,13 @@
     <Button
         android:id="@+id/verify_button"
         android:layout_width="80dp"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="55dp"
-        android:textColor="@color/white"
-        android:background="@color/blue_primary"
+        android:layout_marginTop="80dp"
+        android:background="@color/green"
         android:visibility="invisible"
-        android:text="검" />
+        android:text="검증" />
 
     <LinearLayout
         android:layout_width="match_parent"

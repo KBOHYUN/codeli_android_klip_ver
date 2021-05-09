@@ -2,6 +2,7 @@ package com.example.codeli_klip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.codeli_klip.actions.KlipAction;
 import com.example.codeli_klip.util.JsonHelper;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.klipwallet.app2app.api.Klip;
 import com.klipwallet.app2app.api.KlipCallback;
 import com.klipwallet.app2app.api.request.AuthRequest;
@@ -34,6 +37,8 @@ public class PayActivity extends AppCompatActivity {
     private int menu_price;
     private int delivery_price;
     private int total_price=0;
+    private String room_id;
+    private int room_position=0;
 
     private Context ctx;
     private KlipAction klipAction;
@@ -44,13 +49,22 @@ public class PayActivity extends AppCompatActivity {
     private String requestKey;
     private String userAddress;
     private String txHash;
-    private String room_id;
     private String result;
+
+    private PeopleItem my_data_peopleitem;
+
+    //Firebase Database 관리 객체참조변수
+    private FirebaseDatabase firebaseDatabase;
+
+    //'chat'노드의 참조객체 참조변수
+    private DatabaseReference chat_user_Ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
+
+        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설
 
         pay_price=findViewById(R.id.pay_price);
         pay_total_price=findViewById(R.id.pay_total_price);
@@ -60,6 +74,11 @@ public class PayActivity extends AppCompatActivity {
         delivery_price=getIntent.getIntExtra("delivery_price",0);
         total_price=menu_price+delivery_price;
         room_id=getIntent.getStringExtra("room_id");
+        if(room_id!=null){
+            room_position=Integer.parseInt(room_id);
+        }
+
+        my_data_peopleitem=(PeopleItem)getIntent.getSerializableExtra("my_menu_item");
 
         pay_price.setText("음식가격 "+menu_price+" + 배달팁 "+delivery_price);
         pay_total_price.setText("총 금액 "+total_price);
@@ -104,13 +123,22 @@ public class PayActivity extends AppCompatActivity {
             }
         });
 
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions/"+ LoginActivity.nickname); //채팅 reference
+
         result_button=findViewById(R.id.result_button);
         result_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //결제하기
+                //결제하기 - 성공시
                 klipAction.getResult(requestKey,klipCallback); //결과 요청
                 Toast.makeText(getApplicationContext(), "결제가 완료되었습니다", Toast.LENGTH_SHORT).show();
+                MainActivity.select_room_num=room_position;
+                MainActivity.is_payment=true;
+
+                my_data_peopleitem.setSending_status(true);
+                chat_user_Ref.setValue(my_data_peopleitem);
+
+
                 finish(); //종료
             }
         });

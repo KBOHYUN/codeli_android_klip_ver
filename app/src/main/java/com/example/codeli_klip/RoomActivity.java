@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,6 +39,7 @@ public class RoomActivity extends AppCompatActivity {
     private Button room_ready_button; //준비 버튼
     private Button room_ready_cancel_button; //준비 취소 버튼
     private Button room_pay_button; //결제 버튼
+    private Button room_verfity_button;//검증 버튼
 
     private ImageButton room_chat_button; //채팅 전송 버튼
 
@@ -152,6 +154,7 @@ public class RoomActivity extends AppCompatActivity {
                 intent.putExtra("menu_price",my_menu_item.getMenu_price());
                 intent.putExtra("delivery_price",price_per_person);
                 intent.putExtra("room_id",room_id); //방 번호
+                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
                 startActivity(intent);
                 finish();
             }
@@ -196,6 +199,14 @@ public class RoomActivity extends AppCompatActivity {
             }
         });
 
+        room_verfity_button=findViewById(R.id.verify_button);
+        room_verfity_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                my_menu_item.setVerfication_status(true);
+                chat_user_Ref.setValue(my_menu_item);
+            }
+        });
 
         partitionRef= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions"); //ref 맞는지 확인!
         //'partitions'노드에 저장되어 있는 데이터들을 읽어오기
@@ -223,7 +234,6 @@ public class RoomActivity extends AppCompatActivity {
                     }
 
                     if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){
-                        my_data_check=1;
                         my_menu_item=partition;
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){
@@ -232,12 +242,16 @@ public class RoomActivity extends AppCompatActivity {
                             else{
                                 room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
                             }
+
+                            if(my_menu_item.getSendingStatus()==true){
+                                room_verfity_button.setVisibility(View.VISIBLE);
+                                room_ready_button.setVisibility(View.INVISIBLE);
+                            }
                             room_my_menu.setText(my_menu_item.getMenu_name());
                             room_my_price.setText(""+my_menu_item.getMenu_price());
 
                         }
                     }
-
             }
 
             @Override
