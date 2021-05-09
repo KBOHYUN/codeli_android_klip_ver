@@ -63,4 +63,16 @@
         android:layout_margin="40dp"
         android:layout_alignParentBottom="true"/>
 
+    <Button
+        android:id="@+id/result_button"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:text="닫기"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:layout_margin="40dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"/>
+
 </RelativeLayout>

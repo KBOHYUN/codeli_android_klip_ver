@@ -151,7 +151,9 @@ public class RoomActivity extends AppCompatActivity {
                 Intent intent=new Intent(getApplicationContext(),PayActivity.class);
                 intent.putExtra("menu_price",my_menu_item.getMenu_price());
                 intent.putExtra("delivery_price",price_per_person);
+                intent.putExtra("room_id",room_id); //방 번호
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -162,6 +164,8 @@ public class RoomActivity extends AppCompatActivity {
                 //준비 취소하기
                 room_ready_cancel_button.setVisibility(View.INVISIBLE); //준비취소버튼 안보이기
                 room_ready_button.setVisibility(View.VISIBLE); //준비버튼 보이기
+                room_pay_button.setVisibility(View.INVISIBLE); //결제버튼 안보이기
+
                 room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
 
                 my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getVerification(), my_menu_item.getUid(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus(),my_menu_item.getTx_hash(),my_menu_item.getVerification_status());

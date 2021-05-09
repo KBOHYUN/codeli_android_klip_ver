@@ -3,6 +3,8 @@ package com.example.codeli_klip;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,12 +27,22 @@ public class MypageActivity extends AppCompatActivity {
     private TextView email;
     private TextView klip;
 
+    private Button logout_button;
+
     private Switch arrive_switch;
     private Switch chat_switch;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        logout_button=findViewById(R.id.my_logout_button);
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //로그아웃 후 text file 삭제
+            }
+        });
 
         id=findViewById(R.id.my_name);
         email=findViewById(R.id.my_email);
