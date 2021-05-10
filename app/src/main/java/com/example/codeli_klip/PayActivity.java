@@ -52,7 +52,7 @@ public class PayActivity extends AppCompatActivity {
     private int room_position=0;
     private double klay_flow=2690.0;
     private double total_klay=0.0;
-    private double total_klay_6;
+    private double total_klay_6=0.0001;
 
     private Context ctx;
     private KlipAction klipAction;
@@ -99,14 +99,16 @@ public class PayActivity extends AppCompatActivity {
         pay_price.setText("음식가격 "+menu_price+" + 배달팁 "+delivery_price);
         pay_total_price.setText("총 금액 "+total_price);
 
-        total_klay=total_price/klay_flow;
-        total_klay_6=Double.parseDouble(String.format("%.6f",total_klay));
+        klay_flow=getIntent.getDoubleExtra("klay_flow",1.0);
+
+        //total_klay=total_price/klay_flow;
+        total_klay_6=getIntent.getDoubleExtra("klay_total",1.0);
         Date today = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         String current_time=format1.format(today);
 
         pay_total_price_klay.setText("총 "+total_klay_6+" KLAY");
-        pay_klay_unit.setText("(1KLAY=₩"+2690.0+", "+current_time+" 기준)");
+        pay_klay_unit.setText("(1KLAY=₩"+klay_flow+", "+current_time+" 기준)");
 
 
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
@@ -116,9 +118,6 @@ public class PayActivity extends AppCompatActivity {
 
         klip = Klip.getInstance(this);
 
-
-        //klipAction.prepareLink(klipCallback);
-
         // BApp 정보
         BAppInfo bAppInfo = new BAppInfo("Codeli");
         // Auth 정보
@@ -126,7 +125,8 @@ public class PayActivity extends AppCompatActivity {
 
         KlayTxRequest req = new KlayTxRequest.Builder()
                 .to("0x697e67f7767558dcc8ffee7999e05807da45002d") //서버 클립 주소..?
-                .amount("0.0001")
+                .amount(""+total_klay_6)
+                //.amount("0.00001")
                 .build();
         try {
             klip.prepare(req, bAppInfo, klipCallback);
@@ -208,7 +208,7 @@ public class PayActivity extends AppCompatActivity {
                 //my_data_peopleitem.setTx_hash(txHash);
 
 
-                MyItem item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"prepared",my_data_peopleitem.getVerification_status());
+                MyItem item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
                 chat_user_Ref.setValue(item);
                 txHash="";
                 System.out.println("*****result 성공 - tx hash: "+txHash);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.snapshot.DoubleNode;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.io.Serializable;
@@ -60,6 +65,8 @@ public class RoomActivity extends AppCompatActivity {
     private TextView room_my_price;
 
     private EditText room_chat_text; //채팅 메세지 입력
+
+    private int people_size=1;
 
     private String name;
     private int order_price;
@@ -157,46 +164,84 @@ public class RoomActivity extends AppCompatActivity {
         klay_Ref=firebaseDatabase.getReference("/klay_value/"); //클레이 reference
 
         //결제 버튼
+        Intent intent=new Intent(getApplicationContext(),PayActivity.class);
         room_pay_button=findViewById(R.id.room_pay_button);
+        room_pay_button.setVisibility(View.INVISIBLE);
         room_pay_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KlayData trigger=new KlayData(true);
+
+                KlayData trigger=new KlayData(true, "");
                 klay_Ref.setValue(trigger);
-//                klay_Ref.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-//                        //데이터가 쌓이기 때문에  clear()
-//                        klayDataArrayList.clear();
-//                        for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
-//                        {
-//                            KlayData klayData=ds.getValue(KlayData.class);
-//                            if(klayData.getTrigger()==false){
-//                                klay_flow= Double.parseDouble(klayData.getValue());
+                //클레이 시세 확인
+
+                klay_Ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                        //데이터가 쌓이기 때문에  clear()
+
+                            //String value=ds.getValue(KlayData.class).getValue();
+                            KlayData klay=dataSnapshot.getValue(KlayData.class);
+                            if(klay.getTrigger()==false){
+                                klayDataArrayList.add(klay);
+
+
+                                    klay_flow= Double.parseDouble(klayDataArrayList.get(0).getValue());
+
+                                    // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
+
+                                    int total=price_per_person+my_menu_item.getMenu_price();
+                                    double klay_price=total/klay_flow;
+                                    double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
+
+                                    intent.putExtra("menu_price",my_menu_item.getMenu_price());
+                                    intent.putExtra("delivery_price",price_per_person);
+                                    intent.putExtra("room_id",room_id); //방 번호
+                                    intent.putExtra("klay_flow",klay_flow); //클레이 시세
+                                    intent.putExtra("klay_total",total_klay_6);
+                                    intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+                                    startActivity(intent);
+                                    finish();
+
+
+                        }
+
+
+//                            if(klay.getTrigger()==false){
 //
-//                                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
+//                                klay_flow= Double.parseDouble(klay.getValue());
+//
+//                               // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
+//
+//                                int total=price_per_person+my_menu_item.getMenu_price();
+//                                double klay_price=total/klay_flow;
+//                                double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
+//
 //                                intent.putExtra("menu_price",my_menu_item.getMenu_price());
 //                                intent.putExtra("delivery_price",price_per_person);
 //                                intent.putExtra("room_id",room_id); //방 번호
 //                                intent.putExtra("klay_flow",klay_flow); //클레이 시세
+//                                intent.putExtra("klay_total",total_klay_6);
 //                                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
 //                                startActivity(intent);
 //                                finish();
+//
 //                            }
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) { }
-//                });
 
-                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
-                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-                intent.putExtra("delivery_price",price_per_person);
-                intent.putExtra("room_id",room_id); //방 번호
-                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-                startActivity(intent);
-                finish();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+
+//                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
+//                intent.putExtra("menu_price",my_menu_item.getMenu_price());
+//                intent.putExtra("delivery_price",price_per_person);
+//                intent.putExtra("room_id",room_id); //방 번호
+//                intent.putExtra("klay_flow",klay_flow); //클레이 시세
+//                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+//                startActivity(intent);
+//                finish();
+
 
             }
         });
@@ -233,10 +278,16 @@ public class RoomActivity extends AppCompatActivity {
 
                 chat_user_Ref.setValue(my_menu_item);
 
+                cur_people = peopleItemArrayList.size();
+                people_size++;
+                price_per_person = delivery_price / (people_size);
+                room_delivery_price.setText("배달팁: " + delivery_price + "원 (1인당 : " + price_per_person + ")");
+
                 //버튼 보이기 유무
                 room_ready_button.setVisibility(View.INVISIBLE);
                 room_ready_cancel_button.setVisibility(View.VISIBLE);
                 room_pay_button.setVisibility(View.VISIBLE);
+                
             }
         });
 
@@ -273,7 +324,9 @@ public class RoomActivity extends AppCompatActivity {
                         peopleItemArrayList.add(partition);
 
                         cur_people = peopleItemArrayList.size()+1;
-                        price_per_person = delivery_price / cur_people;
+                        people_size=cur_people;
+
+                        price_per_person = delivery_price / people_size;
                         room_delivery_price.setText("배달팁: " + delivery_price + "원 (1인당 : " + price_per_person + ")");
 
                         //리스트뷰를 갱신
@@ -289,7 +342,8 @@ public class RoomActivity extends AppCompatActivity {
                                 room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
                             }
                             //Toast.makeText(getApplicationContext(), "** sending status: "+my_menu_item.getSendingStatus(), Toast.LENGTH_SHORT).show();
-                            if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("prepared")){
+                            if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
+
                                 room_verfity_button.setVisibility(View.VISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);

@@ -139,6 +139,8 @@ public class RoomOwnerActivity extends AppCompatActivity {
                 VerificationData verification=new VerificationData(LoginActivity.klip_address,true);
                 verification_ref.setValue(verification);
 
+                Toast.makeText(getApplicationContext(), "송금이 요청되었습니다", Toast.LENGTH_SHORT).show();
+
 
             }
         });
