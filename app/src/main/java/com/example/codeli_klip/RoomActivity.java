@@ -1,8 +1,14 @@
 package com.example.codeli_klip;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,8 +25,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
@@ -40,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 public class RoomActivity extends AppCompatActivity {
 
@@ -68,13 +77,8 @@ public class RoomActivity extends AppCompatActivity {
 
     private int people_size=1;
 
-    private String name;
-    private int order_price;
-    private int delivery_price;
-    private String platform;
-    private String delivery_place;
-    private String specific_address;
-    private String delivery_time;
+    private int pos;
+
     private int cur_people;
     private int price_per_person;
 
@@ -130,16 +134,7 @@ public class RoomActivity extends AppCompatActivity {
 
         //방 정보 받기
         Intent data=getIntent();
-        int pos=data.getIntExtra("position",0);
-//        name=data.getStringExtra("name");
-//        platform=data.getStringExtra("platform");
-//        order_price=data.getIntExtra("order_price",0);
-//        delivery_price=data.getIntExtra("delivery_price",0);
-//        delivery_place=data.getStringExtra("address");
-//        specific_address=data.getStringExtra("specific_address");
-//        cur_people=data.getIntExtra("cur_people",1);
-//        room_id=data.getStringExtra("room_id");
-//        specific_address=data.getStringExtra("specific_address");
+        pos=data.getIntExtra("position",0);
 
         //방 데이터 설정
         room_name.setText(MainActivity.roomItemArrayList.get(pos).getName());
@@ -160,7 +155,7 @@ public class RoomActivity extends AppCompatActivity {
         //나의 주문 목록 초기화
         my_menu_item=new MyItem(LoginActivity.nickname,false, "",0,0,"","",false);
 
-        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions/"+ LoginActivity.nickname); //채팅 reference
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         klay_Ref=firebaseDatabase.getReference("/klay_value/"); //클레이 reference
 
@@ -201,6 +196,7 @@ public class RoomActivity extends AppCompatActivity {
                                     intent.putExtra("klay_flow",klay_flow); //클레이 시세
                                     intent.putExtra("klay_total",total_klay_6);
                                     intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+                                    intent.putExtra("position",pos);
                                     startActivity(intent);
                                     finish();
 
@@ -279,10 +275,33 @@ public class RoomActivity extends AppCompatActivity {
 
                 chat_user_Ref.setValue(my_menu_item);
 
-                cur_people = peopleItemArrayList.size();
-                people_size++;
-                price_per_person = delivery_price / (people_size);
-                room_delivery_price.setText("배달팁: " + delivery_price + "원 (1인당 : " + price_per_person + ")");
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+                RoomItem item=new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(), MainActivity.roomItemArrayList.get(pos).getPlatform(),MainActivity.roomItemArrayList.get(pos).getCurrentOrderPrice()+price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner());
+                Map<String, Object> roomValue=item.toMap();
+
+                firestore.collection("Rooms")
+                        .document(""+pos)
+                        .set(roomValue)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                //MainActivity.roomLIstAdapter.notifyDataSetChanged();
+
+                                price_per_person = MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() / (MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1);
+                                room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
+
+
+                                //Toast.makeText(getApplicationContext(), "방 등록이 성공하였습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //Log.w(TAG, "Error adding document", e);
+                                //Toast.makeText(getApplicationContext(), "방 등록이 실패하였습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                 //버튼 보이기 유무
                 room_ready_button.setVisibility(View.INVISIBLE);
@@ -307,7 +326,7 @@ public class RoomActivity extends AppCompatActivity {
             }
         });
 
-        partitionRef= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions"); //ref 맞는지 확인!
+        partitionRef= firebaseDatabase.getReference("/Chat/"+pos+"/partitions"); //ref 맞는지 확인!
         //'partitions'노드에 저장되어 있는 데이터들을 읽어오기
         partitionRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -317,7 +336,7 @@ public class RoomActivity extends AppCompatActivity {
                 for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
                     PeopleItem partition = ds.getValue(PeopleItem.class);
-                    order_price+=partition.getMenu_price(); //***** 현재 금액 파이어스토어 정보 업데이트하기!!!
+                    //order_price+=partition.getMenu_price(); //***** 현재 금액 파이어스토어 정보 업데이트하기!!!
 
                     if(partition.getId()!=null&&!partition.getId().equals(LoginActivity.nickname)) {
 
@@ -327,8 +346,8 @@ public class RoomActivity extends AppCompatActivity {
                         cur_people = peopleItemArrayList.size()+1;
                         people_size=cur_people;
 
-                        price_per_person = delivery_price / people_size;
-                        room_delivery_price.setText("배달팁: " + delivery_price + "원 (1인당 : " + price_per_person + ")");
+                        price_per_person = MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() / people_size;
+                        room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
 
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
@@ -370,7 +389,7 @@ public class RoomActivity extends AppCompatActivity {
         });
 
         //Firebase DB관리 객체와 'caht'노드 참조객체 얻어오기
-        chatRef= firebaseDatabase.getReference("/Chat/"+room_id+"/chat"); //ref 맞는지 확인!
+        chatRef= firebaseDatabase.getReference("/Chat/"+pos+"/chat"); //ref 맞는지 확인!
         //firebaseDB에서 채팅 메세지들 실시간 읽어오기..
         //'chat'노드에 저장되어 있는 데이터들을 읽어오기
         //chatRef에 데이터가 변경되는 것으 듣는 리스너 추가
@@ -385,6 +404,7 @@ public class RoomActivity extends AppCompatActivity {
 
                 //새로운 메세지를 리스뷰에 추가하기 위해 ArrayList에 추가
                 chatItemArrayList.add(messageItem);
+
 
                 //리스트뷰를 갱신
                 chatListAdapter.notifyDataSetChanged();

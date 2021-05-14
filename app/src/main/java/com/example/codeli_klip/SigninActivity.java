@@ -108,9 +108,9 @@ public class SigninActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
-//            finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         ctx = this;
@@ -156,7 +156,7 @@ public class SigninActivity extends AppCompatActivity {
 
                 LoginActivity.nickname=nickname_result;
                 LoginActivity.email=google_email;
-                LoginActivity.klip_address=userAddress;
+                //LoginActivity.klip_address=userAddress;
 
                 try{
                     //파일에 쓰기
@@ -166,7 +166,7 @@ public class SigninActivity extends AppCompatActivity {
                     bw.write(nickname_result);
                     bw.newLine();
                     //bw.write(userAddress);
-                    //bw.close();
+                    bw.close();
                     System.out.println("파일쓰기 완료");
                 }catch(IOException e){
                     e.printStackTrace();

@@ -124,14 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
                     intent.putExtra("position",position);
-//                    intent.putExtra("room_id",room_id); //room id
-//                    intent.putExtra("name",roomLIstAdapter.getItem(position).getName()); //가게 이름
-//                    intent.putExtra("platform",roomLIstAdapter.getItem(position).getPlatform()); //플랫폼
-//                    intent.putExtra("order_price",roomLIstAdapter.getItem(position).getOrderPrice());//최소주문금액
-//                    intent.putExtra("delivery_price",roomLIstAdapter.getItem(position).getDeliveryPrice());//배달 금액
-//                    intent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
-//                    intent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
-//                    intent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
                     //owner - 방장 정보 추가
                     startActivity(intent);
                 }
@@ -212,45 +204,18 @@ public class MainActivity extends AppCompatActivity {
                         if(roomLIstAdapter.getItem(select_room_num).getOwner()!=null&&roomLIstAdapter.getItem(select_room_num).getOwner().equals(LoginActivity.nickname)) {
                             //방장 페이지로 이동
                             Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerActivity.class);
-                            ownerintent.putExtra("room_id",room_id); //room id
-                            ownerintent.putExtra("name",roomLIstAdapter.getItem(select_room_num).getName()); //가게 이름
-                            ownerintent.putExtra("platform",roomLIstAdapter.getItem(select_room_num).getPlatform()); //플랫폼
-                            ownerintent.putExtra("order_price",roomLIstAdapter.getItem(select_room_num).getOrderPrice());//최소주문금액
-                            ownerintent.putExtra("delivery_price",roomLIstAdapter.getItem(select_room_num).getDeliveryPrice());//배달 금액
-                            ownerintent.putExtra("address",roomLIstAdapter.getItem(select_room_num).getAddress());//배달 주소
-                            ownerintent.putExtra("specific_address",roomLIstAdapter.getItem(select_room_num).getSpecificAddress());//세부주소
-                            ownerintent.putExtra("cur_people",roomLIstAdapter.getItem(select_room_num).getCurrentPeople()); //현재 인원
+                            ownerintent.putExtra("position",select_room_num);
                             startActivity(ownerintent);
                             return true;
                         }
                         else{
                             Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
-                            intent.putExtra("room_id",room_id); //room id
-                            intent.putExtra("name",roomLIstAdapter.getItem(select_room_num).getName()); //가게 이름
-                            intent.putExtra("platform",roomLIstAdapter.getItem(select_room_num).getPlatform()); //플랫폼
-                            intent.putExtra("order_price",roomLIstAdapter.getItem(select_room_num).getOrderPrice());//최소주문금액
-                            intent.putExtra("delivery_price",roomLIstAdapter.getItem(select_room_num).getDeliveryPrice());//배달 금액
-                            intent.putExtra("address",roomLIstAdapter.getItem(select_room_num).getAddress());//배달 주소
-                            intent.putExtra("specific_address",roomLIstAdapter.getItem(select_room_num).getSpecificAddress());//세부주소
-                            intent.putExtra("cur_people",roomLIstAdapter.getItem(select_room_num).getCurrentPeople()); //현재 인원
+                            intent.putExtra("position",select_room_num);
                             //owner - 방장 정보 추가
                             startActivity(intent);
                             return true;
                         }
 
-
-                        //
-//                        Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
-//                        intent.putExtra("room_id",roomIdArrayList.get(select_room_num)); //room id
-//                        intent.putExtra("name",roomLIstAdapter.getItem(select_room_num).getName()); //가게 이름
-//                        intent.putExtra("platform",roomLIstAdapter.getItem(select_room_num).getPlatform()); //플랫폼
-//                        intent.putExtra("order_price",roomLIstAdapter.getItem(select_room_num).getOrderPrice());//최소주문금액
-//                        intent.putExtra("delivery_price",roomLIstAdapter.getItem(select_room_num).getDeliveryPrice());//배달 금액
-//                        intent.putExtra("address",roomLIstAdapter.getItem(select_room_num).getAddress());//배달 주소
-//                        intent.putExtra("specific_address",roomLIstAdapter.getItem(select_room_num).getSpecificAddress());//세부주소
-//                        intent.putExtra("cur_people",roomLIstAdapter.getItem(select_room_num).getCurrentPeople()); //현재 인원
-//                        startActivity(intent);
-//                        return true;
                     case R.id.my:
                         Intent my_intent=new Intent(getApplicationContext(), MypageActivity.class);
                         my_intent.putExtra("email",email);

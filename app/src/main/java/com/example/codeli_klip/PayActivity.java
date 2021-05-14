@@ -73,6 +73,8 @@ public class PayActivity extends AppCompatActivity {
     //'chat'노드의 참조객체 참조변수
     private DatabaseReference chat_user_Ref;
 
+    private int pos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class PayActivity extends AppCompatActivity {
             room_position=Integer.parseInt(room_id);
         }
 
+        pos=getIntent.getIntExtra("position",0);
         my_data_peopleitem=(MyItem) getIntent.getSerializableExtra("my_menu_item");
 
         pay_price.setText("음식가격 "+menu_price+" + 배달팁 "+delivery_price);
@@ -150,7 +153,7 @@ public class PayActivity extends AppCompatActivity {
             }
         });
 
-        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+room_id+"/partitions/"+ LoginActivity.nickname); //채팅 reference
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         result_button=findViewById(R.id.result_button);
         result_button.setOnClickListener(new View.OnClickListener() {
