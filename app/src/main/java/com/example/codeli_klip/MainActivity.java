@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.chat:
                         //방목록으로 이동하기
                         //default room num=0
-                        String room_id=roomIdArrayList.get(select_room_num);
 
                         if(roomLIstAdapter.getItem(select_room_num).getOwner()!=null&&roomLIstAdapter.getItem(select_room_num).getOwner().equals(LoginActivity.nickname)) {
                             //방장 페이지로 이동
