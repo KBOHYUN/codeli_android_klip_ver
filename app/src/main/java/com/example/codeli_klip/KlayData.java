@@ -8,8 +8,10 @@ public class KlayData {
     KlayData(){
     }
 
-    KlayData(boolean trigger){
+
+    KlayData(boolean trigger, String value){
         this.trigger=trigger;
+        this.value=value;
     }
 
     public String getValue(){

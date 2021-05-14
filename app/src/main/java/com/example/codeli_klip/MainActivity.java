@@ -9,6 +9,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -157,6 +159,35 @@ public class MainActivity extends AppCompatActivity {
             String addr=getCurrentAddress(latitude,longtitude);
             cur_location.setText(addr);
         }
+
+
+        //background service 시작
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent intent =new Intent(MainActivity.this, BackgroundGPS.class);
+                    System.out.println("service start");
+                    stopService(intent);
+
+                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                    startService(intent);
+                }catch (Exception e){
+                    Log.i("main service error", e.toString());
+                }
+            }
+        }, 2000);
+//        try{
+//            Intent intent =new Intent(MainActivity.this, BackgroundGPS.class);
+//            System.out.println("service start");
+//            stopService(intent);
+//
+//            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+//            startService(intent);
+//        }catch (Exception e){
+//            Log.i("main service error", e.toString());
+//        }
 
         bottomNavigationView=findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.home);

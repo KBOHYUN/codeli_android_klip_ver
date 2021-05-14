@@ -100,7 +100,7 @@ public class SigninActivity extends AppCompatActivity {
                 BufferedReader buf = new BufferedReader(new FileReader(saveFile));
                 LoginActivity.name=buf.readLine();
                 LoginActivity.nickname=buf.readLine();
-                LoginActivity.klip_address=buf.readLine();
+                //LoginActivity.klip_address=buf.readLine();
                 buf.close();
 
             } catch (FileNotFoundException e) {
@@ -108,9 +108,9 @@ public class SigninActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(intent);
+//            finish();
         }
 
         ctx = this;
@@ -165,8 +165,8 @@ public class SigninActivity extends AppCompatActivity {
                     bw.newLine();
                     bw.write(nickname_result);
                     bw.newLine();
-                    bw.write(userAddress);
-                    bw.close();
+                    //bw.write(userAddress);
+                    //bw.close();
                     System.out.println("파일쓰기 완료");
                 }catch(IOException e){
                     e.printStackTrace();

@@ -40,6 +40,12 @@
         <activity android:name=".RoomOwnerActivity" />
 
         <service android:name=".GpsTracker" tools:ignore="Instantiatable" />
+        <service android:name=".BackgroundGPS">
+            <intent-filter>
+                <action android:name="com.example.codeli_klip.backgroundgps"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
