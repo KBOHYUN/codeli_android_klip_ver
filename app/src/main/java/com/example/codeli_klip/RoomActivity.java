@@ -128,25 +128,26 @@ public class RoomActivity extends AppCompatActivity {
         room_delivery_place=findViewById(R.id.room_delivery_place);
         room_delivery_time=findViewById(R.id.room_delivery_time);
 
-        //방 정보 받
+        //방 정보 받기
         Intent data=getIntent();
-        name=data.getStringExtra("name");
-        platform=data.getStringExtra("platform");
-        order_price=data.getIntExtra("order_price",0);
-        delivery_price=data.getIntExtra("delivery_price",0);
-        delivery_place=data.getStringExtra("address");
-        specific_address=data.getStringExtra("specific_address");
-        cur_people=data.getIntExtra("cur_people",1);
-        room_id=data.getStringExtra("room_id");
-        specific_address=data.getStringExtra("specific_address");
+        int pos=data.getIntExtra("position",0);
+//        name=data.getStringExtra("name");
+//        platform=data.getStringExtra("platform");
+//        order_price=data.getIntExtra("order_price",0);
+//        delivery_price=data.getIntExtra("delivery_price",0);
+//        delivery_place=data.getStringExtra("address");
+//        specific_address=data.getStringExtra("specific_address");
+//        cur_people=data.getIntExtra("cur_people",1);
+//        room_id=data.getStringExtra("room_id");
+//        specific_address=data.getStringExtra("specific_address");
 
         //방 데이터 설정
-        room_name.setText(name);
-        room_platform.setText("사용플랫폼: "+platform);
-        room_order_price.setText("최소주문금액: "+order_price+"원");
-        price_per_person=delivery_price/cur_people;
-        room_delivery_price.setText("배달팁: "+delivery_price+"원 (1인당 : "+price_per_person+")");
-        room_delivery_place.setText("배달장소: "+delivery_place+" "+specific_address);
+        room_name.setText(MainActivity.roomItemArrayList.get(pos).getName());
+        room_platform.setText("사용플랫폼: "+MainActivity.roomItemArrayList.get(pos).getPlatform());
+        room_order_price.setText("최소주문금액: "+MainActivity.roomItemArrayList.get(pos).getOrderPrice()+"원");
+        price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
+        room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
+        room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
 
         room_my_status=findViewById(R.id.room_my_status);
         room_my_nickname=findViewById(R.id.room_my_nickname);
