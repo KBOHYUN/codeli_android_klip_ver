@@ -23,11 +23,12 @@ public class MypageActivity extends AppCompatActivity {
     private String my_email;
     private String my_klip;
 
-    private TextView id;
-    private TextView email;
-    private TextView klip;
+    private TextView mypage_id;
+    private static TextView mypage_email;
+    private static TextView mypage_klip;
 
     private Button logout_button;
+    private Button my_edit_bt;
 
     private Switch arrive_switch;
     private Switch chat_switch;
@@ -44,15 +45,27 @@ public class MypageActivity extends AppCompatActivity {
             }
         });
 
-        id=findViewById(R.id.my_name);
-        email=findViewById(R.id.my_email);
-        klip=findViewById(R.id.my_klip);
+        mypage_id=findViewById(R.id.my_name);
+        mypage_email=findViewById(R.id.my_email);
+        mypage_klip=findViewById(R.id.my_klip);
         chat_switch=findViewById(R.id.my_chat_switch);
         arrive_switch=findViewById(R.id.my_arrive_switch);
 
-        email.setText(LoginActivity.email);
-        id.setText(LoginActivity.nickname);
-        klip.setText(LoginActivity.klip_address);
+        mypage_email.setText(LoginActivity.email);
+        mypage_id.setText(LoginActivity.nickname);
+        mypage_klip.setText(LoginActivity.klip_address);
+
+        my_edit_bt=findViewById(R.id.my_edit_bt);
+        my_edit_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //편집 화면 넘어가기
+                Intent intent=new Intent(getApplicationContext(),MypageEditActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         chat_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

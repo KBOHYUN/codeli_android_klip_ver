@@ -98,8 +98,9 @@ public class SigninActivity extends AppCompatActivity {
             //로그인 정보가 있는 경우 -> 자동로그인
             try {
                 BufferedReader buf = new BufferedReader(new FileReader(saveFile));
-                LoginActivity.name=buf.readLine();
+                //LoginActivity.name=buf.readLine();
                 LoginActivity.nickname=buf.readLine();
+                LoginActivity.email=buf.readLine();
                 //LoginActivity.klip_address=buf.readLine();
                 buf.close();
 
