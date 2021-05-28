@@ -62,6 +62,9 @@ public class RoomAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 System.out.println("주소 검색 시작");
+                //도로명 주소 검색 기능 추가
+
+
             }
         });
 
