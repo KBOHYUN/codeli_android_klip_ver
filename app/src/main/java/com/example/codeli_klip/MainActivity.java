@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView cur_location; //현재 위치 주소
 
     private GpsTracker gpsTracker;
-    private double latitude;
-    private double longtitude;
+    public static double latitude;
+    public static double longtitude;
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};

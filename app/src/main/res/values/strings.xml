@@ -9,6 +9,7 @@
     <!-- prepare (klay) -->
     <string name="send_klay_to_address_hint">0x2d9aea5038ca7efac0ebe1b627104c7ece1a3d1a</string>
     <string name="send_klay_amount_hint">1</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
