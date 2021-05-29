@@ -39,6 +39,7 @@
         <activity android:name=".LoginGoogleActivity" />
         <activity android:name=".RoomOwnerActivity" />
         <activity android:name=".MypageEditActivity" />
+        <activity android:name=".SearchAddress" />
 
         <service android:name=".GpsTracker" tools:ignore="Instantiatable" />
         <service android:name=".BackgroundGPS">

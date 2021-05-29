@@ -1,5 +1,4 @@
 package com.example.codeli_klip;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -61,10 +60,11 @@ public class RoomAddActivity extends AppCompatActivity {
         addr_search_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("주소 검색 시작");
+                //System.out.println("주소 검색 시작");
                 //도로명 주소 검색 기능 추가
 
-
+                Intent intent=new Intent(getApplicationContext(), SearchAddress.class);
+                startActivity(intent);
             }
         });
 
