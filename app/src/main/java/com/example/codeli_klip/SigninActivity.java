@@ -162,8 +162,8 @@ public class SigninActivity extends AppCompatActivity {
                 try{
                     //파일에 쓰기
                     BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir() + "/user.txt",true));
-                    bw.write(name_result);
-                    bw.newLine();
+                    //bw.write(name_result);
+                    //bw.newLine();
                     bw.write(nickname_result);
                     bw.newLine();
                     //bw.write(userAddress);

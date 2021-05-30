@@ -2,6 +2,7 @@ package com.example.codeli_klip;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Geocoder geocoder;
 
+    private String address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         result_address=findViewById(R.id.map_result_address);
 
         geocoder = new Geocoder(this);
+
+        //결과 주소 보내
+        ok_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
 
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,16 +73,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 System.out.println(addressList.get(0).toString());
                 // 콤마를 기준으로 split
                 String []splitStr = addressList.get(0).toString().split(",");
-                String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
+                address = splitStr[0].substring(splitStr[0].indexOf("\"") + 6,splitStr[0].length() - 2); // 주소
                 System.out.println(address);
+
+                RoomAddActivity.meeting_address=address;
 
                 String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
                 String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
-                System.out.println(latitude);
-                System.out.println(longitude);
+                //System.out.println(latitude);
+                //System.out.println(longitude);
 
                 // 좌표(위도, 경도) 생성
                 LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+
+                RoomAddActivity.meeting_latitude=Double.parseDouble(latitude);
+                RoomAddActivity.meeting_longtitude=Double.parseDouble(longitude);
+
                 // 마커 생성
                 MarkerOptions mOptions2 = new MarkerOptions();
                 mOptions2.title("검색 결과");

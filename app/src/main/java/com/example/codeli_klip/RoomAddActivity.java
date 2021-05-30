@@ -39,6 +39,10 @@ public class RoomAddActivity extends AppCompatActivity {
 
     private int people_num=1;
 
+    public static String meeting_address;
+    public static double meeting_latitude;
+    public static double meeting_longtitude;
+
     //realtime db
     DatabaseReference mDBReference = null;
     HashMap<String, Object> childUpdates = null;
@@ -64,9 +68,12 @@ public class RoomAddActivity extends AppCompatActivity {
                 //도로명 주소 검색 기능 추가
 
                 Intent intent=new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,100); //주소 전달 받
+
+                //address.setText(meeting_address);
             }
         });
+
 
         people=findViewById(R.id.add_people_et);
         people_up=findViewById(R.id.add_people_plus_bt);
@@ -155,4 +162,18 @@ public class RoomAddActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==100){
+            if (resultCode==RESULT_OK) {
+                address.setText(meeting_address);
+            }else{
+                //Toast.makeText(MainActivity.this, "result cancle!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
