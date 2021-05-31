@@ -32,7 +32,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +59,8 @@ public class RoomOwnerActivity extends AppCompatActivity {
 
 
     private EditText room_chat_text; //채팅 메세지 입력
+
+    private boolean sendingStatusCheck=false;
 
     private String name;
     private int order_price;
@@ -95,7 +101,8 @@ public class RoomOwnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_owner);
 
-        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설
+        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
+        firestore=FirebaseFirestore.getInstance();
 
         //개인별 주문 읍식 나타날 리스트
         ListView listView=findViewById(R.id.room_people_list);
@@ -162,6 +169,7 @@ public class RoomOwnerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
                 peopleItemArrayList.clear();
+                sendingStatusCheck=false;
                 for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
                     PeopleItem partition = ds.getValue(PeopleItem.class);
@@ -172,14 +180,27 @@ public class RoomOwnerActivity extends AppCompatActivity {
                         //새로운 참여자 정보를 리스뷰에 추가하기 위해 ArrayList에 추가
                         peopleItemArrayList.add(partition);
 
+                        //결제하지 않은 인원이 있는 경우 check=false
+                        if(partition.getSendingStatus()!=null&&partition.getSendingStatus().equals("success")){
+                            sendingStatusCheck=true;
+                        }
+                        else{
+                            sendingStatusCheck=false;
+                        }
+
                         cur_people = peopleItemArrayList.size()+1;
                         price_per_person = MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() / cur_people;
                         room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
 
                         //리스트뷰를 갱신
-                        peopleListAdapter.notifyDataSetChanged();
+                       peopleListAdapter.notifyDataSetChanged();
                     }
                 }
+                if(sendingStatusCheck==true){
+                    Toast.makeText(getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
+                }
+
+
             }
 
             @Override
@@ -284,6 +305,29 @@ public class RoomOwnerActivity extends AppCompatActivity {
 
     }
 
+    private void ReadFirestoreData(){
+        //*****Firestore 실시간 정보 읽기******
+        final DocumentReference docRef = firestore.collection("Rooms").document(""+pos);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
 
+                if (snapshot != null && snapshot.exists()) {
+                    System.out.println("Current data: " + snapshot.getData());
+
+                    RoomItem roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
+
+                    int delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
+                    room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
+                    MainActivity.roomItemArrayList.set(pos, roomItem);
+                    MainActivity.roomLIstAdapter.notifyDataSetChanged();
+
+                } else { }
+            }
+        });
+    }
 
 }

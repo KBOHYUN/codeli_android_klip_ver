@@ -111,6 +111,8 @@ public class RoomActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
 
+    private Map<String, Object> roomValue = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,21 +265,29 @@ public class RoomActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //준비 완료 확인 -> 데이터 db 전송!
 
+
+                //내 메뉴 db에 전송
                 String menu=room_my_menu.getText().toString().trim();
                 int price=Integer.parseInt(room_my_price.getText().toString().trim());
-
                 my_menu_item=new MyItem(LoginActivity.nickname,true, menu, price);
-
                 room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비돰 - 파랑
-
                 chat_user_Ref.setValue(my_menu_item);
 
-                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                //****파이어스토어에 데이터 업데이트 하기
+                //메뉴 가격, 현재 인원 증가 -> 1인당 배달비 업데이트
 
-                RoomItem item=new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(), MainActivity.roomItemArrayList.get(pos).getPlatform(),MainActivity.roomItemArrayList.get(pos).getCurrentOrderPrice()+price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner());
-                Map<String, Object> roomValue=item.toMap();
+                int current_price=MainActivity.roomItemArrayList.get(pos).getCurrentOrderPrice()+price;
+                int current_people=MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1;
 
-                //********* 현재 가격, 인원, 배달비 업데이트 하기 ******
+                RoomItem roomItem= new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(),MainActivity.roomItemArrayList.get(pos).getPlatform(),current_price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),current_people,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner());
+                roomValue=roomItem.toMap();
+
+                int delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
+
+                MainActivity.roomItemArrayList.set(pos, roomItem);
+                MainActivity.roomLIstAdapter.notifyDataSetChanged();
+
+                room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                 firestore.collection("Rooms")
                         .document(""+pos)
@@ -286,10 +296,7 @@ public class RoomActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 //MainActivity.roomLIstAdapter.notifyDataSetChanged();
-
-                                price_per_person = MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() / (MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1);
-                                room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
-
+                                //Toast.makeText(getApplicationContext(), "방 등록이 성공하였습니다", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -509,7 +516,8 @@ public class RoomActivity extends AppCompatActivity {
 
                     RoomItem roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
 
-                    room_order_price.setText("최소주문금액: "+roomItem.getOrderPrice()+"원");
+                    int delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
+                    room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                     MainActivity.roomItemArrayList.set(pos, roomItem);
                     MainActivity.roomLIstAdapter.notifyDataSetChanged();

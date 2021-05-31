@@ -74,6 +74,7 @@ public class RoomItem {
         return this.r_owner;
     }
 
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("restaurant", r_name);
