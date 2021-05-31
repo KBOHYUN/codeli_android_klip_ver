@@ -230,16 +230,6 @@ public class RoomActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) { }
                 });
 
-//                Intent intent=new Intent(getApplicationContext(),PayActivity.class);
-//                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-//                intent.putExtra("delivery_price",price_per_person);
-//                intent.putExtra("room_id",room_id); //방 번호
-//                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-//                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-//                startActivity(intent);
-//                finish();
-
-
             }
         });
 
@@ -282,6 +272,7 @@ public class RoomActivity extends AppCompatActivity {
                 Map<String, Object> roomValue=item.toMap();
 
                 //********* 현재 가격, 인원, 배달비 업데이트 하기 ******
+
                 firestore.collection("Rooms")
                         .document(""+pos)
                         .set(roomValue)
@@ -357,14 +348,18 @@ public class RoomActivity extends AppCompatActivity {
 
                     //***** 추가: 준비가 되어있는 경우는 나갔다 들어오더라도 준비버튼 안보이도록!!!
 
-                    if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){
+                    if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){ //nickname이 자신일 경
                         my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){
                                 room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
                             }
                             else{
-                                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
+                                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란우
+                                room_verfity_button.setVisibility(View.INVISIBLE);
+                                room_ready_button.setVisibility(View.INVISIBLE);
+                                room_pay_button.setVisibility(View.VISIBLE);
+                                room_ready_cancel_button.setVisibility(View.VISIBLE);
                             }
                             //Toast.makeText(getApplicationContext(), "** sending status: "+my_menu_item.getSendingStatus(), Toast.LENGTH_SHORT).show();
                             if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
