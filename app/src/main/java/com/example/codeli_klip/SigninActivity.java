@@ -166,7 +166,7 @@ public class SigninActivity extends AppCompatActivity {
                     //bw.newLine();
                     bw.write(nickname_result);
                     bw.newLine();
-                    //bw.write(userAddress);
+                    bw.write(google_email);
                     bw.close();
                     System.out.println("파일쓰기 완료");
                 }catch(IOException e){

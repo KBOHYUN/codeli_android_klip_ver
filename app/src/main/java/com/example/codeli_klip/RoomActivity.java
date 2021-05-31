@@ -112,7 +112,7 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설
+        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
 
         //개인별 주문 읍식 나타날 리스트
         ListView listView=findViewById(R.id.room_people_list);
@@ -243,6 +243,7 @@ public class RoomActivity extends AppCompatActivity {
             }
         });
 
+        //준비 취소 버튼
         room_ready_cancel_button=findViewById(R.id.room_ready_cancel_button);
         room_ready_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,6 +281,7 @@ public class RoomActivity extends AppCompatActivity {
                 RoomItem item=new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(), MainActivity.roomItemArrayList.get(pos).getPlatform(),MainActivity.roomItemArrayList.get(pos).getCurrentOrderPrice()+price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),MainActivity.roomItemArrayList.get(pos).getCurrentPeople()+1,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner());
                 Map<String, Object> roomValue=item.toMap();
 
+                //********* 현재 가격, 인원, 배달비 업데이트 하기 ******
                 firestore.collection("Rooms")
                         .document(""+pos)
                         .set(roomValue)
@@ -352,6 +354,9 @@ public class RoomActivity extends AppCompatActivity {
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
                     }
+
+                    //***** 추가: 준비가 되어있는 경우는 나갔다 들어오더라도 준비버튼 안보이도록!!!
+
                     if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){
                         my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
                         if(my_menu_item.getId()!=null){
