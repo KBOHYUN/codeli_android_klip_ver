@@ -255,6 +255,42 @@ public class RoomActivity extends AppCompatActivity {
                 //my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus());
                 my_menu_item=new MyItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),0,"","",false);
                 chat_user_Ref.setValue(my_menu_item);
+
+                //****파이어스토어에 데이터 업데이트 하기
+                //메뉴 가격, 현재 인원 감소 -> 1인당 배달비 업데이트
+
+                int price=Integer.parseInt(room_my_price.getText().toString().trim());
+                int current_price=MainActivity.roomItemArrayList.get(pos).getCurrentOrderPrice()-price;
+                int current_people=MainActivity.roomItemArrayList.get(pos).getCurrentPeople()-1;
+
+                RoomItem roomItem= new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(),MainActivity.roomItemArrayList.get(pos).getPlatform(),current_price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),current_people,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner(),MainActivity.roomItemArrayList.get(pos).getLatitude(),MainActivity.roomItemArrayList.get(pos).getLongitude());
+                roomValue=roomItem.toMap();
+
+                int delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
+
+                MainActivity.roomItemArrayList.set(pos, roomItem);
+                MainActivity.roomLIstAdapter.notifyDataSetChanged();
+
+                room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
+
+                firestore.collection("Rooms")
+                        .document(""+pos)
+                        .set(roomValue)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                //MainActivity.roomLIstAdapter.notifyDataSetChanged();
+                                //Toast.makeText(getApplicationContext(), "방 등록이 성공하였습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //Log.w(TAG, "Error adding document", e);
+                                //Toast.makeText(getApplicationContext(), "방 등록이 실패하였습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
             }
         });
 
@@ -514,7 +550,12 @@ public class RoomActivity extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
                     System.out.println("Current data: " + snapshot.getData());
 
-                    RoomItem roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),Double.parseDouble(snapshot.getData().get("latitude").toString()),Double.parseDouble(snapshot.getData().get("longitude").toString()));
+                    RoomItem roomItem=null;
+                    if(snapshot.getData().get("latitude")!=null) {
+                        roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),Double.parseDouble(snapshot.getData().get("latitude").toString()),Double.parseDouble(snapshot.getData().get("longitude").toString()));
+                    }else{
+                        roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
+                    }
 
                     int delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
                     room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");

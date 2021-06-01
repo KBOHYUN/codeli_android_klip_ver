@@ -120,23 +120,6 @@ public class RoomOwnerActivity extends AppCompatActivity {
         chatListAdapter=new ChatListAdapter(this, chatItemArrayList);
         chatListView.setAdapter(chatListAdapter);
 
-        calendar=Calendar.getInstance();
-
-        room_time_edit_button=findViewById(R.id.room_time_modify_button);
-        room_time_edit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                TimePickerDialog timePickerDialog=new TimePickerDialog(RoomOwnerActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        room_delivery_time.setText("약속시간: "+hourOfDay+"시 "+minute+"분  ");
-                    }
-                },calendar.HOUR_OF_DAY,calendar.MINUTE,false);
-                timePickerDialog.show();
-            }
-        });
-
         //각 텍스트에 필요한 값 붙이기
         room_name=findViewById(R.id.room_name);
         room_order_price=findViewById(R.id.room_minimum_price);
@@ -165,6 +148,27 @@ public class RoomOwnerActivity extends AppCompatActivity {
         price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
+
+
+        //약속 시간 설정
+        calendar=Calendar.getInstance();
+        room_time_edit_button=findViewById(R.id.room_time_modify_button);
+        room_time_edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                TimePickerDialog timePickerDialog=new TimePickerDialog(RoomOwnerActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        room_delivery_time.setText("약속시간: "+hourOfDay+"시 "+minute+"분  ");
+
+                        //firestore에 올리기
+
+                    }
+                },calendar.HOUR_OF_DAY,calendar.MINUTE,false);
+                timePickerDialog.show();
+            }
+        });
 
         chat_user_Ref= firebaseDatabase.getReference("/Chat/"+pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
@@ -341,7 +345,12 @@ public class RoomOwnerActivity extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
                     System.out.println("Current data: " + snapshot.getData());
 
-                    RoomItem roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
+                    RoomItem roomItem=null;
+                    if(snapshot.getData().get("latitude")!=null) {
+                        roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),Double.parseDouble(snapshot.getData().get("latitude").toString()),Double.parseDouble(snapshot.getData().get("longitude").toString()));
+                    }else{
+                        roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
+                    }
 
                     int delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
                     room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
