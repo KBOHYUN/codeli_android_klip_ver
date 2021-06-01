@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class BackgroundGPS extends Service implements LocationListener {
     private String TAG = "BackgroundGPS";
     private String sPackageName = "sundosoft.co.eco";
@@ -46,6 +48,8 @@ public class BackgroundGPS extends Service implements LocationListener {
 
     public static ArrayList<LocationInfo> location_list=new ArrayList<LocationInfo>();
 
+    //Firebase Database 관리 객체참조변수
+    private FirebaseDatabase firebaseDatabase;
 
 
     @Override
@@ -57,6 +61,8 @@ public class BackgroundGPS extends Service implements LocationListener {
     public void onStart(Intent intent, int startId) {
         Log.i(TAG, "onStart : 서비스 시작");
         super.onStart(intent, startId);
+
+        firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
 
         bThreadGo = true;
 
