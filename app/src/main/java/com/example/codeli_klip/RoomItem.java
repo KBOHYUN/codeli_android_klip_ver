@@ -15,6 +15,9 @@ public class RoomItem {
     private int r_tot_people; //목표 인원
     private String r_owner; //방장
 
+    private Double r_latitude; //위도
+    private Double r_longitude; //경도
+
     public RoomItem(){
 
     }
@@ -45,6 +48,22 @@ public class RoomItem {
         this.r_owner=owner;
     }
 
+    //위도 경도 추가
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double latitude, Double longitude){
+        this.r_name=name;
+        this.r_platform=platform;
+        this.r_cur_order_price=cur_order_price;
+        this.r_order_price=order_price;
+        this.r_delivery_price=deliver_price;
+        this.r_address=address;
+        this.r_specific_address=specific_address;
+        this.r_cur_people=cur_people;
+        this.r_tot_people=tot_people;
+        this.r_owner=owner;
+        this.r_latitude=latitude;
+        this.r_longitude=longitude;
+    }
+
     public String getName(){
         return this.r_name;
     }
@@ -73,6 +92,12 @@ public class RoomItem {
     public String getOwner(){
         return this.r_owner;
     }
+    public Double getLatitude(){
+        return this.r_latitude;
+    }
+    public Double getLongitude(){
+        return this.r_longitude;
+    }
 
 
     public Map<String, Object> toMap() {
@@ -88,6 +113,10 @@ public class RoomItem {
         result.put("participantsMax", r_tot_people);
         result.put("owner",r_owner);
         //방장 정보, 참여 인원 id 정보도 추가
+
+        //위도 경도 추가
+        result.put("latitude",r_longitude);
+        result.put("longitude",r_longitude);
 
         return result;
     }
