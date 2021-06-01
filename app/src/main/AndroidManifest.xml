@@ -60,6 +60,7 @@
         <activity android:name=".RoomOwnerActivity" />
         <activity android:name=".MypageEditActivity" />
         <activity android:name=".SearchAddressActivity" />
+        <activity android:name=".TimepickerActivity" />
 
         <service
             android:name=".GpsTracker"

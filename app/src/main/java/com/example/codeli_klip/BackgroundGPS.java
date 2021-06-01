@@ -194,8 +194,10 @@ public class BackgroundGPS extends Service implements LocationListener {
                             // 위치를 저장
                             positionSaveProc();
 
-                            MyItem item=new MyItem(LoginActivity.nickname,true,"아아",5000,false, latitude,longtitude);
-                            chat_user_Ref.setValue(item);
+
+                            //realtime db에 실시간 gps 전송
+                            //MyItem item=new MyItem(LoginActivity.nickname,true,"아아",5000,false, latitude,longtitude);
+                            //chat_user_Ref.setValue(item);
 
                         }
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
+
     <Button
         android:id="@+id/verify_trigger_button"
         android:layout_width="wrap_content"
@@ -84,11 +85,24 @@
                 android:layout_height="wrap_content"
                 android:text="배달장소"
                 android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/room_delivery_time"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="약속시간"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/room_delivery_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="약속시간:  "/>
+
+                <ImageButton
+                    android:id="@+id/room_time_modify_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_edit_24"
+                    android:background="@android:color/transparent"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 

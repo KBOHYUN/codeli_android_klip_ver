@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RoomOwnerActivity extends AppCompatActivity {
@@ -49,6 +52,9 @@ public class RoomOwnerActivity extends AppCompatActivity {
     private Button verfity_trigger_button;//검증 버튼
 
     private ImageButton room_chat_button; //채팅 전송 버튼
+    private ImageButton room_time_edit_button; //약속시간 변경 버튼
+
+    private Calendar calendar;
 
     private TextView room_name; //가게 이름
     private TextView room_order_price; //최소주문금액
@@ -113,6 +119,23 @@ public class RoomOwnerActivity extends AppCompatActivity {
         final ListView chatListView=findViewById(R.id.room_chat_list);
         chatListAdapter=new ChatListAdapter(this, chatItemArrayList);
         chatListView.setAdapter(chatListAdapter);
+
+        calendar=Calendar.getInstance();
+
+        room_time_edit_button=findViewById(R.id.room_time_modify_button);
+        room_time_edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                TimePickerDialog timePickerDialog=new TimePickerDialog(RoomOwnerActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        room_delivery_time.setText("약속시간: "+hourOfDay+"시 "+minute+"분  ");
+                    }
+                },calendar.HOUR_OF_DAY,calendar.MINUTE,false);
+                timePickerDialog.show();
+            }
+        });
 
         //각 텍스트에 필요한 값 붙이기
         room_name=findViewById(R.id.room_name);
