@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class BackgroundGPS extends Service implements LocationListener {
@@ -32,7 +33,7 @@ public class BackgroundGPS extends Service implements LocationListener {
     private final IBinder mBinder = new LocalBinder();
     int iLoopValue = 0;
 
-    int iThreadInterval = 5000;    // 쓰레드 루프 간격 5초
+    int iThreadInterval = 10000;    // 쓰레드 루프 간격 5초
     boolean bThreadGo = true;        // 루프로직을 태운다.
 
 
@@ -50,6 +51,7 @@ public class BackgroundGPS extends Service implements LocationListener {
 
     //Firebase Database 관리 객체참조변수
     private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference chat_user_Ref;
 
 
     @Override
@@ -62,7 +64,10 @@ public class BackgroundGPS extends Service implements LocationListener {
         Log.i(TAG, "onStart : 서비스 시작");
         super.onStart(intent, startId);
 
+        //***********   pos 변화시키기!!!!!!!!
+
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+5+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         bThreadGo = true;
 
@@ -179,7 +184,7 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                     iLoopValue++;
                     Thread.sleep(iThreadInterval);
-                    if (iLoopValue > 5000)  //900000 = 15분
+                    if (iLoopValue > 10000)  //900000 = 15분
                         iLoopValue = 0;
 
                     Handler mHandler = new Handler(Looper.getMainLooper());
@@ -188,6 +193,9 @@ public class BackgroundGPS extends Service implements LocationListener {
                         public void run() {
                             // 위치를 저장
                             positionSaveProc();
+
+                            MyItem item=new MyItem(LoginActivity.nickname,true,"아아",5000,false, latitude,longtitude);
+                            chat_user_Ref.setValue(item);
 
                         }
 

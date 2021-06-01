@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView cur_location; //현재 위치 주소
 
+    public static boolean gpsCheckStart=false;
+
     private GpsTracker gpsTracker;
     public static double latitude;
     public static double longtitude;
@@ -166,22 +168,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         //background service 시작
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Intent intent =new Intent(MainActivity.this, BackgroundGPS.class);
-                    System.out.println("service start");
-                    stopService(intent);
+        //if(gpsCheckStart==true){
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Intent intent =new Intent(MainActivity.this, BackgroundGPS.class);
+                        System.out.println("service start");
+                        stopService(intent);
 
-                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                    startService(intent);
-                }catch (Exception e){
-                    Log.i("main service error", e.toString());
+                        //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                        startService(intent);
+                    }catch (Exception e){
+                        Log.i("main service error", e.toString());
+                    }
                 }
-            }
-        }, 2000);
+            }, 2000);
+        //}
+
 
 
         bottomNavigationView=findViewById(R.id.bottom_navigation);

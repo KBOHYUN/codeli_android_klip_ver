@@ -13,6 +13,11 @@ public class MyItem implements Serializable {
     private String sendingStatus;
     private boolean verification_status;
 
+    //위 경도 추가
+    private Double latitude;
+    private Double longitude;
+
+
     MyItem(){
 
     }
@@ -32,6 +37,20 @@ public class MyItem implements Serializable {
         this.menu_price=price;
         this.verification_status=verification_status;
     }
+
+
+    public MyItem(String id, boolean status, String name, int price,boolean verification_status,Double latitude, Double longitude){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.verification_status=verification_status;
+        this.latitude=latitude;
+        this.longitude=longitude;
+    }
+
+
+
 
     public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status){
         this.id=id;
@@ -61,6 +80,13 @@ public class MyItem implements Serializable {
     public String getTx_hash(){
         return this.tx_hash;
     }
+    public Double getLatitude(){
+        return this.latitude;
+    }
+    public Double getLongitude(){
+        return this.longitude;
+    }
+
     public void setMenu_name(String menu_name){
         this.menu_name=menu_name;
     }
