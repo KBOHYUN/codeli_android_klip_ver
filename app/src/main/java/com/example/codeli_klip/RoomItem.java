@@ -115,7 +115,7 @@ public class RoomItem {
         //방장 정보, 참여 인원 id 정보도 추가
 
         //위도 경도 추가
-        result.put("latitude",r_longitude);
+        result.put("latitude",r_latitude);
         result.put("longitude",r_longitude);
 
         return result;

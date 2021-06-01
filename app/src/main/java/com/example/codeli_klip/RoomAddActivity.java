@@ -113,7 +113,7 @@ public class RoomAddActivity extends AppCompatActivity {
                 RoomItem item=null;
 
                 if(name.getText().toString()!=null){
-                    item=new RoomItem(name.getText().toString(), platform.getSelectedItem().toString(),0,Integer.parseInt(minimum_price.getText().toString()),Integer.parseInt(delivery_price.getText().toString()),address.getText().toString(),specific_address.getText().toString(),1,people_num,LoginActivity.nickname,meeting_latitude,meeting_longtitude);
+                    item=new RoomItem(name.getText().toString(), platform.getSelectedItem().toString(),0,Integer.parseInt(minimum_price.getText().toString()),Integer.parseInt(delivery_price.getText().toString()),address.getText().toString(),specific_address.getText().toString(),1,people_num,LoginActivity.nickname, meeting_latitude, meeting_longtitude);
                     roomValue=item.toMap();
                 }
 
@@ -139,21 +139,6 @@ public class RoomAddActivity extends AppCompatActivity {
                             }
                         });
 
-//                mDBReference = FirebaseDatabase.getInstance().getReference();
-//                childUpdates = new HashMap<>();
-//                if(name.getText().toString()!=null){
-//                    item=new RoomItem(name.getText().toString(), platform.getSelectedItem().toString(),0,Integer.parseInt(minimum_price.getText().toString()),Integer.parseInt(delivery_price.getText().toString()),address.getText().toString()+" "+specific_address.getText().toString(),1,people_num);
-//                    roomValue=item.toMap();
-//                }
-//
-//                //String room_id="room" + (int)((Math.random()*10000)%10);
-//                String room_id="room";
-//                System.out.println("id: "+ LoginActivity.email);
-//                System.out.println("roominfo: "+name.getText().toString());
-//                childUpdates.put("/Room_info/" + room_id, roomValue); //id값에 이메일 안됨
-//                mDBReference.updateChildren(childUpdates);
-
-                //Toast.makeText(getApplicationContext(), "방이 생성되었습니다", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();

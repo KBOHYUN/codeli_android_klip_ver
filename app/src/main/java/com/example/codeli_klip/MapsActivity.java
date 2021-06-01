@@ -80,14 +80,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
                 String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
-                //System.out.println(latitude);
-                //System.out.println(longitude);
+                System.out.println("************latitude: "+latitude);
+                System.out.println("************longitude: "+longitude);
 
                 // 좌표(위도, 경도) 생성
                 LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
                 RoomAddActivity.meeting_latitude=Double.parseDouble(latitude);
                 RoomAddActivity.meeting_longtitude=Double.parseDouble(longitude);
+
+                System.out.println("************meeting latitude: "+RoomAddActivity.meeting_latitude);
+                System.out.println("************meeting longitude: "+RoomAddActivity.meeting_longtitude);
 
                 // 마커 생성
                 MarkerOptions mOptions2 = new MarkerOptions();
