@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(ownerintent);
                 }
                 else{
-                    Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                    //Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                    Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
                     intent.putExtra("position",position);
                     //owner - 방장 정보 추가
                     startActivity(intent);
