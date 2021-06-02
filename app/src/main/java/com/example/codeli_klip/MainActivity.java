@@ -121,9 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 if(roomLIstAdapter.getItem(position).getOwner()!=null&&roomLIstAdapter.getItem(position).getOwner().equals(LoginActivity.nickname)) {
                     //방장 페이지로 이동
                     select_room_num=position;
-                    Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerActivity.class);
+                    Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerPagerActivity.class);
                     ownerintent.putExtra("position",position);
-
                     startActivity(ownerintent);
                 }
                 else{
@@ -202,13 +201,13 @@ public class MainActivity extends AppCompatActivity {
 
                         if(roomLIstAdapter.getItem(select_room_num).getOwner()!=null&&roomLIstAdapter.getItem(select_room_num).getOwner().equals(LoginActivity.nickname)) {
                             //방장 페이지로 이동
-                            Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerActivity.class);
+                            Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerPagerActivity.class);
                             ownerintent.putExtra("position",select_room_num);
                             startActivity(ownerintent);
                             return true;
                         }
                         else{
-                            Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                            Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
                             intent.putExtra("position",select_room_num);
                             //owner - 방장 정보 추가
                             startActivity(intent);

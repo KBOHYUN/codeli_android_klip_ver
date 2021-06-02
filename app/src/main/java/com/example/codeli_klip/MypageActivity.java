@@ -102,7 +102,7 @@ public class MypageActivity extends AppCompatActivity {
                         return true;
                     case R.id.chat:
                         //방목록으로 이동하기
-                        Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                        Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
                         intent.putExtra("position",MainActivity.select_room_num);
                         startActivity(intent);
                         finish();

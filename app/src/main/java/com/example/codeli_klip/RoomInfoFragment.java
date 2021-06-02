@@ -82,6 +82,8 @@ public class RoomInfoFragment extends Fragment {
 
     private Map<String, Object> roomValue = null;
 
+    private int delivery_price_per_person;
+
 
     public RoomInfoFragment(int pos){
         this.pos=pos;
@@ -170,28 +172,6 @@ public class RoomInfoFragment extends Fragment {
 
                         }
 
-
-//                            if(klay.getTrigger()==false){
-//
-//                                klay_flow= Double.parseDouble(klay.getValue());
-//
-//                               // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
-//
-//                                int total=price_per_person+my_menu_item.getMenu_price();
-//                                double klay_price=total/klay_flow;
-//                                double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
-//
-//                                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-//                                intent.putExtra("delivery_price",price_per_person);
-//                                intent.putExtra("room_id",room_id); //방 번호
-//                                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-//                                intent.putExtra("klay_total",total_klay_6);
-//                                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-//                                startActivity(intent);
-//                                finish();
-//
-//                            }
-
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) { }
@@ -225,7 +205,7 @@ public class RoomInfoFragment extends Fragment {
                 RoomItem roomItem= new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(),MainActivity.roomItemArrayList.get(pos).getPlatform(),current_price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),current_people,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner(),MainActivity.roomItemArrayList.get(pos).getLatitude(),MainActivity.roomItemArrayList.get(pos).getLongitude());
                 roomValue=roomItem.toMap();
 
-                int delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
+                delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
 
                 MainActivity.roomItemArrayList.set(pos, roomItem);
                 MainActivity.roomLIstAdapter.notifyDataSetChanged();
@@ -277,7 +257,7 @@ public class RoomInfoFragment extends Fragment {
                 RoomItem roomItem= new RoomItem(MainActivity.roomItemArrayList.get(pos).getName(),MainActivity.roomItemArrayList.get(pos).getPlatform(),current_price,MainActivity.roomItemArrayList.get(pos).getOrderPrice(),MainActivity.roomItemArrayList.get(pos).getDeliveryPrice(),MainActivity.roomItemArrayList.get(pos).getAddress(),MainActivity.roomItemArrayList.get(pos).getSpecificAddress(),current_people,MainActivity.roomItemArrayList.get(pos).getTotalPeople(),MainActivity.roomItemArrayList.get(pos).getOwner(),MainActivity.roomItemArrayList.get(pos).getLatitude(),MainActivity.roomItemArrayList.get(pos).getLongitude());
                 roomValue=roomItem.toMap();
 
-                int delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
+                delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
 
                 MainActivity.roomItemArrayList.set(pos, roomItem);
                 MainActivity.roomLIstAdapter.notifyDataSetChanged();
@@ -422,7 +402,7 @@ public class RoomInfoFragment extends Fragment {
                         roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
                     }
 
-                    int delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
+                    delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
                     room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                     MainActivity.roomItemArrayList.set(pos, roomItem);
