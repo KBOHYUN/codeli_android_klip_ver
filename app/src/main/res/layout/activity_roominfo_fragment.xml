@@ -31,11 +31,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:text="최소주문금액"/>
                 <TextView
                     android:id="@+id/room_delivery_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:text="배달팁"/>
             </LinearLayout>
 

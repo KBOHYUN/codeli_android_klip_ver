@@ -50,7 +50,7 @@ public class RoomPagerActivity extends AppCompatActivity {
         //getSupportFragmentManager로 프래그먼트 참조가능
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
 
-        RoomInfoFragment fragment1 = new RoomInfoFragment();
+        RoomInfoFragment fragment1 = new RoomInfoFragment(pos);
         adapter.addItem(fragment1); //첫번째 프레그먼트 화면
 
         RoomChatFragment fragment2 = new RoomChatFragment(pos);
@@ -108,7 +108,7 @@ public class RoomPagerActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position){
-                case 0 : return "정보";
+                case 0 : return "준비";
                 case 1 : return "채팅";
             }
             return (position+1)+"";

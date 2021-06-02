@@ -3,7 +3,7 @@
     <style name="Theme.Codeli_android" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_primary</item>
-        <item name="colorPrimaryVariant">@color/yellow_primary</item>
+        <item name="colorPrimaryVariant">@color/blue_primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
