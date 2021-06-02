@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,7 +68,7 @@ public class PayActivity extends AppCompatActivity {
     private String txHash;
     private String result;
 
-    private MyItem my_data_peopleitem;
+    //private MyItem my_data_peopleitem;
 
     //Firebase Database 관리 객체참조변수
     private FirebaseDatabase firebaseDatabase;
@@ -74,6 +77,11 @@ public class PayActivity extends AppCompatActivity {
     private DatabaseReference chat_user_Ref;
 
     private int pos;
+
+    public static int roomPosition=0;
+
+
+    public static MyItem item;
 
 
     @Override
@@ -86,6 +94,27 @@ public class PayActivity extends AppCompatActivity {
         pay_total_price_klay=findViewById(R.id.pay_total_price_klay);
         pay_klay_unit=findViewById(R.id.pay_klay_unit);
 
+        //background service 시작
+        //if(gpsCheckStart==true){
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent intent =new Intent(PayActivity.this, BackgroundGPS.class);
+                    System.out.println("service start");
+                    stopService(intent);
+
+                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                    startService(intent);
+                }catch (Exception e){
+                    Log.i("main service error", e.toString());
+                }
+            }
+        }, 2000);
+        //}
+
+
 
         Intent getIntent=getIntent();
         menu_price=getIntent.getIntExtra("menu_price",0);
@@ -97,7 +126,11 @@ public class PayActivity extends AppCompatActivity {
         }
 
         pos=getIntent.getIntExtra("position",0);
-        my_data_peopleitem=(MyItem) getIntent.getSerializableExtra("my_menu_item");
+        roomPosition=pos;
+
+        //my_data_peopleitem=(MyItem) getIntent.getSerializableExtra("my_menu_item");
+        item=(MyItem) getIntent.getSerializableExtra("my_menu_item");
+
 
         pay_price.setText("음식가격 "+menu_price+" + 배달팁 "+delivery_price);
         pay_total_price.setText("총 금액 "+total_price);
@@ -211,7 +244,9 @@ public class PayActivity extends AppCompatActivity {
                 //my_data_peopleitem.setTx_hash(txHash);
 
 
-                MyItem item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
+                //item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
+
+                item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status());
                 chat_user_Ref.setValue(item);
                 txHash="";
                 System.out.println("*****result 성공 - tx hash: "+txHash);

@@ -30,7 +30,7 @@ public class MyItem implements Serializable {
     }
 
 
-    public MyItem(String id, boolean status, String name, int price,boolean verification_status){
+    public MyItem(String id, boolean status, String name, int price, boolean verification_status){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -38,8 +38,7 @@ public class MyItem implements Serializable {
         this.verification_status=verification_status;
     }
 
-
-    public MyItem(String id, boolean status, String name, int price,boolean verification_status,Double latitude, Double longitude){
+    public MyItem(String id, boolean status, String name, int price, boolean verification_status, double latitude, double longitude){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -50,9 +49,7 @@ public class MyItem implements Serializable {
     }
 
 
-
-
-    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status){
+    public MyItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -61,6 +58,20 @@ public class MyItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
+    }
+
+
+    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double latitude, double longitude){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
 
@@ -87,6 +98,7 @@ public class MyItem implements Serializable {
         return this.longitude;
     }
 
+
     public void setMenu_name(String menu_name){
         this.menu_name=menu_name;
     }
@@ -104,5 +116,11 @@ public class MyItem implements Serializable {
     }
     public void setVerification_status(boolean status){
         this.verification_status=status;
+    }
+    public void setLatitude(double latitude){
+        this.latitude=latitude;
+    }
+    public void setLongitude(double longitude){
+        this.longitude=longitude;
     }
 }

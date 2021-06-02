@@ -84,6 +84,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="메뉴 입력"/>
+
             <Button
                 android:id="@+id/room_ready_button"
                 android:layout_width="60dp"

@@ -1,8 +1,11 @@
 package com.example.codeli_klip;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,6 +131,7 @@ public class RoomOwnerInfoFragment extends Fragment {
 
         //송금 요청 버튼
         verfity_trigger_button=root.findViewById(R.id.verify_trigger_button);
+        verfity_trigger_button.setVisibility(View.GONE);
         verfity_trigger_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +164,7 @@ public class RoomOwnerInfoFragment extends Fragment {
                         peopleItemArrayList.add(partition);
 
                         //결제하지 않은 인원이 있는 경우 check=false
-                        if(partition.getSendingStatus()!=null&&partition.getSendingStatus().equals("success")){
+                        if(partition.getVerification_status()==true){
                             sendingStatusCheck=true;
                         }
                         else{
@@ -171,8 +175,22 @@ public class RoomOwnerInfoFragment extends Fragment {
                         peopleListAdapter.notifyDataSetChanged();
                     }
                 }
-                if(sendingStatusCheck==true){
-                    Toast.makeText(getContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
+
+                if(sendingStatusCheck==true) {
+                    //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
+                    verfity_trigger_button.setVisibility(View.VISIBLE);
+                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+                            .setTitle("지급요청 알림")
+                            .setMessage("모든 인원이 위치 검증 절차 완료하였습니다\n지급 요청을 진행해주세요")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //finish;
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                    AlertDialog msgDlg = msgBuilder.create();
+                    msgDlg.show();
                 }
             }
 
