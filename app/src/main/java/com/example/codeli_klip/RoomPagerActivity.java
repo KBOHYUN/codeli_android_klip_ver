@@ -1,7 +1,10 @@
 package com.example.codeli_klip;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,12 +13,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
 public class RoomPagerActivity extends AppCompatActivity {
-    private static final int DP = 24;
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,29 @@ public class RoomPagerActivity extends AppCompatActivity {
         adapter.addItem(fragment2); //두번째 프레그먼트 화면
 
         pager.setAdapter(adapter);
+
+        bottomNavigationView=findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.chat);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        finish();
+                        return true;
+                    case R.id.chat:
+                        //방목록으로 이동하기
+                        return true;
+                    case R.id.my:
+                        Intent my_intent=new Intent(getApplicationContext(), MypageActivity.class);
+                        startActivity(my_intent);
+                        finish();
+                        //Toast.makeText(getApplicationContext(), "마이 페이지로 이동", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     //어댑터 안에서 각각의 아이템을 데이터로서 관리한다
