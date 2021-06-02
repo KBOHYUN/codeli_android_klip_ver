@@ -10,7 +10,12 @@ public class PeopleItem implements Serializable {
     private int menu_price;
     private String tx_hash;
     private String sendingStatus;
-    private boolean verification_status;
+    private boolean verification_status=false;
+
+    //위 경도 추가
+    private Double latitude;
+    private Double longitude;
+
 
 
     public PeopleItem(String id, boolean status, String name, int price){
@@ -29,6 +34,19 @@ public class PeopleItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
+    }
+
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double latitude, double longitude){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
     public PeopleItem(){
 
@@ -49,6 +67,10 @@ public class PeopleItem implements Serializable {
     }
     public boolean getVerification_status(){
         return verification_status;
+    }
+    public Double getLatitude(){return this.latitude;}
+    public Double getLongitude(){
+        return this.longitude;
     }
 
     public void setMenu_name(String menu_name){

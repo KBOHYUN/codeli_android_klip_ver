@@ -15,6 +15,8 @@ public class RoomItem {
     private int r_tot_people; //목표 인원
     private String r_owner; //방장
 
+    //약속 시간 추가
+
     private Double r_latitude; //위도
     private Double r_longitude; //경도
 
@@ -63,6 +65,8 @@ public class RoomItem {
         this.r_latitude=latitude;
         this.r_longitude=longitude;
     }
+
+    //-> 약속 시간 추가하기
 
     public String getName(){
         return this.r_name;

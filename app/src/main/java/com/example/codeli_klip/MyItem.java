@@ -11,7 +11,7 @@ public class MyItem implements Serializable {
     private int menu_price;
     private String tx_hash;
     private String sendingStatus;
-    private boolean verification_status;
+    private boolean verification_status=false;
 
     //위 경도 추가
     private Double latitude;

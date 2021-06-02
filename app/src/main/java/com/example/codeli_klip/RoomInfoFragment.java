@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,11 +36,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class RoomInfoFragment extends Fragment {
 
     private int pos=0;
+
+    private RecyclerView recyclerview;
 
     private Button room_ready_button; //준비 버튼
     private Button room_ready_cancel_button; //준비 취소 버튼
@@ -139,6 +144,7 @@ public class RoomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                //******** 임시로 결제 화면 넘어가기 *******
                 intent.putExtra("menu_price",my_menu_item.getMenu_price());
                 intent.putExtra("delivery_price",delivery_price_per_person);
                 intent.putExtra("room_id",""+pos); //방 번호
@@ -382,18 +388,20 @@ public class RoomInfoFragment extends Fragment {
 
                             }
                             //Toast.makeText(getApplicationContext(), "** sending status: "+my_menu_item.getSendingStatus(), Toast.LENGTH_SHORT).show();
+
                             //결제 성공 시
                             if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
-
+                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료시 노랑
                                 room_verfity_button.setVisibility(View.VISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
 
                             }
-//                            if(my_menu_item.getVerification_status()==true){
-//                                room_verfity_button.setVisibility(View.VISIBLE);
-//                            }
+                            if(my_menu_item.getVerification_status()==true){
+                                //room_verfity_button.setVisibility(View.VISIBLE);
+                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //결제 완료시 노랑
+                            }
                             room_my_menu.setText(my_menu_item.getMenu_name());
                             room_my_price.setText(""+my_menu_item.getMenu_price());
 
@@ -409,6 +417,23 @@ public class RoomInfoFragment extends Fragment {
 
             }
         });
+
+        //상태 정보 알려주는 recycler view
+        recyclerview = root.findViewById(R.id.recyclerview);
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        List<ExpandableListAdapter.Item> data = new ArrayList<>();
+
+        ExpandableListAdapter.Item status = new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, "상태 색상 정보");
+        status.invisibleChildren = new ArrayList<>();
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "준비 안됨","#FF0000"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "준비됨","#FF028BBB"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "결제 완료","#FFD869"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "위치 검증 완료","#a7ca5d"));
+
+        data.add(status);
+
+        recyclerview.setAdapter(new ExpandableListAdapter(data));
+
 
 
         return root;

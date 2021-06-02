@@ -214,6 +214,14 @@
             android:layout_marginTop="10dp"
             tools:listitem="@layout/activity_people_list"/>
 
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
     </LinearLayout>
 
 

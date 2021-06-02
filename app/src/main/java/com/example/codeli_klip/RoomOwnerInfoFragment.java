@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,11 +40,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 public class RoomOwnerInfoFragment extends Fragment {
 
     private int pos=0;
+
+    private RecyclerView recyclerview;
 
     private Calendar calendar;
 
@@ -179,6 +184,7 @@ public class RoomOwnerInfoFragment extends Fragment {
                 if(sendingStatusCheck==true) {
                     //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
                     verfity_trigger_button.setVisibility(View.VISIBLE);
+
                     AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
                             .setTitle("지급요청 알림")
                             .setMessage("모든 인원이 위치 검증 절차 완료하였습니다\n지급 요청을 진행해주세요")
@@ -197,6 +203,22 @@ public class RoomOwnerInfoFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+        //상태 정보 알려주는 recycler view
+        recyclerview = root.findViewById(R.id.recyclerview);
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        List<ExpandableListAdapter.Item> data = new ArrayList<>();
+
+        ExpandableListAdapter.Item status = new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, "상태 색상 정보");
+        status.invisibleChildren = new ArrayList<>();
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "준비 안됨","#FF0000"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "준비됨","#FF028BBB"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "결제 완료","#FFD869"));
+        status.invisibleChildren.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "위치 검증 완료","#a7ca5d"));
+
+        data.add(status);
+
+        recyclerview.setAdapter(new ExpandableListAdapter(data));
 
         return root;
     }

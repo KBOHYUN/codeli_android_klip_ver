@@ -61,6 +61,14 @@ public class PeopleListAdapter extends BaseAdapter {
             status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
         }
 
+        if(peopleItemArrayList.get(position).getSendingStatus()!=null&&peopleItemArrayList.get(position).getSendingStatus().equals("success")){
+            status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료 - 노랑
+        }
+
+        if(peopleItemArrayList.get(position).getVerification_status()==true){
+            status.setColorFilter(Color.parseColor("#a7ca5d")); //검증 완료 - 초록
+        }
+
         menu_name.setText(peopleItemArrayList.get(position).getMenu_name());
         menu_price.setText(peopleItemArrayList.get(position).getMenu_price()+"");
 
