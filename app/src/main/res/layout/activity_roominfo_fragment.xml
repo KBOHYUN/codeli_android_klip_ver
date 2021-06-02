@@ -1,12 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="정보"
-        android:layout_centerInParent="true"/>
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="8"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/room_minimum_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="최소주문금액"/>
+                <TextView
+                    android:id="@+id/room_delivery_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="배달팁"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:id="@+id/room_platform"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="사용플랫폼"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/room_delivery_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="배달장소"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/room_delivery_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="약속시간"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/light_gray"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/room_ready_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/yellow"
+                android:textSize="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="준비"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <Button
+                    android:id="@+id/room_ready_cancel_button"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/yellow"
+                    android:textSize="12dp"
+                    android:text="준비취소"
+                    android:visibility="invisible"
+                    android:layout_marginRight="10dp"/>
+                <Button
+                    android:id="@+id/room_pay_button"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:visibility="invisible"
+                    android:background="@color/blue_primary"
+                    android:text="결제" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/verify_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/yellow_primary"
+                android:visibility="invisible"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="도착" />
+        </RelativeLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_text"
+            android:padding="5dp"
+            android:stretchColumns="0,1,2,3">
+            <TableRow>
+                <ImageView
+                    android:id="@+id/room_my_status"
+                    android:layout_width="5dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle"
+                    android:backgroundTint="@color/red"
+                    />
+                <TextView
+                    android:id="@+id/room_my_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/user"
+                    />
+                <EditText
+                    android:id="@+id/room_my_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:hint="싸이버거 세트"
+                    android:textAlignment="center"
+                    android:background="@drawable/bg_room_list"
+                    android:padding="5dp"
+                    android:textSize="13dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="5"
+                    />
+
+                <EditText
+                    android:id="@+id/room_my_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:padding="5dp"
+                    android:background="@drawable/bg_room_list"
+                    android:text="0"
+                    android:textSize="13dp"
+                    android:layout_marginRight="10dp"
+                    android:inputType="number"
+                    android:layout_weight="2"/>
+            </TableRow>
+        </TableLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/light_gray"/>
+
+        <ListView
+            android:id="@+id/room_people_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/white"
+            android:dividerHeight="2dp"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/activity_people_list"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
