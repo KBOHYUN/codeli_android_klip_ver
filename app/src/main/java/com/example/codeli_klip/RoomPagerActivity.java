@@ -3,6 +3,7 @@ package com.example.codeli_klip;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,10 @@ public class RoomPagerActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    private int pos;
+
+    private TextView room_name; //가게 이름
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,13 @@ public class RoomPagerActivity extends AppCompatActivity {
         TabLayout tabLayout=findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
 
+        //방 정보 받기
+        Intent data=getIntent();
+        pos=data.getIntExtra("position",0);
+
+        room_name=findViewById(R.id.room_name);
+        room_name.setText(MainActivity.roomItemArrayList.get(pos).getName());
+
 
         //getSupportFragmentManager로 프래그먼트 참조가능
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
@@ -41,7 +53,7 @@ public class RoomPagerActivity extends AppCompatActivity {
         RoomInfoFragment fragment1 = new RoomInfoFragment();
         adapter.addItem(fragment1); //첫번째 프레그먼트 화면
 
-        RoomChatFragment fragment2 = new RoomChatFragment();
+        RoomChatFragment fragment2 = new RoomChatFragment(pos);
         adapter.addItem(fragment2); //두번째 프레그먼트 화면
 
         pager.setAdapter(adapter);

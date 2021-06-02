@@ -123,14 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     select_room_num=position;
                     Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerActivity.class);
                     ownerintent.putExtra("position",position);
-//                    ownerintent.putExtra("room_id",room_id); //room id
-//                    ownerintent.putExtra("name",roomLIstAdapter.getItem(position).getName()); //가게 이름
-//                    ownerintent.putExtra("platform",roomLIstAdapter.getItem(position).getPlatform()); //플랫폼
-//                    ownerintent.putExtra("order_price",roomLIstAdapter.getItem(position).getOrderPrice());//최소주문금액
-//                    ownerintent.putExtra("delivery_price",roomLIstAdapter.getItem(position).getDeliveryPrice());//배달 금액
-//                    ownerintent.putExtra("address",roomLIstAdapter.getItem(position).getAddress());//배달 주소
-//                    ownerintent.putExtra("specific_address",roomLIstAdapter.getItem(position).getSpecificAddress());//세부주소
-//                    ownerintent.putExtra("cur_people",roomLIstAdapter.getItem(position).getCurrentPeople()); //현재 인원
+
                     startActivity(ownerintent);
                 }
                 else{
