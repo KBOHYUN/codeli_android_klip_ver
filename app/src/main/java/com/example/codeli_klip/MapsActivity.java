@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -54,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        //지도 검색 시 주소
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +127,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // 맵 터치 이벤트 구현 //
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng point) {
+                MarkerOptions mOptions = new MarkerOptions();
+                // 마커 타이틀
+                mOptions.title("");
+                mMap.clear(); //지도 초기화
+
+                Double latitude = point.latitude; // 위도
+                Double longitude = point.longitude; // 경도
+                // 마커의 스니펫(간단한 텍스트) 설정
+                mOptions.snippet(latitude + ", " + longitude);
+                // LatLng: 위도 경도 쌍을 나타냄
+                mOptions.position(new LatLng(latitude, longitude));
+                // 마커(핀) 추가
+                googleMap.addMarker(mOptions);
+
+                String address_geocoder=getCurrentAddress(latitude,longitude);
+                result_address.setText(address_geocoder);
+
+                RoomAddActivity.meeting_address=address_geocoder;
+                RoomAddActivity.meeting_latitude=latitude;
+                RoomAddActivity.meeting_longtitude=longitude;
+
+            }
+        });
+
         // Add a marker in Sydney and move the camera
         //현재 위치로 받아오기
         LatLng cau = new LatLng(MainActivity.latitude, MainActivity.longtitude);
@@ -131,5 +162,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cau));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cau,16));
 
+    }
+
+
+    public String getCurrentAddress( double latitude, double longitude) {
+
+        //지오코더
+        // GPS를 주소로 변환
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        List<Address> addresses;
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 7);
+
+        } catch (IOException ioException) {
+            //네트워크 문제
+            //Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+            return "지오코더 서비스 사용불가";
+        } catch (IllegalArgumentException illegalArgumentException) {
+            //Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+            return "잘못된 GPS 좌표";
+
+        }
+
+        if (addresses == null || addresses.size() == 0) {
+            //Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
+            return "주소 미발견";
+
+        }
+
+        Address address = addresses.get(0);
+        String addr=address.getAddressLine(0);
+        addr=addr.substring(5);
+        //return address.getAddressLine(0).toString()+"\n";
+        return addr;
     }
 }
