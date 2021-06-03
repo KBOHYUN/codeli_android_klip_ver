@@ -54,7 +54,7 @@
         android:layout_below="@+id/menubar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:fillViewport="true"
         android:layout_marginBottom="50dp">
 
