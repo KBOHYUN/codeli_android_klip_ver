@@ -4,6 +4,68 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp">
+
+        <Button
+            android:id="@+id/room_ready_button"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_yellow_button"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="준비"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/room_ready_cancel_button"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_yellow_button"
+                android:textSize="12dp"
+                android:text="준비취소"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                android:layout_marginBottom="10dp"/>
+            <Button
+                android:id="@+id/room_pay_button"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:visibility="invisible"
+                android:background="@drawable/bg_darkblue_button"
+                android:text="결제" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/verify_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_green_button"
+            android:visibility="invisible"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="도착" />
+    </RelativeLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:textSize="18dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:text="최소주문금액"/>
@@ -39,7 +101,7 @@
                     android:id="@+id/room_delivery_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:text="배달팁"/>
@@ -79,69 +141,6 @@
             android:layout_height="2dp"
             android:layout_marginTop="5dp"
             android:background="@color/light_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:text="메뉴 입력"/>
-
-            <Button
-                android:id="@+id/room_ready_button"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@color/yellow_primary"
-                android:textSize="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="준비"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-
-                <Button
-                    android:id="@+id/room_ready_cancel_button"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/yellow_primary"
-                    android:textSize="12dp"
-                    android:text="준비취소"
-                    android:visibility="invisible"
-                    android:layout_marginRight="10dp"/>
-                <Button
-                    android:id="@+id/room_pay_button"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="12dp"
-                    android:visibility="invisible"
-                    android:background="@color/blue_primary"
-                    android:text="결제" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/verify_button"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@color/yellow_primary"
-                android:visibility="invisible"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="도착" />
-        </RelativeLayout>
 
         <TableLayout
             android:layout_width="match_parent"
