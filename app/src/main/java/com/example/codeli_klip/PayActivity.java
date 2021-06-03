@@ -249,6 +249,8 @@ public class PayActivity extends AppCompatActivity {
                 item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status());
                 chat_user_Ref.setValue(item);
                 txHash="";
+
+                Toast.makeText(getApplicationContext(), "결제가 완료되었습니다", Toast.LENGTH_SHORT).show();
                 System.out.println("*****result 성공 - tx hash: "+txHash);
                 //System.out.println("*****result 성공 - user klip address : "+userAddress);
 

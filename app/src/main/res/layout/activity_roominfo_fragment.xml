@@ -140,6 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@color/light_gray"/>
 
         <TableLayout
@@ -201,7 +202,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/light_gray"/>
 
         <ListView
