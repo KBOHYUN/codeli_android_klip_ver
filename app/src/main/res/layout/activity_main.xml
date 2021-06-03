@@ -74,8 +74,8 @@
 
     <ImageButton
         android:id="@+id/add_room_bt"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/ic_plus"
         android:scaleType="fitCenter"
         android:padding="5dp"
