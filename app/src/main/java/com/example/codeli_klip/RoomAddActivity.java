@@ -40,8 +40,8 @@ public class RoomAddActivity extends AppCompatActivity {
     private int people_num=1;
 
     public static String meeting_address;
-    public static double meeting_latitude;
-    public static double meeting_longtitude;
+    public static String meeting_latitude;
+    public static String meeting_longtitude;
 
     //realtime db
     DatabaseReference mDBReference = null;

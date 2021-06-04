@@ -89,8 +89,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // 좌표(위도, 경도) 생성
                 LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
-                RoomAddActivity.meeting_latitude=Double.parseDouble(latitude);
-                RoomAddActivity.meeting_longtitude=Double.parseDouble(longitude);
+                RoomAddActivity.meeting_latitude=latitude;
+                RoomAddActivity.meeting_longtitude=longitude;
 
                 System.out.println("************meeting latitude: "+RoomAddActivity.meeting_latitude);
                 System.out.println("************meeting longitude: "+RoomAddActivity.meeting_longtitude);
@@ -149,8 +149,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 result_address.setText(address_geocoder);
 
                 RoomAddActivity.meeting_address=address_geocoder;
-                RoomAddActivity.meeting_latitude=latitude;
-                RoomAddActivity.meeting_longtitude=longitude;
+                RoomAddActivity.meeting_latitude=latitude.toString();
+                RoomAddActivity.meeting_longtitude=longitude.toString();
 
             }
         });

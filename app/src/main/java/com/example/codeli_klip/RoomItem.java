@@ -18,8 +18,8 @@ public class RoomItem {
     //약속 시간 추가
     private String time;
 
-    private Double x; //위도
-    private Double y; //경도
+    private String x; //위도
+    private String y; //경도
 
     public RoomItem(){
 
@@ -52,7 +52,7 @@ public class RoomItem {
     }
 
     //위도 경도 추가
-    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double x, Double y){
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, String x, String y){
         this.r_name=name;
         this.r_platform=platform;
         this.r_cur_order_price=cur_order_price;
@@ -68,7 +68,7 @@ public class RoomItem {
     }
 
     //-> 약속 시간 추가하기
-    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double x, Double y,String time){
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, String x, String y,String time){
         this.r_name=name;
         this.r_platform=platform;
         this.r_cur_order_price=cur_order_price;
@@ -112,10 +112,10 @@ public class RoomItem {
     public String getOwner(){
         return this.r_owner;
     }
-    public Double getX(){
+    public String getX(){
         return this.x;
     }
-    public Double getY(){
+    public String getY(){
         return this.y;
     }
 
