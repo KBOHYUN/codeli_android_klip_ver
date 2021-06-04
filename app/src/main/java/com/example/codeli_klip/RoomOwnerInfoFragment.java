@@ -79,9 +79,12 @@ public class RoomOwnerInfoFragment extends Fragment {
     //'partition'노드 참조객체 변수
     private DatabaseReference partitionRef;
     private DatabaseReference verification_ref;
-
+    private DatabaseReference verification_state_ref;
 
     private FirebaseFirestore firestore;
+
+    private VerificationData verification;
+    private ArrayList<VerificationData> verificationDataArrayList=new ArrayList<VerificationData>();
 
 
     public RoomOwnerInfoFragment(int pos){
@@ -134,20 +137,52 @@ public class RoomOwnerInfoFragment extends Fragment {
             }
         });
 
+
+        verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference
         //송금 요청 버튼
         verfity_trigger_button=root.findViewById(R.id.verify_trigger_button);
-        verfity_trigger_button.setVisibility(View.GONE);
+        //verfity_trigger_button.setVisibility(View.GONE);
         verfity_trigger_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference
 
-                VerificationData verification=new VerificationData(LoginActivity.klip_address,true);
+                verification=new VerificationData(LoginActivity.klip_address,true);
                 verification_ref.setValue(verification);
 
                 Toast.makeText(getContext(), "송금이 요청되었습니다", Toast.LENGTH_SHORT).show();
             }
         });
+
+        verification_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                //데이터가 쌓이기 때문에  clear()
+
+                    verification=dataSnapshot.getValue(VerificationData.class);
+
+                    if(verification.getTrigger()==true && verification.getState()!=null){
+                        if(verification.getState().equals("success")){
+                            Toast.makeText(getActivity().getApplicationContext(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
+                        }
+                        else if(verification.getState().equals("room_manager_not_here")){
+                            Toast.makeText(getActivity().getApplicationContext(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            String noshow="";
+                            if(verification.getComment()!=null){
+                                noshow=verification.getComment();
+                                Toast.makeText(getActivity().getApplicationContext(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }
+                }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
 
 
         partitionRef= firebaseDatabase.getReference("/Chat/"+pos+"/partitions"); //ref 맞는지 확인!
@@ -176,11 +211,13 @@ public class RoomOwnerInfoFragment extends Fragment {
                             sendingStatusCheck=false;
                         }
 
+
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
                     }
                 }
 
+                //송금하였는지 확인
                 if(sendingStatusCheck==true) {
                     //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
                     verfity_trigger_button.setVisibility(View.VISIBLE);

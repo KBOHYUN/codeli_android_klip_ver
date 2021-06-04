@@ -17,8 +17,8 @@ public class RoomItem {
 
     //약속 시간 추가
 
-    private Double r_latitude; //위도
-    private Double r_longitude; //경도
+    private Double x; //위도
+    private Double y; //경도
 
     public RoomItem(){
 
@@ -62,8 +62,8 @@ public class RoomItem {
         this.r_cur_people=cur_people;
         this.r_tot_people=tot_people;
         this.r_owner=owner;
-        this.r_latitude=latitude;
-        this.r_longitude=longitude;
+        this.x=latitude;
+        this.y=longitude;
     }
 
     //-> 약속 시간 추가하기
@@ -97,10 +97,10 @@ public class RoomItem {
         return this.r_owner;
     }
     public Double getLatitude(){
-        return this.r_latitude;
+        return this.x;
     }
     public Double getLongitude(){
-        return this.r_longitude;
+        return this.y;
     }
 
 
@@ -119,8 +119,8 @@ public class RoomItem {
         //방장 정보, 참여 인원 id 정보도 추가
 
         //위도 경도 추가
-        result.put("latitude",r_latitude);
-        result.put("longitude",r_longitude);
+        result.put("latitude",x);
+        result.put("longitude",y);
 
         return result;
     }

@@ -94,28 +94,6 @@ public class PayActivity extends AppCompatActivity {
         pay_total_price_klay=findViewById(R.id.pay_total_price_klay);
         pay_klay_unit=findViewById(R.id.pay_klay_unit);
 
-        //background service 시작
-        //if(gpsCheckStart==true){
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Intent intent =new Intent(PayActivity.this, BackgroundGPS.class);
-                    System.out.println("service start");
-                    stopService(intent);
-
-                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                    startService(intent);
-                }catch (Exception e){
-                    Log.i("main service error", e.toString());
-                }
-            }
-        }, 2000);
-        //}
-
-
-
         Intent getIntent=getIntent();
         menu_price=getIntent.getIntExtra("menu_price",0);
         delivery_price=getIntent.getIntExtra("delivery_price",0);

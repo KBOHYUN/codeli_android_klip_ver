@@ -13,8 +13,8 @@ public class PeopleItem implements Serializable {
     private boolean verification_status=false;
 
     //위 경도 추가
-    private Double latitude;
-    private Double longitude;
+    private Double x;
+    private Double y;
 
 
 
@@ -45,8 +45,8 @@ public class PeopleItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.x=latitude;
+        this.y=longitude;
     }
     public PeopleItem(){
 
@@ -68,9 +68,9 @@ public class PeopleItem implements Serializable {
     public boolean getVerification_status(){
         return verification_status;
     }
-    public Double getLatitude(){return this.latitude;}
+    public Double getLatitude(){return this.x;}
     public Double getLongitude(){
-        return this.longitude;
+        return this.y;
     }
 
     public void setMenu_name(String menu_name){

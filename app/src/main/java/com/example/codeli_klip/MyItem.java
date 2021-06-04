@@ -14,8 +14,8 @@ public class MyItem implements Serializable {
     private boolean verification_status=false;
 
     //위 경도 추가
-    private Double latitude;
-    private Double longitude;
+    private Double x;
+    private Double y;
 
 
     MyItem(){
@@ -44,8 +44,8 @@ public class MyItem implements Serializable {
         this.menu_name=name;
         this.menu_price=price;
         this.verification_status=verification_status;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.x=latitude;
+        this.y=longitude;
     }
 
 
@@ -61,7 +61,7 @@ public class MyItem implements Serializable {
     }
 
 
-    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double latitude, double longitude){
+    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double x, double y){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -70,8 +70,8 @@ public class MyItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.x=x;
+        this.y=y;
     }
 
 
@@ -92,10 +92,10 @@ public class MyItem implements Serializable {
         return this.tx_hash;
     }
     public Double getLatitude(){
-        return this.latitude;
+        return this.x;
     }
     public Double getLongitude(){
-        return this.longitude;
+        return this.y;
     }
 
 
@@ -117,10 +117,10 @@ public class MyItem implements Serializable {
     public void setVerification_status(boolean status){
         this.verification_status=status;
     }
-    public void setLatitude(double latitude){
-        this.latitude=latitude;
+    public void setLatitude(double x){
+        this.x=x;
     }
-    public void setLongitude(double longitude){
-        this.longitude=longitude;
+    public void setLongitude(double y){
+        this.y=y;
     }
 }

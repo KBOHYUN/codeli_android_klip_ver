@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class RoomInfoFragment extends Fragment {
 
-    private int pos=0;
+    public static int pos=0;
 
     private RecyclerView recyclerview;
 
@@ -66,7 +66,7 @@ public class RoomInfoFragment extends Fragment {
     private int cur_people;
     private int price_per_person;
 
-    private MyItem my_menu_item;
+    public static MyItem my_menu_item;
     private PeopleListAdapter peopleListAdapter;
     private ArrayList<PeopleItem> peopleItemArrayList = new ArrayList<PeopleItem>();
 
@@ -78,6 +78,8 @@ public class RoomInfoFragment extends Fragment {
     //'partition'노드 참조객체 변수
     private DatabaseReference partitionRef;
     private DatabaseReference chat_user_Ref;
+
+    private DatabaseReference verification_ref;
 
 
     private DatabaseReference klay_Ref; //클레이 시세 받아오는 참조변수
@@ -308,6 +310,8 @@ public class RoomInfoFragment extends Fragment {
 
             }
         });
+        //timer trigger가 true가 되면 위경도 업데이트
+        //background service 시작
 
         room_verfity_button=root.findViewById(R.id.verify_button);
         room_verfity_button.setOnClickListener(new View.OnClickListener() {
@@ -326,20 +330,56 @@ public class RoomInfoFragment extends Fragment {
                     public void run() {
                         try{
                             Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-                            System.out.println("service finish");
+                            System.out.println("service start");
                             getActivity().stopService(intent);
 
+                            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                            getActivity().startService(intent);
                         }catch (Exception e){
                             Log.i("main service error", e.toString());
                         }
                     }
                 }, 2000);
-                //}
 
                 //한 번 더 확인하는 alert창 띄우기
                 //room_verfity_button.setVisibility(View.INVISIBLE);
             }
         });
+
+
+        verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference
+        verification_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                //데이터가 쌓이기 때문에  clear()
+
+                VerificationData verification=dataSnapshot.getValue(VerificationData.class);
+
+                if(verification!=null && verification.getTrigger()==true){
+                    if(verification.getState()!=null){
+                        if(verification.getState().equals("success")){
+                            Toast.makeText(getActivity().getApplicationContext(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
+                        }
+                        else if(verification.getState().equals("room_manager_not_here")){
+                            Toast.makeText(getActivity().getApplicationContext(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            String noshow="";
+                            if(verification.getComment()!=null){
+                                noshow=verification.getComment();
+                                Toast.makeText(getActivity().getApplicationContext(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
 
         ReadFirestoreData();
 

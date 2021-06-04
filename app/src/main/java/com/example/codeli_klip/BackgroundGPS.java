@@ -67,7 +67,7 @@ public class BackgroundGPS extends Service implements LocationListener {
         //***********   pos 변화시키기!!!!!!!!
 
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
-        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+PayActivity.roomPosition+"/partitions/"+ LoginActivity.nickname); //채팅 reference
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+RoomInfoFragment.pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         bThreadGo = true;
 
@@ -196,7 +196,11 @@ public class BackgroundGPS extends Service implements LocationListener {
 
 
                             //realtime db에 실시간 gps 전송
-                            MyItem item=PayActivity.item;
+                            //payactivity에서 호출할 경우
+                            //MyItem item=PayActivity.item;
+
+                            //roomactivity에서 호출할 경우
+                            MyItem item=RoomInfoFragment.my_menu_item;
                             item.setLatitude(latitude);
                             item.setLongitude(longtitude);
                             chat_user_Ref.setValue(item);
