@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,7 +29,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                                 roomIdArrayList.add(document.getId());
 
                                 RoomItem roomItem=null;
-                                if(document.getData().get("latitude")!=null) {
-                                    roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), Double.parseDouble(document.getData().get("latitude").toString()), Double.parseDouble(document.getData().get("longitude").toString()));
+                                if(document.getData().get("x")!=null) {
+                                    roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), Double.parseDouble(document.getData().get("x").toString()), Double.parseDouble(document.getData().get("y").toString()));
                                 }else{
                                     roomItem= new RoomItem(document.getData().get("restaurant").toString(),document.getData().get("deliveryApp").toString(),Integer.parseInt(document.getData().get("currentValue").toString()),Integer.parseInt(document.getData().get("minOrderAmount").toString()),Integer.parseInt(document.getData().get("deliveryCost").toString()),document.getData().get("deliveryAddress").toString(),document.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(document.getData().get("participantsNum").toString()),Integer.parseInt(document.getData().get("participantsMax").toString()),document.getData().get("owner").toString());
                                 }

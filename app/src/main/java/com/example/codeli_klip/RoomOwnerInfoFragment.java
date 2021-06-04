@@ -160,22 +160,28 @@ public class RoomOwnerInfoFragment extends Fragment {
 
                     verification=dataSnapshot.getValue(VerificationData.class);
 
-                    if(verification.getTrigger()==true && verification.getState()!=null){
-                        if(verification.getState().equals("success")){
-                            Toast.makeText(getActivity().getApplicationContext(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
-                        }
-                        else if(verification.getState().equals("room_manager_not_here")){
-                            Toast.makeText(getActivity().getApplicationContext(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
-                        }
-                        else{
-                            String noshow="";
-                            if(verification.getComment()!=null){
-                                noshow=verification.getComment();
-                                Toast.makeText(getActivity().getApplicationContext(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+                    if(verification!=null){
+                        if(verification.getTrigger()==true && verification.getState()!=null){
+                            if(verification.getState().equals("success")){
+                                Toast.makeText(getActivity(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
                             }
+                            else if(verification.getState().equals("room_manager_not_here")){
+                                Toast.makeText(getActivity(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                String noshow="";
+                                if(verification.getComment()!=null){
+                                    noshow=verification.getComment();
+                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다",Toast.LENGTH_LONG).show();Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+                                }
 
+                            }
                         }
                     }
+
                 }
 
 
@@ -274,8 +280,8 @@ public class RoomOwnerInfoFragment extends Fragment {
                     System.out.println("Current data: " + snapshot.getData());
 
                     RoomItem roomItem=null;
-                    if(snapshot.getData().get("latitude")!=null) {
-                        roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),Double.parseDouble(snapshot.getData().get("latitude").toString()),Double.parseDouble(snapshot.getData().get("longitude").toString()));
+                    if(snapshot.getData().get("x")!=null) {
+                        roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),Double.parseDouble(snapshot.getData().get("x").toString()),Double.parseDouble(snapshot.getData().get("y").toString()));
                     }else{
                         roomItem= new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString());
                     }

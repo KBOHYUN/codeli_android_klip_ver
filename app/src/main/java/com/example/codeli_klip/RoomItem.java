@@ -51,7 +51,7 @@ public class RoomItem {
     }
 
     //위도 경도 추가
-    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double latitude, Double longitude){
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double x, Double y){
         this.r_name=name;
         this.r_platform=platform;
         this.r_cur_order_price=cur_order_price;
@@ -62,8 +62,8 @@ public class RoomItem {
         this.r_cur_people=cur_people;
         this.r_tot_people=tot_people;
         this.r_owner=owner;
-        this.x=latitude;
-        this.y=longitude;
+        this.x=x;
+        this.y=y;
     }
 
     //-> 약속 시간 추가하기
@@ -96,10 +96,10 @@ public class RoomItem {
     public String getOwner(){
         return this.r_owner;
     }
-    public Double getLatitude(){
+    public Double getX(){
         return this.x;
     }
-    public Double getLongitude(){
+    public Double getY(){
         return this.y;
     }
 
@@ -119,8 +119,8 @@ public class RoomItem {
         //방장 정보, 참여 인원 id 정보도 추가
 
         //위도 경도 추가
-        result.put("latitude",x);
-        result.put("longitude",y);
+        result.put("x",x);
+        result.put("y",y);
 
         return result;
     }

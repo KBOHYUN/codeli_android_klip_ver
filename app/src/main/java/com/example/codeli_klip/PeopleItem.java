@@ -36,7 +36,17 @@ public class PeopleItem implements Serializable {
         this.verification_status=verification_status;
     }
 
-    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double latitude, double longitude){
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String sending_status, boolean verification_status){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+    }
+
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double x, double y){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -45,8 +55,8 @@ public class PeopleItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
-        this.x=latitude;
-        this.y=longitude;
+        this.x=x;
+        this.y=y;
     }
     public PeopleItem(){
 
@@ -68,8 +78,8 @@ public class PeopleItem implements Serializable {
     public boolean getVerification_status(){
         return verification_status;
     }
-    public Double getLatitude(){return this.x;}
-    public Double getLongitude(){
+    public Double getX(){return this.x;}
+    public Double getY(){
         return this.y;
     }
 

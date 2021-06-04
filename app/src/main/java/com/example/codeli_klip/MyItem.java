@@ -38,14 +38,14 @@ public class MyItem implements Serializable {
         this.verification_status=verification_status;
     }
 
-    public MyItem(String id, boolean status, String name, int price, boolean verification_status, double latitude, double longitude){
+    public MyItem(String id, boolean status, String name, int price, boolean verification_status, double x, double y){
         this.id=id;
         this.status=status;
         this.menu_name=name;
         this.menu_price=price;
         this.verification_status=verification_status;
-        this.x=latitude;
-        this.y=longitude;
+        this.x=x;
+        this.y=y;
     }
 
 
@@ -91,10 +91,10 @@ public class MyItem implements Serializable {
     public String getTx_hash(){
         return this.tx_hash;
     }
-    public Double getLatitude(){
+    public Double getX(){
         return this.x;
     }
-    public Double getLongitude(){
+    public Double getY(){
         return this.y;
     }
 
@@ -117,10 +117,10 @@ public class MyItem implements Serializable {
     public void setVerification_status(boolean status){
         this.verification_status=status;
     }
-    public void setLatitude(double x){
+    public void setX(double x){
         this.x=x;
     }
-    public void setLongitude(double y){
+    public void setY(double y){
         this.y=y;
     }
 }
