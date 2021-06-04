@@ -119,6 +119,10 @@ public class RoomOwnerInfoFragment extends Fragment {
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
 
+        if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
+            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceAll(":","/");
+            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
+        }
         ReadFirestoreData();  //firestore 데이터 실시간 읽기
 
         //약속 시간 설정
@@ -127,6 +131,8 @@ public class RoomOwnerInfoFragment extends Fragment {
         final String datetime = dateFormat.format(today);
 
         calendar=Calendar.getInstance();
+        int hour=calendar.get(Calendar.HOUR);
+        int min=calendar.get(Calendar.MINUTE);
         room_time_edit_button=root.findViewById(R.id.room_time_modify_button);
         room_time_edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +171,7 @@ public class RoomOwnerInfoFragment extends Fragment {
 
 
                     }
-                },calendar.HOUR_OF_DAY,calendar.MINUTE,false);
+                },hour,min,true);
                 timePickerDialog.show();
             }
         });

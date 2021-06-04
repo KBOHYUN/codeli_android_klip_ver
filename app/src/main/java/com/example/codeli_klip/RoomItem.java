@@ -118,6 +118,9 @@ public class RoomItem {
     public String getY(){
         return this.y;
     }
+    public String getTime(){
+        return this.time;
+    }
 
     public void setTime(String time){
         this.time=time;
