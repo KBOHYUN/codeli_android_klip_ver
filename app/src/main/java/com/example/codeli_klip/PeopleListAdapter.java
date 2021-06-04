@@ -58,7 +58,8 @@ public class PeopleListAdapter extends BaseAdapter {
             status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
         }
         else{
-            status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란
+            //파란색 - FF028BBB
+            status.setColorFilter(Color.parseColor("#a7ca5d")); //준비됨 -초록
         }
 
         if(peopleItemArrayList.get(position).getSendingStatus()!=null&&peopleItemArrayList.get(position).getSendingStatus().equals("success")){

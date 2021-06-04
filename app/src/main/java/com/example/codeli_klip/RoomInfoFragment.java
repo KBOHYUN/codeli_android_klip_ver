@@ -122,7 +122,7 @@ public class RoomInfoFragment extends Fragment {
         price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
-        //약속시간 텍스트 설정
+        //약속시간 텍스트 설
         if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
             String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceAll(":","/");
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
@@ -271,7 +271,7 @@ public class RoomInfoFragment extends Fragment {
                 String menu=room_my_menu.getText().toString().trim();
                 int price=Integer.parseInt(room_my_price.getText().toString().trim());
                 my_menu_item=new MyItem(LoginActivity.nickname,true, menu, price);
-                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비돰 - 파랑
+                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //준비돰 - 초록
                 chat_user_Ref.setValue(my_menu_item);
 
                 //****파이어스토어에 데이터 업데이트 하기
@@ -427,7 +427,7 @@ public class RoomInfoFragment extends Fragment {
                                 room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
                             }
                             else{
-                                room_my_status.setColorFilter(Color.parseColor("#FF028BBB")); //준비됨 -파란우
+                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //준비됨 -파랑
                                 room_verfity_button.setVisibility(View.INVISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.VISIBLE);
