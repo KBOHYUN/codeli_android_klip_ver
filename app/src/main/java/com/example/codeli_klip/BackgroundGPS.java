@@ -1,8 +1,10 @@
 package com.example.codeli_klip;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -16,15 +18,20 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class BackgroundGPS extends Service implements LocationListener {
     private String TAG = "BackgroundGPS";
@@ -52,6 +59,12 @@ public class BackgroundGPS extends Service implements LocationListener {
     //Firebase Database 관리 객체참조변수
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference chat_user_Ref;
+    //'partition'노드 참조객체 변수
+    private DatabaseReference partitionRef;
+    private PeopleListAdapter peopleListAdapter;
+    private ArrayList<PeopleItem> peopleItemArrayList = new ArrayList<PeopleItem>();
+
+    private MyItem item;
 
 
     @Override
@@ -112,6 +125,12 @@ public class BackgroundGPS extends Service implements LocationListener {
                 if (this != null && locationMgr != null) {
                     locationMgr.removeUpdates(this);
                 }
+
+                //종료 시에도 위경도 업데이트 후 종료
+                item=RoomInfoFragment.my_menu_item;
+                item.setX(latitude);
+                item.setY(longtitude);
+                chat_user_Ref.setValue(item);
 
                 TAG = null;
                 sBestGpsProvider = null;
@@ -187,6 +206,7 @@ public class BackgroundGPS extends Service implements LocationListener {
                     if (iLoopValue > 10000)  //900000 = 15분
                         iLoopValue = 0;
 
+                    //위경도 전송
                     Handler mHandler = new Handler(Looper.getMainLooper());
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -200,7 +220,7 @@ public class BackgroundGPS extends Service implements LocationListener {
                             //MyItem item=PayActivity.item;
 
                             //roomactivity에서 호출할 경우
-                            MyItem item=RoomInfoFragment.my_menu_item;
+                            item=RoomInfoFragment.my_menu_item;
                             item.setX(latitude);
                             item.setY(longtitude);
                             chat_user_Ref.setValue(item);
@@ -208,6 +228,28 @@ public class BackgroundGPS extends Service implements LocationListener {
                         }
 
                     }, 0);
+
+                    //'partitions'노드에 저장되어 있는 데이터들을 읽어오기
+                    chat_user_Ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                            //데이터가 쌓이기 때문에  clear()
+                            peopleItemArrayList.clear();
+
+
+                            item = dataSnapshot.getValue(MyItem.class);
+
+                            if(item!=null){
+                                //System.out.println("***백그라운드 my item 읽기: "+item.getId()+" "+item.getVerification_status());
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) { }
+                    });
+
 
 
                     //변경된 위치 내부저장소 파일에 저장
@@ -219,6 +261,7 @@ public class BackgroundGPS extends Service implements LocationListener {
                         getTime = simpleDate.format(mDate);
                         System.out.println("*****백그라운드 서비스 : "+getTime+ " "+latitude+" " +longtitude);
                         location_list.add(new LocationInfo(getTime, latitude,longtitude));
+
                     }
                 }
             } catch (Exception e) {

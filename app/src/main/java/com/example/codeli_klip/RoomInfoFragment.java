@@ -317,6 +317,23 @@ public class RoomInfoFragment extends Fragment {
         });
         //timer trigger가 true가 되면 위경도 업데이트
         //background service 시작
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                    System.out.println("service start");
+                    getActivity().stopService(intent);
+
+                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                    getActivity().startService(intent);
+                }catch (Exception e){
+                    Log.i("main service error", e.toString());
+                }
+            }
+        }, 2000);
+
 
         room_verfity_button=root.findViewById(R.id.verify_button);
         room_verfity_button.setOnClickListener(new View.OnClickListener() {
@@ -330,23 +347,10 @@ public class RoomInfoFragment extends Fragment {
                 //Toast.makeText(getActivity(), "배달 주문 검증이 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
                 // timer trigger 변경 시 동작하도록 변경하기!!!!!!!!!
-
-                Handler mHandler = new Handler(Looper.getMainLooper());
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-                            System.out.println("service start");
-                            getActivity().stopService(intent);
-
-                            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                            getActivity().startService(intent);
-                        }catch (Exception e){
-                            Log.i("main service error", e.toString());
-                        }
-                    }
-                }, 2000);
+                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                System.out.println("종료");
+                getActivity().stopService(intent);
 
                 //한 번 더 확인하는 alert창 띄우기
                 //room_verfity_button.setVisibility(View.INVISIBLE);
@@ -420,7 +424,7 @@ public class RoomInfoFragment extends Fragment {
 
                     //***** 추가: 준비가 되어있는 경우는 나갔다 들어오더라도 준비버튼 안보이도록!!!
 
-                    if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){ //nickname이 자신일 경
+                    if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){ //nickname이 자신일 경우
                         my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){
@@ -505,6 +509,9 @@ public class RoomInfoFragment extends Fragment {
                     if(snapshot.getData().get("x")!=null) {
                         if(snapshot.getData().get("time")!=null){
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString(),snapshot.getData().get("time").toString());
+                            //약속 시간 변경시 업데이트
+                            String replaceTime=snapshot.getData().get("time").toString().replaceAll(":","/");
+                            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
                         }
                         else{
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString());

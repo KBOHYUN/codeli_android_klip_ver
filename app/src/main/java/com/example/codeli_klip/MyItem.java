@@ -17,6 +17,9 @@ public class MyItem implements Serializable {
     private Double x;
     private Double y;
 
+    //위치 확인 status..?
+
+
 
     MyItem(){
 
