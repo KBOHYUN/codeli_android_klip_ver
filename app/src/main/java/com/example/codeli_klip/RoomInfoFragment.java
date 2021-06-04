@@ -122,6 +122,11 @@ public class RoomInfoFragment extends Fragment {
         price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
+        //약속시간 텍스트 설정
+        if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
+            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceAll(":","/");
+            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
+        }
 
         room_my_status=root.findViewById(R.id.room_my_status);
         room_my_nickname=root.findViewById(R.id.room_my_nickname);

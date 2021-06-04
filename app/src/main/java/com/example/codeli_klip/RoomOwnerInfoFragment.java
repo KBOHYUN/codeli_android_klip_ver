@@ -123,6 +123,7 @@ public class RoomOwnerInfoFragment extends Fragment {
             String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceAll(":","/");
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
         }
+
         ReadFirestoreData();  //firestore 데이터 실시간 읽기
 
         //약속 시간 설정
@@ -138,13 +139,13 @@ public class RoomOwnerInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                TimePickerDialog timePickerDialog=new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog=new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
                         String time =":"+hourOfDay+":"+minute;
                         room_delivery_time.setText("약속시간: "+ datetime+time);
 
-                        //firestore에 올리기
 
                         //firestore db
 
@@ -171,7 +172,7 @@ public class RoomOwnerInfoFragment extends Fragment {
 
 
                     }
-                },hour,min,true);
+                },hour,min,false);
                 timePickerDialog.show();
             }
         });
