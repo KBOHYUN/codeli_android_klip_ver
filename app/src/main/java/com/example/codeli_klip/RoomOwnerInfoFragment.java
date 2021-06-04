@@ -38,8 +38,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +85,8 @@ public class RoomOwnerInfoFragment extends Fragment {
 
     private FirebaseFirestore firestore;
 
+    Map<String, Object> roomValue = null;
+
     private VerificationData verification;
     private ArrayList<VerificationData> verificationDataArrayList=new ArrayList<VerificationData>();
 
@@ -118,6 +122,10 @@ public class RoomOwnerInfoFragment extends Fragment {
         ReadFirestoreData();  //firestore 데이터 실시간 읽기
 
         //약속 시간 설정
+        Date today=new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM:dd");
+        final String datetime = dateFormat.format(today);
+
         calendar=Calendar.getInstance();
         room_time_edit_button=root.findViewById(R.id.room_time_modify_button);
         room_time_edit_button.setOnClickListener(new View.OnClickListener() {
@@ -127,9 +135,34 @@ public class RoomOwnerInfoFragment extends Fragment {
                 TimePickerDialog timePickerDialog=new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        room_delivery_time.setText("약속시간: "+hourOfDay+"시 "+minute+"분  ");
+                        String time =":"+hourOfDay+":"+minute;
+                        room_delivery_time.setText("약속시간: "+ datetime+time);
 
                         //firestore에 올리기
+
+                        //firestore db
+
+                        RoomItem roomItem=MainActivity.roomItemArrayList.get(pos);
+                        roomItem.setTime(datetime+time);
+                        roomValue=roomItem.toMap_time();
+
+                        firestore.collection("Rooms")
+                                .document(""+pos)
+                                .set(roomValue)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        MainActivity.roomLIstAdapter.notifyDataSetChanged();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        //Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
+
+
 
                     }
                 },calendar.HOUR_OF_DAY,calendar.MINUTE,false);

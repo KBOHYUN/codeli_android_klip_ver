@@ -16,6 +16,7 @@ public class RoomItem {
     private String r_owner; //방장
 
     //약속 시간 추가
+    private String time;
 
     private Double x; //위도
     private Double y; //경도
@@ -67,6 +68,21 @@ public class RoomItem {
     }
 
     //-> 약속 시간 추가하기
+    public RoomItem(String name, String platform, int cur_order_price, int order_price, int deliver_price, String address, String specific_address, int cur_people, int tot_people,String owner, Double x, Double y,String time){
+        this.r_name=name;
+        this.r_platform=platform;
+        this.r_cur_order_price=cur_order_price;
+        this.r_order_price=order_price;
+        this.r_delivery_price=deliver_price;
+        this.r_address=address;
+        this.r_specific_address=specific_address;
+        this.r_cur_people=cur_people;
+        this.r_tot_people=tot_people;
+        this.r_owner=owner;
+        this.x=x;
+        this.y=y;
+        this.time=time;
+    }
 
     public String getName(){
         return this.r_name;
@@ -103,6 +119,10 @@ public class RoomItem {
         return this.y;
     }
 
+    public void setTime(String time){
+        this.time=time;
+    }
+
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -121,6 +141,29 @@ public class RoomItem {
         //위도 경도 추가
         result.put("x",x);
         result.put("y",y);
+
+        return result;
+    }
+
+    public Map<String, Object> toMap_time() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("restaurant", r_name);
+        result.put("deliveryApp", r_platform);
+        result.put("currentValue", r_cur_order_price);
+        result.put("minOrderAmount", r_order_price);
+        result.put("deliveryCost", r_delivery_price);
+        result.put("deliveryAddress",r_address);
+        result.put("deliveryDetailAddress",r_specific_address);
+        result.put("participantsNum", r_cur_people);
+        result.put("participantsMax", r_tot_people);
+        result.put("owner",r_owner);
+        //방장 정보, 참여 인원 id 정보도 추가
+
+        //위도 경도 추가
+        result.put("x",x);
+        result.put("y",y);
+
+        result.put("time",time);
 
         return result;
     }

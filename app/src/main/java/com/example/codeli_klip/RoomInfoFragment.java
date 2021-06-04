@@ -483,6 +483,7 @@ public class RoomInfoFragment extends Fragment {
 
     private void ReadFirestoreData(){
         //*****Firestore 실시간 정보 읽기******
+
         final DocumentReference docRef = firestore.collection("Rooms").document(""+pos);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

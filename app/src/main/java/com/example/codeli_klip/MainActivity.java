@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent my_intent=new Intent(getApplicationContext(), MypageActivity.class);
                         my_intent.putExtra("email",email);
                         startActivity(my_intent);
-                        Toast.makeText(getApplicationContext(), "마이 페이지로 이동", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "마이 페이지로 이동", Toast.LENGTH_SHORT).show();
                         return true;
                 }
                 return false;
