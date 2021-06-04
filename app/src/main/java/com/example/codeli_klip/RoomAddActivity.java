@@ -48,6 +48,8 @@ public class RoomAddActivity extends AppCompatActivity {
     HashMap<String, Object> childUpdates = null;
     Map<String, Object> roomValue = null;
 
+    private static final int SEARCH_ADDRESS_ACTIVITY = 10000; //다음 주소 api 결과값
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +67,12 @@ public class RoomAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //System.out.println("주소 검색 시작");
-                //도로명 주소 검색 기능 추가
+                //다음 도로명 주소 검색 기능 추가
+                //Intent intent = new Intent(getApplicationContext(), DaumWebviewActivity.class);
+                //startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
 
                 Intent intent=new Intent(getApplicationContext(), MapsActivity.class);
-                startActivityForResult(intent,100); //주소 전달 받
+                startActivityForResult(intent,100); //주소 전달 받기
 
                 //address.setText(meeting_address);
             }
@@ -159,6 +163,19 @@ public class RoomAddActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "result cancle!", Toast.LENGTH_SHORT).show();
             }
         }
+        //다음 주소 api 결과
+        switch (requestCode) {
+            case SEARCH_ADDRESS_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    String resultaddress = data.getExtras().getString("data");
+                    if (data != null) {
+                        address.setText(resultaddress);
+                    }
+                }
+                break;
+        }
     }
+
+
 
 }
