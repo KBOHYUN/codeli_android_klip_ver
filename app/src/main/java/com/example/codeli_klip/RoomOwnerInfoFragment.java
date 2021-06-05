@@ -83,6 +83,8 @@ public class RoomOwnerInfoFragment extends Fragment {
     private DatabaseReference verification_ref;
     private DatabaseReference verification_state_ref;
 
+    private DatabaseReference time_ref;
+
     private FirebaseFirestore firestore;
 
     Map<String, Object> roomValue = null;
@@ -127,6 +129,8 @@ public class RoomOwnerInfoFragment extends Fragment {
         ReadFirestoreData();  //firestore 데이터 실시간 읽기
 
         //약속 시간 설정
+
+        time_ref=firebaseDatabase.getReference("/Chat/"+pos+"/appointmentTime/");
         Date today=new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd");
         SimpleDateFormat hourFormat = new SimpleDateFormat("hh");
@@ -167,21 +171,23 @@ public class RoomOwnerInfoFragment extends Fragment {
                         roomItem.setTime(datetime+time);
                         roomValue=roomItem.toMap_time();
 
-                        firestore.collection("Rooms")
-                                .document(""+pos)
-                                .set(roomValue)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        MainActivity.roomLIstAdapter.notifyDataSetChanged();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        //Log.w(TAG, "Error adding document", e);
-                                    }
-                                });
+                        time_ref.setValue(datetime+time);
+
+//                        firestore.collection("Rooms")
+//                                .document(""+pos)
+//                                .set(roomValue)
+//                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task) {
+//                                        MainActivity.roomLIstAdapter.notifyDataSetChanged();
+//                                    }
+//                                })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        //Log.w(TAG, "Error adding document", e);
+//                                    }
+//                                });
 
 
 
