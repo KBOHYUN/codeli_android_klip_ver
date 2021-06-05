@@ -277,24 +277,24 @@ public class RoomOwnerInfoFragment extends Fragment {
                     }
                 }
 
-                //송금하였는지 확인
-                if(sendingStatusCheck==true) {
-                    //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
-                    verfity_trigger_button.setVisibility(View.VISIBLE);
-
-                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
-                            .setTitle("지급요청 알림")
-                            .setMessage("모든 인원이 위치 검증 절차 완료하였습니다\n지급 요청을 진행해주세요")
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //finish;
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                    AlertDialog msgDlg = msgBuilder.create();
-                    msgDlg.show();
-                }
+//                //송금하였는지 확인
+//                if(sendingStatusCheck==true) {
+//                    //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
+//                    verfity_trigger_button.setVisibility(View.VISIBLE);
+//
+//                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+//                            .setTitle("지급요청 알림")
+//                            .setMessage("모든 인원이 위치 검증 절차 완료하였습니다\n지급 요청을 진행해주세요")
+//                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    //finish;
+//                                    dialogInterface.dismiss();
+//                                }
+//                            });
+//                    AlertDialog msgDlg = msgBuilder.create();
+//                    msgDlg.show();
+//                }
             }
 
             @Override
