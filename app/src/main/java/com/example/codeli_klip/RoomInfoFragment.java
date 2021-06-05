@@ -124,8 +124,7 @@ public class RoomInfoFragment extends Fragment {
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
         //약속시간 텍스트 설
         if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
-            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceFirst(":","/");
-            replaceTime=replaceTime.replaceFirst(":"," ");
+            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime();
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
         }
 
@@ -348,10 +347,13 @@ public class RoomInfoFragment extends Fragment {
                 //Toast.makeText(getActivity(), "배달 주문 검증이 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
                 // timer trigger 변경 시 동작하도록 변경하기!!!!!!!!!
+                //백그라운드 서비스 종료
                 Intent intent =new Intent(getActivity(), BackgroundGPS.class);
                 //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
                 System.out.println("종료");
                 getActivity().stopService(intent);
+
+                //->>>> 위치 확인 후 도착했다고 확인되면 도착 확인 메세지 출력
 
                 //한 번 더 확인하는 alert창 띄우기
                 //room_verfity_button.setVisibility(View.INVISIBLE);
@@ -511,8 +513,7 @@ public class RoomInfoFragment extends Fragment {
                         if(snapshot.getData().get("time")!=null){
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString(),snapshot.getData().get("time").toString());
                             //약속 시간 변경시 업데이트
-                            String replaceTime=snapshot.getData().get("time").toString().replaceFirst(":","/");
-                            replaceTime=replaceTime.replaceFirst(":","  ");
+                            String replaceTime=snapshot.getData().get("time").toString();
                             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
                         }
                         else{

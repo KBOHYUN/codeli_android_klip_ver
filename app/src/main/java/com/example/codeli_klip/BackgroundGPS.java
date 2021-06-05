@@ -40,7 +40,7 @@ public class BackgroundGPS extends Service implements LocationListener {
     private final IBinder mBinder = new LocalBinder();
     int iLoopValue = 0;
 
-    int iThreadInterval = 10000;    // 쓰레드 루프 간격 5초
+    int iThreadInterval = 1000;    // 쓰레드 루프 간격 5초
     boolean bThreadGo = true;        // 루프로직을 태운다.
 
 
@@ -203,7 +203,7 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                     iLoopValue++;
                     Thread.sleep(iThreadInterval);
-                    if (iLoopValue > 10000)  //900000 = 15분
+                    if (iLoopValue > 1000)  //900000 = 15분
                         iLoopValue = 0;
 
                     //위경도 전송

@@ -16,7 +16,9 @@ public class PeopleItem implements Serializable {
     private Double x;
     private Double y;
 
+    public  PeopleItem(){
 
+    }
 
     public PeopleItem(String id, boolean status, String name, int price){
         this.id=id;
@@ -24,8 +26,25 @@ public class PeopleItem implements Serializable {
         this.menu_name=name;
         this.menu_price=price;
     }
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+    }
 
-    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status){
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String sending_status){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.sendingStatus=sending_status;
+    }
+
+
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status){
         this.id=id;
         this.status=status;
         this.menu_name=name;
@@ -58,9 +77,7 @@ public class PeopleItem implements Serializable {
         this.x=x;
         this.y=y;
     }
-    public PeopleItem(){
 
-    }
 
     public String getId(){return id;}
     public boolean getStatus(){return status;}

@@ -120,8 +120,7 @@ public class RoomOwnerInfoFragment extends Fragment {
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
 
         if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
-            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceFirst(":","/");
-            replaceTime=replaceTime.replaceFirst(":"," ");
+            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime();
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
         }
 
@@ -129,7 +128,7 @@ public class RoomOwnerInfoFragment extends Fragment {
 
         //약속 시간 설정
         Date today=new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM:dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd");
         SimpleDateFormat hourFormat = new SimpleDateFormat("hh");
         SimpleDateFormat minFormat = new SimpleDateFormat("mm");
         final String datetime = dateFormat.format(today);
@@ -145,7 +144,7 @@ public class RoomOwnerInfoFragment extends Fragment {
                 TimePickerDialog timePickerDialog=new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String time=":";
+                        String time=" ";
 
                         if(hourOfDay<10){
                             time+="0"+hourOfDay;
@@ -339,8 +338,7 @@ public class RoomOwnerInfoFragment extends Fragment {
                         if(snapshot.getData().get("time")!=null){
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString(),snapshot.getData().get("time").toString());
                             //약속 시간 변경시 업데이트
-                            String replaceTime=snapshot.getData().get("time").toString().replaceFirst(":","/");
-                            replaceTime=replaceTime.replaceFirst(":"," ");
+                            String replaceTime=snapshot.getData().get("time").toString();
                             room_delivery_time.setText("약속시간: "+replaceTime+"  ");
                         }
                         else{
