@@ -63,6 +63,7 @@ public class RoomOwnerPagerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
+                        MainActivity.bottomNavigationView.setSelectedItemId(R.id.home);
                         finish();
                         return true;
                     case R.id.chat:

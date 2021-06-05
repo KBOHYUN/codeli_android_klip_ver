@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<String> roomIdArrayList=new ArrayList<String>();
 
-    private BottomNavigationView bottomNavigationView;
+    public static BottomNavigationView bottomNavigationView;
 
     private ImageButton add_room_bt; //방 추가 버튼
 
