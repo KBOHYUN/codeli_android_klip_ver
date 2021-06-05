@@ -51,6 +51,7 @@
                 android:text="결제" />
         </LinearLayout>
 
+
         <Button
             android:id="@+id/room_arrive_button"
             android:layout_width="70dp"
@@ -69,13 +70,15 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
-            android:visibility="invisible"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/bg_green_button"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
+            android:visibility="invisible"
             android:text="수령\n확인" />
+
+
     </RelativeLayout>
 
 
@@ -163,6 +166,7 @@
             android:padding="5dp"
             android:stretchColumns="0,1,2,3">
             <TableRow>
+                <!--
                 <ImageView
                     android:id="@+id/room_my_status"
                     android:layout_width="5dp"
@@ -173,12 +177,16 @@
                     android:src="@drawable/circle"
                     android:backgroundTint="@color/red"
                     />
+                    -->
                 <TextView
                     android:id="@+id/room_my_nickname"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:background="@drawable/bg_room_list"
                     android:layout_weight="2"
                     android:src="@drawable/user"
                     />

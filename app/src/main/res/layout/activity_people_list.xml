@@ -12,6 +12,7 @@
         android:padding="5dp"
         android:stretchColumns="0,1,2,3">
         <TableRow>
+            <!--
             <ImageView
                 android:id="@+id/people_status"
                 android:layout_width="5dp"
@@ -21,12 +22,16 @@
                 android:layout_weight="1"
                 android:src="@drawable/circle"
                 />
+                -->
             <TextView
                 android:id="@+id/people_nickname"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="5dp"
+                android:background="@drawable/bg_room_list"
                 android:layout_weight="2"
                 android:src="@drawable/user"
                 />

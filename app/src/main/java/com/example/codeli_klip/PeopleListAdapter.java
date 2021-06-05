@@ -48,27 +48,33 @@ public class PeopleListAdapter extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.activity_people_list, null);
 
         nickname=view.findViewById(R.id.people_nickname);
-        status=view.findViewById(R.id.people_status);
+        //status=view.findViewById(R.id.people_status);
         menu_name=view.findViewById(R.id.people_menu);
         menu_price=view.findViewById(R.id.people_price);
 
         nickname.setText(peopleItemArrayList.get(position).getId());
         boolean color_status=peopleItemArrayList.get(position).getStatus();
         if(color_status==false){
-            status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+            //nickname.setBackgroundColor(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+            nickname.setBackgroundResource(R.drawable.bg_room_list_red);
         }
         else{
-            //파란색 - FF028BBB
-            status.setColorFilter(Color.parseColor("#a7ca5d")); //준비됨 -초록
+            //nickname.setBackgroundColor(Color.parseColor("#a7ca5d")); //준비됨 -초록
+            nickname.setBackgroundResource(R.drawable.bg_room_list_green);
         }
 
 
         if(peopleItemArrayList.get(position).getSendingStatus()!=null&&peopleItemArrayList.get(position).getSendingStatus().equals("success")){
-            status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료 - 노랑
+            //nickname.setBackgroundColor(Color.parseColor("#FFD869")); //결제 완료 - 노랑
+            nickname.setBackgroundResource(R.drawable.bg_room_list_red);
         }
 
+        if(peopleItemArrayList.get(position).getLocation_verification_status()==true){
+            //nickname.setBackgroundColor(Color.parseColor("#a7ca5d")); //검증 완료 - 초록
+            nickname.setBackgroundResource(R.drawable.bg_room_list_yellow);
+        }
         if(peopleItemArrayList.get(position).getVerification_status()==true){
-            status.setColorFilter(Color.parseColor("#a7ca5d")); //검증 완료 - 초록
+            nickname.setBackgroundResource(R.drawable.bg_room_list_green);
         }
 
         menu_name.setText(peopleItemArrayList.get(position).getMenu_name());
