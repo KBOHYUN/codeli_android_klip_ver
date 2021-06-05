@@ -48,7 +48,8 @@ public class RoomInfoFragment extends Fragment {
     private Button room_ready_button; //준비 버튼
     private Button room_ready_cancel_button; //준비 취소 버튼
     private Button room_pay_button; //결제 버튼
-    private Button room_verfity_button;//검증 버튼
+    private Button room_verfity_button;//검증 버튼 - 수령 버튼
+    private Button room_arrive_button; //도착 확인 버튼
 
     private TextView room_order_price; //최소주문금액
     private TextView room_delivery_price;//배달금액
@@ -119,7 +120,7 @@ public class RoomInfoFragment extends Fragment {
 
         room_platform.setText("사용플랫폼: "+MainActivity.roomItemArrayList.get(pos).getPlatform());
         room_order_price.setText("최소주문금액: "+MainActivity.roomItemArrayList.get(pos).getOrderPrice()+"원");
-        price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
+        price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getTotalPeople();
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
         //약속시간 텍스트 설정
@@ -240,7 +241,7 @@ public class RoomInfoFragment extends Fragment {
                 MainActivity.roomItemArrayList.set(pos, roomItem);
                 MainActivity.roomLIstAdapter.notifyDataSetChanged();
 
-                room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
+                //room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                 firestore.collection("Rooms")
                         .document(""+pos)
@@ -288,10 +289,11 @@ public class RoomInfoFragment extends Fragment {
 
                 delivery_price_per_person=roomItem.getDeliveryPrice() / current_people;
 
+
                 MainActivity.roomItemArrayList.set(pos, roomItem);
                 MainActivity.roomLIstAdapter.notifyDataSetChanged();
 
-                room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
+                //room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                 firestore.collection("Rooms")
                         .document(""+pos)
@@ -319,16 +321,56 @@ public class RoomInfoFragment extends Fragment {
             }
         });
 
+        //백그라운드 실행
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                    System.out.println("service start");
+                    getActivity().stopService(intent);
 
-        room_verfity_button=root.findViewById(R.id.verify_button);
+                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                    getActivity().startService(intent);
+                }catch (Exception e){
+                    Log.i("main service error", e.toString());
+                }
+            }
+        }, 2000);
+
+        //위경도 보내기
+        room_arrive_button=root.findViewById(R.id.room_arrive_button);
+        room_arrive_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                my_menu_item.setX(BackgroundGPS.longtitude);
+                my_menu_item.setY(BackgroundGPS.latitude);
+                chat_user_Ref.setValue(my_menu_item);
+
+//                timer trigger가 true가 되면 위경도 업데이트
+//                background service 시작
+
+                room_arrive_button.setVisibility(View.INVISIBLE);
+                room_verfity_button.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        room_verfity_button=root.findViewById(R.id.room_verify_button);
         room_verfity_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //my_menu_item.setVerification_status(true);
 
                 //MyItem data=new MyItem(my_menu_item.getId(),my_menu_item.getStatus(),my_menu_item.getMenu_name(),my_menu_item.getMenu_price(),0,"","",true);
+
                 my_menu_item.setVerification_status(true);
                 chat_user_Ref.setValue(my_menu_item);
+
                 //Toast.makeText(getActivity(), "배달 주문 검증이 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
                 // timer trigger 변경 시 동작하도록 변경하기!!!!!!!!!
@@ -403,7 +445,7 @@ public class RoomInfoFragment extends Fragment {
                         people_size=cur_people;
 
                         price_per_person = MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() / people_size;
-                        room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
+                        //room_delivery_price.setText("배달팁: " + MainActivity.roomItemArrayList.get(pos).getDeliveryPrice() + "원 (1인당 : " + price_per_person + ")");
 
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
@@ -429,36 +471,24 @@ public class RoomInfoFragment extends Fragment {
 
                             //결제 성공 시
                             if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
-                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료시 노랑
-                                room_verfity_button.setVisibility(View.VISIBLE);
+                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료 후
+                                room_verfity_button.setVisibility(View.INVISIBLE);
+                                room_arrive_button.setVisibility(View.VISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
-
-                                //timer trigger가 true가 되면 위경도 업데이트
-                                //background service 시작
-//                                Handler mHandler = new Handler(Looper.getMainLooper());
-//                                mHandler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        try{
-//                                            Intent intent =new Intent(getActivity().this, BackgroundGPS.class);
-//                                            System.out.println("service start");
-//                                            getActivity().stopService(intent);
-//
-//                                            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-//                                            getActivity().startService(intent);
-//                                        }catch (Exception e){
-//                                            Log.i("main service error", e.toString());
-//                                        }
-//                                    }
-//                                }, 2000);
-
-
+                            }
+                            if(my_menu_item.getVerification_status()==false&&my_menu_item.getX()!=null){
+                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //도착 확인 버튼 누른 후
+                                room_verfity_button.setVisibility(View.VISIBLE);
+                                room_arrive_button.setVisibility(View.INVISIBLE);
+                                room_ready_button.setVisibility(View.INVISIBLE);
+                                room_pay_button.setVisibility(View.INVISIBLE);
+                                room_ready_cancel_button.setVisibility(View.INVISIBLE);
                             }
                             if(my_menu_item.getVerification_status()==true){
                                 //room_verfity_button.setVisibility(View.VISIBLE);
-                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //결제 완료시 노랑
+                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //수령 확인 버튼 후
                             }
                             room_my_menu.setText(my_menu_item.getMenu_name());
                             room_my_price.setText(""+my_menu_item.getMenu_price());
@@ -529,7 +559,7 @@ public class RoomInfoFragment extends Fragment {
                     }
 
                     delivery_price_per_person=roomItem.getDeliveryPrice() / roomItem.getCurrentPeople();
-                    room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
+                    //room_delivery_price.setText("배달팁: "+roomItem.getDeliveryPrice()+"원 (1인당 : "+delivery_price_per_person+")");
 
                     MainActivity.roomItemArrayList.set(pos, roomItem);
                     MainActivity.roomLIstAdapter.notifyDataSetChanged();

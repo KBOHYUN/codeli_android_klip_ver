@@ -13,6 +13,8 @@ public class MyItem implements Serializable {
     private String sendingStatus;
     private boolean verification_status=false;
 
+    private boolean location_verification_state=false; //위치 인식
+
     //위 경도 추가
     private Double x;
     private Double y;
@@ -25,11 +27,11 @@ public class MyItem implements Serializable {
 
     }
 
-    public MyItem(String id, boolean status, String name, int price){
-        this.id=id;
-        this.status=status;
-        this.menu_name=name;
-        this.menu_price=price;
+    public MyItem(String id, boolean status, String name, int price) {
+        this.id = id;
+        this.status = status;
+        this.menu_name = name;
+        this.menu_price = price;
     }
 
 
@@ -41,12 +43,34 @@ public class MyItem implements Serializable {
         this.verification_status=verification_status;
     }
 
+
+    public MyItem(String id, boolean status, String name, int price, boolean verification_status, boolean location_verification_state){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.verification_status=verification_status;
+        this.location_verification_state=location_verification_state;
+    }
+
+
     public MyItem(String id, boolean status, String name, int price, boolean verification_status, double x, double y){
         this.id=id;
         this.status=status;
         this.menu_name=name;
         this.menu_price=price;
         this.verification_status=verification_status;
+        this.x=x;
+        this.y=y;
+    }
+
+    public MyItem(String id, boolean status, String name, int price, boolean verification_status, boolean location_verification_state, double x, double y){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.verification_status=verification_status;
+        this.location_verification_state=location_verification_state;
         this.x=x;
         this.y=y;
     }
@@ -63,6 +87,18 @@ public class MyItem implements Serializable {
         this.verification_status=verification_status;
     }
 
+    public MyItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status, boolean location_verification_state){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_state=location_verification_state;
+    }
+
 
     public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double x, double y){
         this.id=id;
@@ -73,6 +109,20 @@ public class MyItem implements Serializable {
         this.tx_hash=tx_hash;
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
+        this.x=x;
+        this.y=y;
+    }
+
+    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, boolean location_verification_state,double x, double y){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_state=location_verification_state;
         this.x=x;
         this.y=y;
     }
@@ -90,6 +140,9 @@ public class MyItem implements Serializable {
     }
     public boolean getVerification_status(){
         return verification_status;
+    }
+    public boolean getLocation_verification_status(){
+        return location_verification_state;
     }
     public String getTx_hash(){
         return this.tx_hash;

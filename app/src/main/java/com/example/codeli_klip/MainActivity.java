@@ -353,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
                 gpsTracker = new GpsTracker(MainActivity.this);
                 latitude = gpsTracker.getLatitude(); // 위도
                 longtitude = gpsTracker.getLongitude(); //경도
+                
                 String addr=getCurrentAddress(latitude,longtitude);
                 cur_location.setText(addr);
             }

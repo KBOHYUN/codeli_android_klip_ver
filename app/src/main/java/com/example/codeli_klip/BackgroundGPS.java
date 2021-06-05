@@ -40,7 +40,7 @@ public class BackgroundGPS extends Service implements LocationListener {
     private final IBinder mBinder = new LocalBinder();
     int iLoopValue = 0;
 
-    int iThreadInterval = 600000;    // 쓰레드 루프 간격 5초
+    int iThreadInterval = 10000;    // 쓰레드 루프 간격 5초
     boolean bThreadGo = true;        // 루프로직을 태운다.
 
 
@@ -52,7 +52,7 @@ public class BackgroundGPS extends Service implements LocationListener {
     private Timestamp mDate;
     private SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //저장할 날짜, 시간 형식
 
-    private double longtitude=0, latitude=0; //latitude-위도, longtitude-경도
+    public static double longtitude=0, latitude=0; //latitude-위도, longtitude-경도
 
     public static ArrayList<LocationInfo> location_list=new ArrayList<LocationInfo>();
 
@@ -80,7 +80,7 @@ public class BackgroundGPS extends Service implements LocationListener {
         //***********   pos 변화시키기!!!!!!!!
 
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
-        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+PayActivity.roomPosition+"/partitions/"+ LoginActivity.nickname); //채팅 reference
+        chat_user_Ref= firebaseDatabase.getReference("/Chat/"+RoomInfoFragment.pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         bThreadGo = true;
 
@@ -132,12 +132,12 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                 //종료 시에도 위경도 업데이트 후 종료
 
-                item=RoomInfoFragment.my_menu_item;
-
-                //item=RoomInfoFragment.my_menu_item;
-                item.setX(longtitude);
-                item.setY(latitude);
-                chat_user_Ref.setValue(item);
+//                item=RoomInfoFragment.my_menu_item;
+//
+//                //item=RoomInfoFragment.my_menu_item;
+//                item.setX(longtitude);
+//                item.setY(latitude);
+//                chat_user_Ref.setValue(item);
 
                 TAG = null;
                 sBestGpsProvider = null;
@@ -210,7 +210,7 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                     iLoopValue++;
                     Thread.sleep(iThreadInterval);
-                    if (iLoopValue > 600000)  //900000 = 15분
+                    if (iLoopValue > 10000)  //900000 = 15분
                         iLoopValue = 0;
 
                     //위경도 전송
@@ -224,42 +224,21 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                             //realtime db에 실시간 gps 전송
                             //payactivity에서 호출할 경우
-                            MyItem item=PayActivity.item;
+                            //MyItem item=PayActivity.item;
 
-                            if(RoomInfoFragment.my_menu_item.getVerification_status()==true){
+                            //if(RoomInfoFragment.my_menu_item.getVerification_status()==true){
                                 item=RoomInfoFragment.my_menu_item;
-                            }
+                           // }
 
                             //roomactivity에서 호출할 경우
                             //item=RoomInfoFragment.my_menu_item;
-                            item.setX(longtitude);
-                            item.setY(latitude);
-                            chat_user_Ref.setValue(item);
+//                            item.setX(longtitude);
+//                            item.setY(latitude);
+//                            chat_user_Ref.setValue(item);
 
                         }
 
                     }, 0);
-
-                    //'partitions'노드에 저장되어 있는 데이터들을 읽어오기
-                    chat_user_Ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-                            //데이터가 쌓이기 때문에  clear()
-                            peopleItemArrayList.clear();
-
-
-                            item = dataSnapshot.getValue(MyItem.class);
-
-                            if(item!=null){
-                                //System.out.println("***백그라운드 my item 읽기: "+item.getId()+" "+item.getVerification_status());
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) { }
-                    });
 
 
 

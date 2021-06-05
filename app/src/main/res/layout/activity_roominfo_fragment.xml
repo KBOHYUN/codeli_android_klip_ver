@@ -52,17 +52,30 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/verify_button"
+            android:id="@+id/room_arrive_button"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/bg_green_button"
-            android:visibility="invisible"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
-            android:text="도착" />
+            android:visibility="invisible"
+            android:text="도착\n확인" />
+
+        <Button
+            android:id="@+id/room_verify_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_green_button"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="수령\n확인" />
     </RelativeLayout>
 
 

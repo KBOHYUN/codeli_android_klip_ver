@@ -11,6 +11,7 @@ public class PeopleItem implements Serializable {
     private String tx_hash;
     private String sendingStatus;
     private boolean verification_status=false;
+    private boolean location_verification_status=false;
 
     //위 경도 추가
     private Double x;
@@ -25,6 +26,13 @@ public class PeopleItem implements Serializable {
         this.status=status;
         this.menu_name=name;
         this.menu_price=price;
+    }
+    public PeopleItem(String id, boolean status, String name, int price, boolean location_verification_status){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.location_verification_status=location_verification_status;
     }
     public PeopleItem(String id, boolean status, String name, int price, int expiration_time){
         this.id=id;
@@ -54,6 +62,17 @@ public class PeopleItem implements Serializable {
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
     }
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status, boolean location_verification_status){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_status=location_verification_status;
+    }
 
     public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String sending_status, boolean verification_status){
         this.id=id;
@@ -78,6 +97,20 @@ public class PeopleItem implements Serializable {
         this.y=y;
     }
 
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, boolean location_verification_status,double x, double y){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_status=location_verification_status;
+        this.x=x;
+        this.y=y;
+    }
+
 
     public String getId(){return id;}
     public boolean getStatus(){return status;}
@@ -94,6 +127,9 @@ public class PeopleItem implements Serializable {
     }
     public boolean getVerification_status(){
         return verification_status;
+    }
+    public boolean getLocation_verification_status(){
+        return location_verification_status;
     }
     public Double getX(){return this.x;}
     public Double getY(){
