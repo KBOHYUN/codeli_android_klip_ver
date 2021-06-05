@@ -48,7 +48,7 @@ public class RoomInfoFragment extends Fragment {
     private Button room_ready_button; //준비 버튼
     private Button room_ready_cancel_button; //준비 취소 버튼
     private Button room_pay_button; //결제 버튼
-    private Button room_verfity_button;//검증 버튼 - 수령 버튼
+    private Button room_verify_button;//검증 버튼 - 수령 버튼
     private Button room_arrive_button; //도착 확인 버튼
 
     private TextView room_order_price; //최소주문금액
@@ -129,13 +129,13 @@ public class RoomInfoFragment extends Fragment {
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
         }
 
-        room_my_status=root.findViewById(R.id.room_my_status);
+        //room_my_status=root.findViewById(R.id.room_my_status);
         room_my_nickname=root.findViewById(R.id.room_my_nickname);
         room_my_menu=root.findViewById(R.id.room_my_menu);
         room_my_price=root.findViewById(R.id.room_my_price);
 
         room_my_nickname.setText(LoginActivity.nickname);
-        room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+        room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
 
         //나의 주문 목록 초기화
         my_menu_item=new MyItem(LoginActivity.nickname,false, "",0,0,"","",false);
@@ -221,7 +221,7 @@ public class RoomInfoFragment extends Fragment {
                 room_ready_button.setVisibility(View.VISIBLE); //준비버튼 보이기
                 room_pay_button.setVisibility(View.INVISIBLE); //결제버튼 안보이기
 
-                room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
                 //my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus());
                 my_menu_item=new MyItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),0,"","",false);
                 chat_user_Ref.setValue(my_menu_item);
@@ -275,7 +275,7 @@ public class RoomInfoFragment extends Fragment {
                 String menu=room_my_menu.getText().toString().trim();
                 int price=Integer.parseInt(room_my_price.getText().toString().trim());
                 my_menu_item=new MyItem(LoginActivity.nickname,true, menu, price);
-                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //준비돰 - 초록
+                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //준비돰 - 초록
                 chat_user_Ref.setValue(my_menu_item);
 
                 //****파이어스토어에 데이터 업데이트 하기
@@ -341,10 +341,10 @@ public class RoomInfoFragment extends Fragment {
 
         //위경도 보내기
         room_arrive_button=root.findViewById(R.id.room_arrive_button);
+        room_arrive_button.setVisibility(View.INVISIBLE);
         room_arrive_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 my_menu_item.setX(BackgroundGPS.longtitude);
                 my_menu_item.setY(BackgroundGPS.latitude);
@@ -354,14 +354,15 @@ public class RoomInfoFragment extends Fragment {
 //                background service 시작
 
                 room_arrive_button.setVisibility(View.INVISIBLE);
-                room_verfity_button.setVisibility(View.VISIBLE);
+                room_verify_button.setVisibility(View.VISIBLE);
 
             }
         });
 
 
-        room_verfity_button=root.findViewById(R.id.room_verify_button);
-        room_verfity_button.setOnClickListener(new View.OnClickListener() {
+        room_verify_button=root.findViewById(R.id.room_verify_button);
+        room_verify_button.setVisibility(View.INVISIBLE);
+        room_verify_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //my_menu_item.setVerification_status(true);
@@ -371,13 +372,6 @@ public class RoomInfoFragment extends Fragment {
                 my_menu_item.setVerification_status(true);
                 chat_user_Ref.setValue(my_menu_item);
 
-                //Toast.makeText(getActivity(), "배달 주문 검증이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-
-                // timer trigger 변경 시 동작하도록 변경하기!!!!!!!!!
-                //백그라운드 서비스 종료
-//                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-//                System.out.println("종료");
-//                getActivity().stopService(intent);
 
                 //->>>> 위치 확인 후 도착했다고 확인되면 도착 확인 메세지 출력
 
@@ -454,14 +448,20 @@ public class RoomInfoFragment extends Fragment {
                     //***** 추가: 준비가 되어있는 경우는 나갔다 들어오더라도 준비버튼 안보이도록!!!
 
                     if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){ //nickname이 자신일 경우
-                        my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
+                        if(partition.getX()==null){
+                            my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
+                        }
+                        else{
+                            my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status(),partition.getLocation_verification_status(),partition.getX(),partition.getY());
+                        }
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){
-                                room_my_status.setColorFilter(Color.parseColor("#FF0000")); //준비 안됨 - 빨강
+                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
                             }
                             else{
-                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //준비됨 -파랑
-                                room_verfity_button.setVisibility(View.INVISIBLE);
+                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //준비됨 -green
+                                room_verify_button.setVisibility(View.INVISIBLE);
+                                room_arrive_button.setVisibility(View.INVISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.VISIBLE);
                                 room_ready_cancel_button.setVisibility(View.VISIBLE);
@@ -471,25 +471,29 @@ public class RoomInfoFragment extends Fragment {
 
                             //결제 성공 시
                             if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
-                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //결제 완료 후
-                                room_verfity_button.setVisibility(View.INVISIBLE);
+                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //결제 완료 후
+                                room_verify_button.setVisibility(View.INVISIBLE);
                                 room_arrive_button.setVisibility(View.VISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
-                            }
-                            if(my_menu_item.getVerification_status()==false&&my_menu_item.getX()!=null){
-                                room_my_status.setColorFilter(Color.parseColor("#FFD869")); //도착 확인 버튼 누른 후
-                                room_verfity_button.setVisibility(View.VISIBLE);
+
+                            }if(my_menu_item.getX()!=null&&my_menu_item.getY()!=null){
+                                room_verify_button.setVisibility(View.VISIBLE);
                                 room_arrive_button.setVisibility(View.INVISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
                             }
+                            if(my_menu_item.getLocation_verification_status()==true){
+                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_yellow); //위치 확인
+                            }
+
                             if(my_menu_item.getVerification_status()==true){
                                 //room_verfity_button.setVisibility(View.VISIBLE);
-                                room_my_status.setColorFilter(Color.parseColor("#a7ca5d")); //수령 확인 버튼 후
+                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //수령 확인 버튼 후
                             }
+
                             room_my_menu.setText(my_menu_item.getMenu_name());
                             room_my_price.setText(""+my_menu_item.getMenu_price());
 
