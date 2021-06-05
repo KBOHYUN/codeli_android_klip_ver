@@ -56,7 +56,7 @@ public class RoomOwnerInfoFragment extends Fragment {
     private int order_price;
 
     private Button verfity_trigger_button;//검증 버튼
-    private ImageButton room_time_edit_button; //약속시간 변경 버튼
+    private Button room_time_edit_button; //약속시간 변경 버튼
 
     private TextView room_order_price; //최소주문금액
     private TextView room_delivery_price;//배달금액
@@ -120,7 +120,8 @@ public class RoomOwnerInfoFragment extends Fragment {
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
 
         if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
-            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceAll(":","/");
+            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime().replaceFirst(":","/");
+            replaceTime=replaceTime.replaceFirst(":"," ");
             room_delivery_time.setText("약속시간: "+replaceTime+"   ");
         }
 
@@ -338,8 +339,9 @@ public class RoomOwnerInfoFragment extends Fragment {
                         if(snapshot.getData().get("time")!=null){
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString(),snapshot.getData().get("time").toString());
                             //약속 시간 변경시 업데이트
-                            String replaceTime=snapshot.getData().get("time").toString().replaceAll(":","/");
-                            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
+                            String replaceTime=snapshot.getData().get("time").toString().replaceFirst(":","/");
+                            replaceTime=replaceTime.replaceFirst(":"," ");
+                            room_delivery_time.setText("약속시간: "+replaceTime+"  ");
                         }
                         else{
                             roomItem = new RoomItem(snapshot.getData().get("restaurant").toString(),snapshot.getData().get("deliveryApp").toString(),Integer.parseInt(snapshot.getData().get("currentValue").toString()),Integer.parseInt(snapshot.getData().get("minOrderAmount").toString()),Integer.parseInt(snapshot.getData().get("deliveryCost").toString()),snapshot.getData().get("deliveryAddress").toString(),snapshot.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(snapshot.getData().get("participantsNum").toString()),Integer.parseInt(snapshot.getData().get("participantsMax").toString()),snapshot.getData().get("owner").toString(),snapshot.getData().get("x").toString(),snapshot.getData().get("y").toString());

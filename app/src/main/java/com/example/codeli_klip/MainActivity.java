@@ -96,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
                                 RoomItem roomItem=null;
                                 if(document.getData().get("x")!=null) {
-                                    if(document.getData().get("time")!=null){
+                                    if(document.getData().get("time")!=null){//시간 있는 경우
                                         roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), document.getData().get("x").toString(), document.getData().get("y").toString(),document.getData().get("time").toString());
                                     }
-                                    else{
+                                    else{//위경도 있는 경우
                                         roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), document.getData().get("x").toString(), document.getData().get("y").toString());
                                     }
-                                }else{
+                                }else{//기본 형태
                                     roomItem= new RoomItem(document.getData().get("restaurant").toString(),document.getData().get("deliveryApp").toString(),Integer.parseInt(document.getData().get("currentValue").toString()),Integer.parseInt(document.getData().get("minOrderAmount").toString()),Integer.parseInt(document.getData().get("deliveryCost").toString()),document.getData().get("deliveryAddress").toString(),document.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(document.getData().get("participantsNum").toString()),Integer.parseInt(document.getData().get("participantsMax").toString()),document.getData().get("owner").toString());
                                 }
                                 roomItemArrayList.add(roomItem);
