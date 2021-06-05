@@ -270,7 +270,6 @@ public class RoomInfoFragment extends Fragment {
             public void onClick(View v) {
                 //준비 완료 확인 -> 데이터 db 전송!
 
-
                 //내 메뉴 db에 전송
                 String menu=room_my_menu.getText().toString().trim();
                 int price=Integer.parseInt(room_my_price.getText().toString().trim());
@@ -435,6 +434,26 @@ public class RoomInfoFragment extends Fragment {
                                 room_ready_button.setVisibility(View.INVISIBLE);
                                 room_pay_button.setVisibility(View.INVISIBLE);
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
+
+                                //timer trigger가 true가 되면 위경도 업데이트
+                                //background service 시작
+//                                Handler mHandler = new Handler(Looper.getMainLooper());
+//                                mHandler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        try{
+//                                            Intent intent =new Intent(getActivity().this, BackgroundGPS.class);
+//                                            System.out.println("service start");
+//                                            getActivity().stopService(intent);
+//
+//                                            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+//                                            getActivity().startService(intent);
+//                                        }catch (Exception e){
+//                                            Log.i("main service error", e.toString());
+//                                        }
+//                                    }
+//                                }, 2000);
+
 
                             }
                             if(my_menu_item.getVerification_status()==true){

@@ -135,8 +135,8 @@ public class BackgroundGPS extends Service implements LocationListener {
                 item=RoomInfoFragment.my_menu_item;
 
                 //item=RoomInfoFragment.my_menu_item;
-                item.setX(latitude);
-                item.setY(longtitude);
+                item.setX(longtitude);
+                item.setY(latitude);
                 chat_user_Ref.setValue(item);
 
                 TAG = null;
@@ -232,8 +232,8 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                             //roomactivity에서 호출할 경우
                             //item=RoomInfoFragment.my_menu_item;
-                            item.setX(latitude);
-                            item.setY(longtitude);
+                            item.setX(longtitude);
+                            item.setY(latitude);
                             chat_user_Ref.setValue(item);
 
                         }

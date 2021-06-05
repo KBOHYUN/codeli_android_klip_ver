@@ -220,28 +220,10 @@ public class PayActivity extends AppCompatActivity {
 
                 //item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
 
-                item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status(),MainActivity.latitude,MainActivity.longtitude);
+                item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status(),MainActivity.longtitude,MainActivity.latitude);
                 chat_user_Ref.setValue(item);
                 txHash="";
 
-                //timer trigger가 true가 되면 위경도 업데이트
-                //background service 시작
-                Handler mHandler = new Handler(Looper.getMainLooper());
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            Intent intent =new Intent(PayActivity.this, BackgroundGPS.class);
-                            System.out.println("service start");
-                            stopService(intent);
-
-                            //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                            startService(intent);
-                        }catch (Exception e){
-                            Log.i("main service error", e.toString());
-                        }
-                    }
-                }, 2000);
 
                 Toast.makeText(getApplicationContext(), "결제가 완료되었습니다", Toast.LENGTH_SHORT).show();
                 System.out.println("*****result 성공 - tx hash: "+txHash);
