@@ -198,6 +198,20 @@ public class RoomOwnerInfoFragment extends Fragment {
         });
 
 
+        //약속시간 realtime에서 불러오기
+        time_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                room_delivery_time.setText("약속시간: "+dataSnapshot.getValue().toString()+"   ");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference
         //송금 요청 버튼
         verfity_trigger_button=root.findViewById(R.id.verify_trigger_button);
