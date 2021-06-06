@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -121,16 +122,32 @@ public class RoomOwnerInfoFragment extends Fragment {
         room_delivery_price.setText("배달팁: "+MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()+"원 (1인당 : "+price_per_person+")");
         room_delivery_place.setText("배달장소: "+MainActivity.roomItemArrayList.get(pos).getAddress()+" "+MainActivity.roomItemArrayList.get(pos).getSpecificAddress());
 
-        if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
-            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime();
-            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
-        }
+        //firestore에서 약속시간 읽기
+//        if(MainActivity.roomItemArrayList.get(pos).getTime()!=null){
+//            String replaceTime=MainActivity.roomItemArrayList.get(pos).getTime();
+//            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
+//        }
 
         ReadFirestoreData();  //firestore 데이터 실시간 읽기
 
         //약속 시간 설정
-
         time_ref=firebaseDatabase.getReference("/Chat/"+pos+"/appointmentTime/");
+
+        time_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+
+                String timeItem=(String)dataSnapshot.getValue();
+
+                if(timeItem!=null){
+                    room_delivery_time.setText("약속시간: "+timeItem+"   ");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+
         Date today=new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd");
         SimpleDateFormat hourFormat = new SimpleDateFormat("hh");
@@ -199,17 +216,8 @@ public class RoomOwnerInfoFragment extends Fragment {
 
 
         //약속시간 realtime에서 불러오기
-        time_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                room_delivery_time.setText("약속시간: "+dataSnapshot.getValue().toString()+"   ");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
 
 
         verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference

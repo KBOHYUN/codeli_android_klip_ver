@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -135,20 +136,6 @@ public class RoomInfoFragment extends Fragment {
 //            room_delivery_time.setText("약속시간: "+replaceTime+"   ");
 //        }
 
-        //약속시간 realtime에서 읽기
-        meeting_time_ref=firebaseDatabase.getReference("/Chat/"+pos+"/appointmentTime/");
-        meeting_time_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                room_delivery_time.setText("약속시간: "+dataSnapshot.getValue().toString()+"   ");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         //room_my_status=root.findViewById(R.id.room_my_status);
         room_my_nickname=root.findViewById(R.id.room_my_nickname);
         room_my_menu=root.findViewById(R.id.room_my_menu);
@@ -164,6 +151,24 @@ public class RoomInfoFragment extends Fragment {
         chat_user_Ref= firebaseDatabase.getReference("/Chat/"+pos+"/partitions/"+ LoginActivity.nickname); //채팅 reference
 
         klay_Ref=firebaseDatabase.getReference("/klay_value/"); //클레이 reference
+
+        //약속시간 realtime에서 읽기
+        meeting_time_ref=firebaseDatabase.getReference("/Chat/"+pos+"/appointmentTime/");
+        meeting_time_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+
+                String timeItem=(String)dataSnapshot.getValue();
+
+                if(timeItem!=null){
+                    room_delivery_time.setText("약속시간: "+timeItem+"   ");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+
 
         //결제 버튼
         Intent intent=new Intent(getActivity(),PayActivity.class);
