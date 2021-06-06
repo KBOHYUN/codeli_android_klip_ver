@@ -215,11 +215,6 @@ public class RoomOwnerInfoFragment extends Fragment {
         });
 
 
-        //약속시간 realtime에서 불러오기
-
-
-
-
         verification_ref= firebaseDatabase.getReference("/Chat/"+pos+"/verification/"); //방장 송금 요청 verification reference
         //송금 요청 버튼
         verfity_trigger_button=root.findViewById(R.id.verify_trigger_button);
@@ -242,7 +237,7 @@ public class RoomOwnerInfoFragment extends Fragment {
 
                     verification=dataSnapshot.getValue(VerificationData.class);
 
-                    if(verification!=null){
+                    if(verification!=null && getActivity()!=null){
                         if(verification.getTrigger()==true && verification.getState()!=null){
                             if(verification.getState().equals("success")){
                                 Toast.makeText(getActivity(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
@@ -306,6 +301,15 @@ public class RoomOwnerInfoFragment extends Fragment {
                 }
 
 //                //송금하였는지 확인
+                  if(sendingStatusCheck==true){
+                      if(getActivity()!=null){
+                          if(MainActivity.owner_check_verification_num[pos]==0){
+                              CustomDialog customDialog = new CustomDialog(getActivity());
+                              customDialog.callFunction("송금 요청 알림","모든 참여자들이 음식을 수령하였습니다");
+                          }
+                      }
+                      MainActivity.owner_check_verification_num[pos]=1;
+                  }
 //                if(sendingStatusCheck==true) {
 //                    //Toast.makeText(getActivity().getApplicationContext(),"모든 인원이 결제를 완료하였습니다\n음식 수령 시 검증 절차 후 송금 요청을 진행해주세요",Toast.LENGTH_LONG).show();
 //                    verfity_trigger_button.setVisibility(View.VISIBLE);

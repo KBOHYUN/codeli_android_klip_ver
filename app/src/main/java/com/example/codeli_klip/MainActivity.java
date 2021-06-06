@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
 
+    public static Integer[] owner_check_verification_num=new Integer[100];
+
     public static int select_room_num=0;
     public static boolean is_payment=false;
 
@@ -132,20 +134,25 @@ public class MainActivity extends AppCompatActivity {
                     select_room_num=position;
                     Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerPagerActivity.class);
                     ownerintent.putExtra("position",position);
+                    owner_check_verification_num[position]=0;
                     startActivity(ownerintent);
                 }
                 else{
                     //Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
+                    Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
+                    intent.putExtra("position",position);
+                    //owner - 방장 정보 추가
+                    startActivity(intent);
 
                     //인원이 최대가 된 경우 방 참여 불가
-                    if(roomLIstAdapter.getItem(position).getCurrentPeople()<roomLIstAdapter.getItem(position).getTotalPeople()){
-                        Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
-                        intent.putExtra("position",position);
-                        //owner - 방장 정보 추가
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(getApplicationContext(), "인원이 초과되었습니다", Toast.LENGTH_SHORT).show();
-                    }
+//                    if(roomLIstAdapter.getItem(position).getCurrentPeople()<roomLIstAdapter.getItem(position).getTotalPeople()){
+//                        Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
+//                        intent.putExtra("position",position);
+//                        //owner - 방장 정보 추가
+//                        startActivity(intent);
+//                    }else{
+//                        Toast.makeText(getApplicationContext(), "인원이 초과되었습니다", Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
         });
