@@ -92,7 +92,7 @@ public class RoomInfoFragment extends Fragment {
 
     private DatabaseReference klay_Ref; //클레이 시세 받아오는 참조변수
     private ArrayList<KlayData> klayDataArrayList=new ArrayList<KlayData>();
-    private double klay_flow;
+    private double klay_flow=1500.0;
 
     private String room_id="";
 
@@ -102,7 +102,7 @@ public class RoomInfoFragment extends Fragment {
 
     private int delivery_price_per_person;
 
-    private int click_arrive_button=0;
+    private boolean check_all_ready=true;
 
 
     public RoomInfoFragment(int pos){
@@ -182,61 +182,71 @@ public class RoomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                //******** 임시로 결제 화면 넘어가기 *******
-//                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-//                intent.putExtra("delivery_price",delivery_price_per_person);
-//                intent.putExtra("room_id",""+pos); //방 번호
-//                intent.putExtra("klay_flow",123); //클레이 시세
-//                intent.putExtra("klay_total",0);
-//                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-//                intent.putExtra("position",pos);
-//                startActivity(intent);
-//                getActivity().finish();
+                if(getActivity()!=null){
+                    if(check_all_ready==false){ //모두 준비 안된 경우
+                        Toast.makeText(getActivity(), "모든 참여자가 준비되지 않았습니다", Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        KlayData trigger=new KlayData(true, "");
+                        klay_Ref.setValue(trigger);
+                        //클레이 시세 확인
+                        klay_Ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                                //데이터가 쌓이기 때문에  clear()
+
+                                //String value=ds.getValue(KlayData.class).getValue();
+                                KlayData klay=dataSnapshot.getValue(KlayData.class);
+
+                                if(klay.getTrigger()==false){
+                                    klayDataArrayList.add(klay);
 
 
-                KlayData trigger=new KlayData(true, "");
-                klay_Ref.setValue(trigger);
-                //클레이 시세 확인
-                klay_Ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-                        //데이터가 쌓이기 때문에  clear()
+                                    klay_flow= Double.parseDouble(klayDataArrayList.get(0).getValue());
 
-                        //String value=ds.getValue(KlayData.class).getValue();
-                        KlayData klay=dataSnapshot.getValue(KlayData.class);
+                                    // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
 
-                        if(klay.getTrigger()==false){
-                            klayDataArrayList.add(klay);
+                                    int total=my_menu_item.getMenu_price()+delivery_price_per_person;
+                                    double klay_price=total/klay_flow;
+                                    double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
 
+                                    if(getActivity()!=null){
+                                        intent.putExtra("menu_price",my_menu_item.getMenu_price());
+                                        intent.putExtra("delivery_price",delivery_price_per_person);
+                                        intent.putExtra("room_id",room_id); //방 번호
+                                        intent.putExtra("klay_flow",klay_flow); //클레이 시세
+                                        intent.putExtra("klay_total",total_klay_6);
+                                        intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+                                        intent.putExtra("position",pos);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    }
 
-                            klay_flow= Double.parseDouble(klayDataArrayList.get(0).getValue());
+                                }
 
-                            // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
-
-                            int total=my_menu_item.getMenu_price()+delivery_price_per_person;
-                            double klay_price=total/klay_flow;
-                            double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
-
-                            if(getActivity()!=null){
-                                intent.putExtra("menu_price",my_menu_item.getMenu_price());
-                                intent.putExtra("delivery_price",delivery_price_per_person);
-                                intent.putExtra("room_id",room_id); //방 번호
-                                intent.putExtra("klay_flow",klay_flow); //클레이 시세
-                                intent.putExtra("klay_total",total_klay_6);
-                                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-                                intent.putExtra("position",pos);
-                                startActivity(intent);
-                                getActivity().finish();
                             }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) { }
+                        });
 
+                        //******* 임시로 넘어가기
 
-
-                        }
+//                        int total=my_menu_item.getMenu_price()+delivery_price_per_person;
+//                        double klay_price=total/klay_flow;
+//                        double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
+//
+//                        intent.putExtra("menu_price",my_menu_item.getMenu_price());
+//                        intent.putExtra("delivery_price",delivery_price_per_person);
+//                        intent.putExtra("room_id",""+pos); //방 번호
+//                        intent.putExtra("klay_flow",klay_flow); //클레이 시세
+//                        intent.putExtra("klay_total",total_klay_6);
+//                        intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+//                        intent.putExtra("position",pos);
+//                        startActivity(intent);
+//                        getActivity().finish();
 
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) { }
-                });
+                }
 
             }
         });
@@ -353,23 +363,23 @@ public class RoomInfoFragment extends Fragment {
             }
         });
 
-        //백그라운드 실행
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-                    System.out.println("service start");
-                    getActivity().stopService(intent);
-
-                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                    getActivity().startService(intent);
-                }catch (Exception e){
-                    Log.i("main service error", e.toString());
-                }
-            }
-        }, 2000);
+//        //백그라운드 실행
+//        Handler mHandler = new Handler(Looper.getMainLooper());
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                try{
+//                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+//                    System.out.println("service start");
+//                    getActivity().stopService(intent);
+//
+//                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+//                    getActivity().startService(intent);
+//                }catch (Exception e){
+//                    Log.i("main service error", e.toString());
+//                }
+//            }
+//        }, 2000);
 
         //위경도 보내기
         room_arrive_button=root.findViewById(R.id.room_arrive_button);
@@ -449,8 +459,6 @@ public class RoomInfoFragment extends Fragment {
                     }
                 }, 1000);
 
-                click_arrive_button++;
-
             }
         });
 
@@ -521,6 +529,7 @@ public class RoomInfoFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
                 peopleItemArrayList.clear();
+                check_all_ready=true;
                 for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
                     PeopleItem partition = ds.getValue(PeopleItem.class);
@@ -531,6 +540,10 @@ public class RoomInfoFragment extends Fragment {
                         //새로운 메세지를 리스뷰에 추가하기 위해 ArrayList에 추가
                         peopleItemArrayList.add(partition);
 
+                        if(partition.getStatus()==false){
+                            check_all_ready=false;
+                        }
+
                         cur_people = peopleItemArrayList.size()+1;
                         people_size=cur_people;
 
@@ -539,6 +552,7 @@ public class RoomInfoFragment extends Fragment {
 
                         //리스트뷰를 갱신
                         peopleListAdapter.notifyDataSetChanged();
+
                     }
 
                     //***** 추가: 준비가 되어있는 경우는 나갔다 들어오더라도 준비버튼 안보이도록!!!

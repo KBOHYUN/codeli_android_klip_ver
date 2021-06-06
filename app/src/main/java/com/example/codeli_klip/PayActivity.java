@@ -107,7 +107,7 @@ public class PayActivity extends AppCompatActivity {
 
 
         pay_price.setText("음식가격 "+menu_price+" + 배달팁 "+delivery_price);
-        pay_total_price.setText("총 금액 "+total_price);
+        pay_total_price.setText("총 금액 "+total_price+"원");
 
         klay_flow=getIntent.getDoubleExtra("klay_flow",1.0);
 
