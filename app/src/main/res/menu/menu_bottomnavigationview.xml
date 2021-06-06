@@ -8,9 +8,9 @@
     <item
         android:id="@+id/chat"
         android:title="채팅"
-        android:icon="@drawable/chat"/>
+        android:icon="@drawable/ic_chat_bubble"/>
     <item
         android:id="@+id/my"
         android:title="마이"
-        android:icon="@drawable/my"/>
+        android:icon="@drawable/ic_person"/>
 </menu>
