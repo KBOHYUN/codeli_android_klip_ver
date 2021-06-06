@@ -154,6 +154,35 @@ public class BackgroundGPS extends Service implements LocationListener {
     public void onTaskRemoved(Intent rootIntent) {
         //강제종료시
 
+        try {
+            Log.i(TAG, "onDestroy : 서비스 종료");
+
+            bThreadGo = false;
+
+            if (this != null && locationMgr != null) {
+                locationMgr.removeUpdates(this);
+            }
+
+            //종료 시에도 위경도 업데이트 후 종료
+
+//                item=RoomInfoFragment.my_menu_item;
+//
+//                //item=RoomInfoFragment.my_menu_item;
+//                item.setX(longtitude);
+//                item.setY(latitude);
+//                chat_user_Ref.setValue(item);
+
+            TAG = null;
+            sBestGpsProvider = null;
+            locationMgr = null;
+            mRun = null;
+        } catch (Exception e) {
+            Log.i(TAG, ">onDestroy : " + e.toString());
+        }
+
+        super.onDestroy();
+
+
     }
 
     /*
@@ -232,9 +261,9 @@ public class BackgroundGPS extends Service implements LocationListener {
 
                             //roomactivity에서 호출할 경우
                             //item=RoomInfoFragment.my_menu_item;
-//                            item.setX(longtitude);
-//                            item.setY(latitude);
-//                            chat_user_Ref.setValue(item);
+                            item.setX(longtitude);
+                            item.setY(latitude);
+                            chat_user_Ref.setValue(item);
 
                         }
 

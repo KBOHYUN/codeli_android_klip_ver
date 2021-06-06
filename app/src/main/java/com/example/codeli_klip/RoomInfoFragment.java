@@ -1,5 +1,7 @@
 package com.example.codeli_klip;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -99,6 +101,8 @@ public class RoomInfoFragment extends Fragment {
     private Map<String, Object> roomValue = null;
 
     private int delivery_price_per_person;
+
+    private int click_arrive_button=0;
 
 
     public RoomInfoFragment(int pos){
@@ -389,8 +393,55 @@ public class RoomInfoFragment extends Fragment {
                             if(my_menu_item.getLocation_verification_status()==true) {
                                 room_arrive_button.setVisibility(View.INVISIBLE);
                                 room_verify_button.setVisibility(View.VISIBLE);
+
+                                if(getActivity()!=null){
+
+                                    Handler gpsHandler = new Handler(Looper.getMainLooper());
+                                    gpsHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                                                getActivity().stopService(intent);
+                                            }catch (Exception e){
+                                                Log.i("main service error", e.toString());
+                                            }
+                                        }
+                                    }, 2000);
+
+
+                                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+                                            .setTitle("위치 확인 완료")
+                                            .setMessage("방장과 만난 후 수령 확인 버튼을 눌러주세요")
+                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    //finish;
+                                                    dialogInterface.dismiss();
+                                                }
+                                            });
+                                    AlertDialog msgDlg = msgBuilder.create();
+                                    msgDlg.show();
+                                }
+
+
                             }else{
-                                room_info_text.setText("위치 검증 실패 - 약속 장소에 도착하지 않았습니다");
+                                    room_info_text.setVisibility(View.GONE);
+                                    if(getActivity()!=null){
+                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+                                                .setTitle("위치 확인 실패")
+                                                .setMessage("배달 장소에 도착하지 않았습니다")
+                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        //finish;
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                });
+                                        AlertDialog msgDlg = msgBuilder.create();
+                                        msgDlg.show();
+                                    }
+
                             }
                         }catch (Exception e){
                             Log.i("main service error", e.toString());
@@ -398,7 +449,7 @@ public class RoomInfoFragment extends Fragment {
                     }
                 }, 1000);
 
-
+                click_arrive_button++;
 
             }
         });
@@ -412,7 +463,8 @@ public class RoomInfoFragment extends Fragment {
                 //my_menu_item.setVerification_status(true);
 
                 //MyItem data=new MyItem(my_menu_item.getId(),my_menu_item.getStatus(),my_menu_item.getMenu_name(),my_menu_item.getMenu_price(),0,"","",true);
-                room_info_text.setText("음식 수령 확인");
+                //room_info_text.setText("음식 수령 확인");
+                room_info_text.setVisibility(View.GONE);
                 my_menu_item.setVerification_status(true);
                 chat_user_Ref.setValue(my_menu_item);
 
@@ -524,7 +576,9 @@ public class RoomInfoFragment extends Fragment {
                                     room_ready_cancel_button.setVisibility(View.INVISIBLE);
 
                                 }if(my_menu_item.getLocation_verification_status()==true && my_menu_item.getVerification_status()==false) {
-                                    room_info_text.setText("위치 확인 완료 - 방장과 만나 수령 확인 버튼을 눌러주세요");
+                                    //room_info_text.setText("위치 확인 완료 - 방장과 만나 수령 확인 버튼을 눌러주세요");
+                                    room_info_text.setVisibility(View.GONE);
+
                                     room_verify_button.setVisibility(View.VISIBLE);
                                     room_arrive_button.setVisibility(View.INVISIBLE);
                                     room_ready_button.setVisibility(View.INVISIBLE);
@@ -534,7 +588,8 @@ public class RoomInfoFragment extends Fragment {
                                 }
                                 if(my_menu_item.getVerification_status()==true){
                                     //room_verfity_button.setVisibility(View.VISIBLE);
-                                    room_info_text.setText("음식 수령 확인 완료");
+                                    //room_info_text.setText("음식 수령 확인 완료");
+                                    room_info_text.setVisibility(View.GONE);
                                     room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //수령 확인 버튼 후
                                     room_verify_button.setVisibility(View.INVISIBLE);
                                     room_arrive_button.setVisibility(View.INVISIBLE);
