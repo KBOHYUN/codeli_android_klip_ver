@@ -44,6 +44,8 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FirebaseFirestore firestore;
+
     public static int select_room_num=0;
     public static boolean is_payment=false;
 
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firestore = FirebaseFirestore.getInstance();
+
         Intent loginIntent=getIntent();
         email=loginIntent.getStringExtra("email");
 
@@ -82,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(roomLIstAdapter);
 
         //room data 수신
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Rooms")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        ReadFirestoreData(); //실시간 방 추가 읽기
 
         //리스트 아이템 클릭스 -> 방으로 이동
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -359,6 +363,47 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+
+    private void ReadFirestoreData(){
+        //*****Firestore  방 추가 실시간 읽기
+        firestore.collection("Rooms")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        roomItemArrayList.clear();
+                        roomIdArrayList.clear();
+
+
+                        for (QueryDocumentSnapshot document : value) {
+                            roomIdArrayList.add(document.getId());
+
+                            RoomItem roomItem=null;
+                            if(document.getData().get("x")!=null) {
+                                    if(document.getData().get("time")!=null){//시간 있는 경우
+                                        roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), document.getData().get("x").toString(), document.getData().get("y").toString(),document.getData().get("time").toString());
+                                    }
+                                    else{//위경도 있는 경우
+                                        roomItem = new RoomItem(document.getData().get("restaurant").toString(), document.getData().get("deliveryApp").toString(), Integer.parseInt(document.getData().get("currentValue").toString()), Integer.parseInt(document.getData().get("minOrderAmount").toString()), Integer.parseInt(document.getData().get("deliveryCost").toString()), document.getData().get("deliveryAddress").toString(), document.getData().get("deliveryDetailAddress").toString(), Integer.parseInt(document.getData().get("participantsNum").toString()), Integer.parseInt(document.getData().get("participantsMax").toString()), document.getData().get("owner").toString(), document.getData().get("x").toString(), document.getData().get("y").toString());
+                                    }
+                                }else{//기본 형태
+                                    roomItem= new RoomItem(document.getData().get("restaurant").toString(),document.getData().get("deliveryApp").toString(),Integer.parseInt(document.getData().get("currentValue").toString()),Integer.parseInt(document.getData().get("minOrderAmount").toString()),Integer.parseInt(document.getData().get("deliveryCost").toString()),document.getData().get("deliveryAddress").toString(),document.getData().get("deliveryDetailAddress").toString(),Integer.parseInt(document.getData().get("participantsNum").toString()),Integer.parseInt(document.getData().get("participantsMax").toString()),document.getData().get("owner").toString());
+                                }
+                                roomItemArrayList.add(roomItem);
+                                roomLIstAdapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
+
+
+
+
     }
 
 
