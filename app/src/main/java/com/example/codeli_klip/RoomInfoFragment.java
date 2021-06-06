@@ -388,54 +388,61 @@ public class RoomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                my_menu_item.setX(BackgroundGPS.longtitude);
-                my_menu_item.setY(BackgroundGPS.latitude);
+                my_menu_item.setX(MainActivity.longtitude);
+                my_menu_item.setY(MainActivity.latitude);
                 chat_user_Ref.setValue(my_menu_item);
 
 //                timer trigger가 true가 되면 위경도 업데이트
 //                background service 시작
 
-                Handler mHandler = new Handler(Looper.getMainLooper());
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            if(my_menu_item.getLocation_verification_status()==true) {
-                                room_arrive_button.setVisibility(View.INVISIBLE);
-                                room_verify_button.setVisibility(View.VISIBLE);
+                if(getActivity()!=null){
+                    Handler mHandler = new Handler(Looper.getMainLooper());
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                                System.out.println("service start");
+                                getActivity().stopService(intent);
 
-                                if(getActivity()!=null){
+                                //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+                                getActivity().startService(intent);
 
-                                    Handler gpsHandler = new Handler(Looper.getMainLooper());
-                                    gpsHandler.postDelayed(new Runnable() {
+                                if(my_menu_item.getLocation_verification_status()==true) {
+                                    room_arrive_button.setVisibility(View.INVISIBLE);
+                                    room_verify_button.setVisibility(View.VISIBLE);
+
+                                    if(getActivity()!=null){
+                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+                                                .setTitle("위치 확인 완료")
+                                                .setMessage("방장과 만난 후 수령 확인 버튼을 눌러주세요")
+                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        //finish;
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                });
+                                        AlertDialog msgDlg = msgBuilder.create();
+                                        msgDlg.show();
+                                    }
+
+                                    //백그라운드 종료
+                                    Handler stopHandler = new Handler(Looper.getMainLooper());
+                                    stopHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             try{
                                                 Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                                                System.out.println("service stop");
                                                 getActivity().stopService(intent);
                                             }catch (Exception e){
                                                 Log.i("main service error", e.toString());
                                             }
                                         }
-                                    }, 2000);
+                                    }, 1000);
 
-
-                                    AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
-                                            .setTitle("위치 확인 완료")
-                                            .setMessage("방장과 만난 후 수령 확인 버튼을 눌러주세요")
-                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    //finish;
-                                                    dialogInterface.dismiss();
-                                                }
-                                            });
-                                    AlertDialog msgDlg = msgBuilder.create();
-                                    msgDlg.show();
-                                }
-
-
-                            }else{
+                                }else{
                                     room_info_text.setVisibility(View.GONE);
                                     if(getActivity()!=null){
                                         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
@@ -452,13 +459,13 @@ public class RoomInfoFragment extends Fragment {
                                         msgDlg.show();
                                     }
 
+                                }
+                            }catch (Exception e){
+                                Log.i("main service error", e.toString());
                             }
-                        }catch (Exception e){
-                            Log.i("main service error", e.toString());
                         }
-                    }
-                }, 1000);
-
+                    }, 1000);
+                }
             }
         });
 
