@@ -607,7 +607,7 @@ public class RoomInfoFragment extends Fragment {
                                     room_ready_cancel_button.setVisibility(View.INVISIBLE);
                                     room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_yellow); //위치 확인
                                 }
-                                if(my_menu_item.getVerification_status()==true){
+                                if(my_menu_item.getLocation_verification_status()==true && my_menu_item.getVerification_status()==true){
                                     //room_verfity_button.setVisibility(View.VISIBLE);
                                     //room_info_text.setText("음식 수령 확인 완료");
                                     room_info_text.setVisibility(View.GONE);

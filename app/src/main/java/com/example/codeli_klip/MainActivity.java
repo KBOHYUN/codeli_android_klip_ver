@@ -136,10 +136,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     //Intent intent=new Intent(getApplicationContext(),RoomActivity.class);
-                    Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
-                    intent.putExtra("position",position);
-                    //owner - 방장 정보 추가
-                    startActivity(intent);
+
+                    //인원이 최대가 된 경우 방 참여 불가
+                    if(roomLIstAdapter.getItem(position).getCurrentPeople()<roomLIstAdapter.getItem(position).getTotalPeople()){
+                        Intent intent=new Intent(getApplicationContext(),RoomPagerActivity.class);
+                        intent.putExtra("position",position);
+                        //owner - 방장 정보 추가
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "인원이 초과되었습니다", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

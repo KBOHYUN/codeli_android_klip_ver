@@ -72,7 +72,7 @@ public class PeopleListAdapter extends BaseAdapter {
                 //nickname.setBackgroundColor(Color.parseColor("#a7ca5d"));
                 nickname.setBackgroundResource(R.drawable.bg_room_list_yellow);
             }
-            if(peopleItemArrayList.get(position).getVerification_status()==true){
+            if(peopleItemArrayList.get(position).getLocation_verification_status()==true&&peopleItemArrayList.get(position).getVerification_status()==true){
                 nickname.setBackgroundResource(R.drawable.bg_room_list_green);
             }
         }
