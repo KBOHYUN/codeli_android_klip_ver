@@ -55,7 +55,7 @@ public class RoomLIstAdapter extends BaseAdapter {
         price_progress.setText("￦"+roomItemArrayList.get(position).getCurrentOrderPrice());
         price.setText(roomItemArrayList.get(position).getOrderPrice()+"원");
 
-        int delivery_price_per_person=roomItemArrayList.get(position).getDeliveryPrice() / roomItemArrayList.get(position).getCurrentPeople();
+        int delivery_price_per_person=roomItemArrayList.get(position).getDeliveryPrice() / roomItemArrayList.get(position).getTotalPeople();
 
         price_delivery.setText("(배달팁: "+delivery_price_per_person+"원)");
         location.setText(roomItemArrayList.get(position).getAddress()+" "+roomItemArrayList.get(position).getSpecificAddress());

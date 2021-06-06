@@ -57,6 +57,8 @@ public class RoomInfoFragment extends Fragment {
     private TextView room_delivery_place; //배달 장소
     private TextView room_delivery_time; //배달 시간
 
+    private TextView room_info_text; //단계 정보 알림 텍스트
+
     private ImageView room_my_status;
     private TextView room_my_nickname;
     private TextView room_my_menu;
@@ -118,6 +120,8 @@ public class RoomInfoFragment extends Fragment {
         room_delivery_place=root.findViewById(R.id.room_delivery_place);
         room_delivery_time=root.findViewById(R.id.room_delivery_time);
 
+        room_info_text=root.findViewById(R.id.room_info_text);
+
         room_platform.setText("사용플랫폼: "+MainActivity.roomItemArrayList.get(pos).getPlatform());
         room_order_price.setText("최소주문금액: "+MainActivity.roomItemArrayList.get(pos).getOrderPrice()+"원");
         price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getTotalPeople();
@@ -136,6 +140,7 @@ public class RoomInfoFragment extends Fragment {
 
         room_my_nickname.setText(LoginActivity.nickname);
         room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
+        room_info_text.setText("준비 전 - 메뉴와 가격 작성 후 준비 버튼을 눌러주세요");
 
         //나의 주문 목록 초기화
         my_menu_item=new MyItem(LoginActivity.nickname,false, "",0,0,"","",false);
@@ -222,6 +227,7 @@ public class RoomInfoFragment extends Fragment {
                 room_pay_button.setVisibility(View.INVISIBLE); //결제버튼 안보이기
 
                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
+
                 //my_menu_item=new PeopleItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),my_menu_item.getExpiration_time(),my_menu_item.getSendingStatus());
                 my_menu_item=new MyItem(LoginActivity.nickname,false, my_menu_item.getMenu_name(), my_menu_item.getMenu_price(),0,"","",false);
                 chat_user_Ref.setValue(my_menu_item);
@@ -276,6 +282,7 @@ public class RoomInfoFragment extends Fragment {
                 int price=Integer.parseInt(room_my_price.getText().toString().trim());
                 my_menu_item=new MyItem(LoginActivity.nickname,true, menu, price);
                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //준비돰 - 초록
+                room_info_text.setText("준비 완료 - 결제를 진행해주세요");
                 chat_user_Ref.setValue(my_menu_item);
 
                 //****파이어스토어에 데이터 업데이트 하기
@@ -368,7 +375,7 @@ public class RoomInfoFragment extends Fragment {
                 //my_menu_item.setVerification_status(true);
 
                 //MyItem data=new MyItem(my_menu_item.getId(),my_menu_item.getStatus(),my_menu_item.getMenu_name(),my_menu_item.getMenu_price(),0,"","",true);
-
+                room_info_text.setText("음식 수령 확인");
                 my_menu_item.setVerification_status(true);
                 chat_user_Ref.setValue(my_menu_item);
 
@@ -456,9 +463,11 @@ public class RoomInfoFragment extends Fragment {
                         }
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){
+                                room_info_text.setText("준비 전 - 메뉴와 가격 작성 후 준비 버튼을 눌러주세요");
                                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //준비 안됨 - 빨강
                             }
                             else{
+                                room_info_text.setText("준비 완료 - 결제를 진행해주세요");
                                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //준비됨 -green
                                 room_verify_button.setVisibility(View.INVISIBLE);
                                 room_arrive_button.setVisibility(View.INVISIBLE);
@@ -471,6 +480,7 @@ public class RoomInfoFragment extends Fragment {
 
                             //결제 성공 시
                             if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
+                                room_info_text.setText("약속 장소에서 도착 확인 버튼을 눌러주세요");
                                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //결제 완료 후
                                 room_verify_button.setVisibility(View.INVISIBLE);
                                 room_arrive_button.setVisibility(View.VISIBLE);
@@ -479,6 +489,7 @@ public class RoomInfoFragment extends Fragment {
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
 
                             }if(my_menu_item.getX()!=null&&my_menu_item.getY()!=null){
+                                room_info_text.setText("방장과 만나 음식 수령 시 수령 확인 버튼을 눌러주세요");
                                 room_verify_button.setVisibility(View.VISIBLE);
                                 room_arrive_button.setVisibility(View.INVISIBLE);
                                 room_ready_button.setVisibility(View.INVISIBLE);
@@ -486,11 +497,13 @@ public class RoomInfoFragment extends Fragment {
                                 room_ready_cancel_button.setVisibility(View.INVISIBLE);
                             }
                             if(my_menu_item.getLocation_verification_status()==true){
+                                room_info_text.setText("약속장소 도착 확인");
                                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_yellow); //위치 확인
                             }
 
                             if(my_menu_item.getVerification_status()==true){
                                 //room_verfity_button.setVisibility(View.VISIBLE);
+                                room_info_text.setText("음식 수령");
                                 room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //수령 확인 버튼 후
                             }
 
