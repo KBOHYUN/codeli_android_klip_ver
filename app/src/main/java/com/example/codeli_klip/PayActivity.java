@@ -120,7 +120,6 @@ public class PayActivity extends AppCompatActivity {
         pay_total_price_klay.setText("총 "+total_klay_6+" KLAY");
         pay_klay_unit.setText("(1KLAY=₩"+klay_flow+", "+current_time+" 기준)");
 
-
         firebaseDatabase= FirebaseDatabase.getInstance(); //파이어베이스 설정
 
         ctx = this;
@@ -220,7 +219,7 @@ public class PayActivity extends AppCompatActivity {
 
                 //item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
 
-                item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status(),MainActivity.longtitude,MainActivity.latitude);
+                item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status(),item.getLocation_verification_status());
                 chat_user_Ref.setValue(item);
                 txHash="";
 

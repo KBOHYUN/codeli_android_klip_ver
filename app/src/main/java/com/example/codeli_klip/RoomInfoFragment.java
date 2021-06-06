@@ -209,7 +209,7 @@ public class RoomInfoFragment extends Fragment {
 
                             // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
 
-                            int total=my_menu_item.getMenu_price();
+                            int total=my_menu_item.getMenu_price()+delivery_price_per_person;
                             double klay_price=total/klay_flow;
                             double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
 
@@ -381,8 +381,24 @@ public class RoomInfoFragment extends Fragment {
 //                timer trigger가 true가 되면 위경도 업데이트
 //                background service 시작
 
-                room_arrive_button.setVisibility(View.INVISIBLE);
-                room_verify_button.setVisibility(View.VISIBLE);
+                Handler mHandler = new Handler(Looper.getMainLooper());
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            if(my_menu_item.getLocation_verification_status()==true) {
+                                room_arrive_button.setVisibility(View.INVISIBLE);
+                                room_verify_button.setVisibility(View.VISIBLE);
+                            }else{
+                                room_info_text.setText("위치 검증 실패 - 약속 장소에 도착하지 않았습니다");
+                            }
+                        }catch (Exception e){
+                            Log.i("main service error", e.toString());
+                        }
+                    }
+                }, 1000);
+
+
 
             }
         });
@@ -496,37 +512,39 @@ public class RoomInfoFragment extends Fragment {
                                 room_pay_button.setVisibility(View.VISIBLE);
                                 room_ready_cancel_button.setVisibility(View.VISIBLE);
 
+
+                                //결제 성공 시
+                                if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")&&my_menu_item.getLocation_verification_status()==false&&my_menu_item.getVerification_status()==false){
+                                    room_info_text.setText("약속 장소에서 도착 확인 버튼을 눌러주세요");
+                                    room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //결제 완료 후
+                                    room_verify_button.setVisibility(View.INVISIBLE);
+                                    room_arrive_button.setVisibility(View.VISIBLE);
+                                    room_ready_button.setVisibility(View.INVISIBLE);
+                                    room_pay_button.setVisibility(View.INVISIBLE);
+                                    room_ready_cancel_button.setVisibility(View.INVISIBLE);
+
+                                }if(my_menu_item.getLocation_verification_status()==true && my_menu_item.getVerification_status()==false) {
+                                    room_info_text.setText("위치 확인 완료 - 방장과 만나 수령 확인 버튼을 눌러주세요");
+                                    room_verify_button.setVisibility(View.VISIBLE);
+                                    room_arrive_button.setVisibility(View.INVISIBLE);
+                                    room_ready_button.setVisibility(View.INVISIBLE);
+                                    room_pay_button.setVisibility(View.INVISIBLE);
+                                    room_ready_cancel_button.setVisibility(View.INVISIBLE);
+                                    room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_yellow); //위치 확인
+                                }
+                                if(my_menu_item.getVerification_status()==true){
+                                    //room_verfity_button.setVisibility(View.VISIBLE);
+                                    room_info_text.setText("음식 수령 확인 완료");
+                                    room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //수령 확인 버튼 후
+                                    room_verify_button.setVisibility(View.INVISIBLE);
+                                    room_arrive_button.setVisibility(View.INVISIBLE);
+                                    room_ready_button.setVisibility(View.INVISIBLE);
+                                    room_pay_button.setVisibility(View.INVISIBLE);
+                                    room_ready_cancel_button.setVisibility(View.INVISIBLE);
+                                }
+
                             }
                             //Toast.makeText(getApplicationContext(), "** sending status: "+my_menu_item.getSendingStatus(), Toast.LENGTH_SHORT).show();
-
-                            //결제 성공 시
-                            if(my_menu_item.getSendingStatus()!=null&&my_menu_item.getSendingStatus().equals("success")){
-                                room_info_text.setText("약속 장소에서 도착 확인 버튼을 눌러주세요");
-                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_red); //결제 완료 후
-                                room_verify_button.setVisibility(View.INVISIBLE);
-                                room_arrive_button.setVisibility(View.VISIBLE);
-                                room_ready_button.setVisibility(View.INVISIBLE);
-                                room_pay_button.setVisibility(View.INVISIBLE);
-                                room_ready_cancel_button.setVisibility(View.INVISIBLE);
-
-                            }if(my_menu_item.getX()!=null&&my_menu_item.getY()!=null){
-                                room_info_text.setText("방장과 만나 음식 수령 시 수령 확인 버튼을 눌러주세요");
-                                room_verify_button.setVisibility(View.VISIBLE);
-                                room_arrive_button.setVisibility(View.INVISIBLE);
-                                room_ready_button.setVisibility(View.INVISIBLE);
-                                room_pay_button.setVisibility(View.INVISIBLE);
-                                room_ready_cancel_button.setVisibility(View.INVISIBLE);
-                            }
-                            if(my_menu_item.getLocation_verification_status()==true){
-                                room_info_text.setText("약속장소 도착 확인");
-                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_yellow); //위치 확인
-                            }
-
-                            if(my_menu_item.getVerification_status()==true){
-                                //room_verfity_button.setVisibility(View.VISIBLE);
-                                room_info_text.setText("음식 수령");
-                                room_my_nickname.setBackgroundResource(R.drawable.bg_room_list_green); //수령 확인 버튼 후
-                            }
 
                             room_my_menu.setText(my_menu_item.getMenu_name());
                             room_my_price.setText(""+my_menu_item.getMenu_price());

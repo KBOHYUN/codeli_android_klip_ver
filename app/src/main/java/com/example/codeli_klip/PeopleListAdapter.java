@@ -64,13 +64,13 @@ public class PeopleListAdapter extends BaseAdapter {
         }
 
 
-        if(peopleItemArrayList.get(position).getSendingStatus()!=null&&peopleItemArrayList.get(position).getSendingStatus().equals("success")){
-            //nickname.setBackgroundColor(Color.parseColor("#FFD869")); //결제 완료 - 노랑
+        if(peopleItemArrayList.get(position).getSendingStatus()!=null&&peopleItemArrayList.get(position).getSendingStatus().equals("success")&&peopleItemArrayList.get(position).getLocation_verification_status()==false){
+            //nickname.setBackgroundColor(Color.parseColor("#FFD869"));
             nickname.setBackgroundResource(R.drawable.bg_room_list_red);
         }
 
-        if(peopleItemArrayList.get(position).getLocation_verification_status()==true){
-            //nickname.setBackgroundColor(Color.parseColor("#a7ca5d")); //검증 완료 - 초록
+        if(peopleItemArrayList.get(position).getLocation_verification_status()==true && peopleItemArrayList.get(position).getVerification_status()==false){
+            //nickname.setBackgroundColor(Color.parseColor("#a7ca5d"));
             nickname.setBackgroundResource(R.drawable.bg_room_list_yellow);
         }
         if(peopleItemArrayList.get(position).getVerification_status()==true){
