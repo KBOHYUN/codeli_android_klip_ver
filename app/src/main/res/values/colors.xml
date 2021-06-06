@@ -12,6 +12,9 @@
     <color name="yellow_primary">#F8D266</color>
     <color name="blue_primary">#028BBB</color>
     <color name="light_gray">#EAEAEA</color>
+    <color name="very_light_gray">#F6F1F1</color>
+    <color name="dark_gray">#D8D7D7</color>
+
     <color name="dark_blue">#1E2F4F</color>
     <color name="yellow">#F1B711</color>
     <color name="green">#a7ca5d</color>
