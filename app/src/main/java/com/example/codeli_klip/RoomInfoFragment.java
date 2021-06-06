@@ -149,7 +149,6 @@ public class RoomInfoFragment extends Fragment {
             }
         });
 
-
         //room_my_status=root.findViewById(R.id.room_my_status);
         room_my_nickname=root.findViewById(R.id.room_my_nickname);
         room_my_menu=root.findViewById(R.id.room_my_menu);

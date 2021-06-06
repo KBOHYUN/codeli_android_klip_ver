@@ -175,6 +175,7 @@
                 />
         </LinearLayout>
 
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -191,6 +192,16 @@
             android:background="@android:color/transparent"
             android:visibility="invisible"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="핸드폰 기증자: 김수현"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="60dp"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
