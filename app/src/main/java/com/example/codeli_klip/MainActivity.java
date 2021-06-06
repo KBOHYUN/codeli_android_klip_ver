@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                     select_room_num=position;
                     Intent ownerintent=new Intent(getApplicationContext(),RoomOwnerPagerActivity.class);
                     ownerintent.putExtra("position",position);
-                    owner_check_verification_num[position]=0;
                     startActivity(ownerintent);
                 }
                 else{

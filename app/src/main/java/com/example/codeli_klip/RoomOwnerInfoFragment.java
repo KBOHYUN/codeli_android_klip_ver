@@ -303,9 +303,9 @@ public class RoomOwnerInfoFragment extends Fragment {
 //                //송금하였는지 확인
                   if(sendingStatusCheck==true){
                       if(getActivity()!=null){
-                          if(MainActivity.owner_check_verification_num[pos]==0){
+                          if(MainActivity.owner_check_verification_num[pos]==null){
                               CustomDialog customDialog = new CustomDialog(getActivity());
-                              customDialog.callFunction("송금 요청 알림","모든 참여자들이 음식을 수령하였습니다");
+                              customDialog.callFunction("지급 요청 알림","모든 참여자들이 음식을 수령하였습니다");
                           }
                       }
                       MainActivity.owner_check_verification_num[pos]=1;
