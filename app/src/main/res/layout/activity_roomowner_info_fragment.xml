@@ -83,8 +83,9 @@
                 <Button
                     android:id="@+id/room_time_modify_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="right"
+                    android:padding="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_yellow_button"
                     android:text="시간설정"
@@ -108,9 +109,10 @@
                 android:id="@+id/verify_trigger_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/yellow_primary"
+                android:background="@drawable/bg_green_button"
                 android:layout_margin="10dp"
                 android:textSize="12dp"
+                android:textColor="@color/white"
                 android:text="지급요청"/>
 
         </RelativeLayout>
