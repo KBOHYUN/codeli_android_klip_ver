@@ -413,18 +413,21 @@ public class RoomInfoFragment extends Fragment {
                                     room_verify_button.setVisibility(View.VISIBLE);
 
                                     if(getActivity()!=null){
-                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
-                                                .setTitle("위치 확인 완료")
-                                                .setMessage("방장과 만난 후 수령 확인 버튼을 눌러주세요")
-                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        //finish;
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                });
-                                        AlertDialog msgDlg = msgBuilder.create();
-                                        msgDlg.show();
+//                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+//                                                .setTitle("위치 확인 완료")
+//                                                .setMessage("방장과 만난 후 수령 확인 버튼을 눌러주세요")
+//                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//                                                    @Override
+//                                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                                        //finish;
+//                                                        dialogInterface.dismiss();
+//                                                    }
+//                                                });
+//                                        AlertDialog msgDlg = msgBuilder.create();
+//                                        msgDlg.show();
+
+                                        CustomDialog customDialog = new CustomDialog(getActivity());
+                                        customDialog.callFunction("위치 확인 완료","방장과 만난 후 수령 확인 버튼을 눌러주세요");
                                     }
 
                                     //백그라운드 종료
@@ -445,18 +448,21 @@ public class RoomInfoFragment extends Fragment {
                                 }else{
                                     room_info_text.setVisibility(View.GONE);
                                     if(getActivity()!=null){
-                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
-                                                .setTitle("위치 확인 실패")
-                                                .setMessage("배달 장소에 도착하지 않았습니다")
-                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        //finish;
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                });
-                                        AlertDialog msgDlg = msgBuilder.create();
-                                        msgDlg.show();
+//                                        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(getActivity())
+//                                                .setTitle("위치 확인 실패")
+//                                                .setMessage("배달 장소에 도착하지 않았습니다")
+//                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//                                                    @Override
+//                                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                                        //finish;
+//                                                        dialogInterface.dismiss();
+//                                                    }
+//                                                });
+//                                        AlertDialog msgDlg = msgBuilder.create();
+//                                        msgDlg.show();
+
+                                        CustomDialog customDialog = new CustomDialog(getActivity());
+                                        customDialog.callFunction("위치 확인 실패","배달 장소에 도착하지 않았습니다");
                                     }
 
                                 }
