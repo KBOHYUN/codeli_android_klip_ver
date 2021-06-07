@@ -19,6 +19,8 @@ public class MyItem implements Serializable {
     private Double x;
     private Double y;
 
+    private boolean sendToManager=false;
+
     //위치 확인 status..?
 
 
@@ -99,6 +101,19 @@ public class MyItem implements Serializable {
         this.location_verification_status=location_verification_state;
     }
 
+    public MyItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status, boolean location_verification_state, boolean sendToManager){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_status=location_verification_state;
+        this.sendToManager=sendToManager;
+    }
+
 
     public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, double x, double y){
         this.id=id;
@@ -123,6 +138,22 @@ public class MyItem implements Serializable {
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
         this.location_verification_status=location_verification_state;
+        this.x=x;
+        this.y=y;
+    }
+
+
+    public MyItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, boolean location_verification_state,boolean sendToManager,double x, double y){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_status=location_verification_state;
+        this.sendToManager=sendToManager;
         this.x=x;
         this.y=y;
     }
@@ -183,6 +214,7 @@ public class MyItem implements Serializable {
     public Double getY(){
         return this.y;
     }
+    public boolean getSendToManager(){return this.sendToManager;}
 
 
     public void setMenu_name(String menu_name){

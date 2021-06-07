@@ -226,45 +226,45 @@ public class RoomOwnerInfoFragment extends Fragment {
                 verification=new VerificationData(LoginActivity.klip_address,true);
                 verification_ref.setValue(verification);
 
-                Toast.makeText(getContext(), "송금이 요청되었습니다", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "송금이 요청되었습니다", Toast.LENGTH_SHORT).show();
             }
         });
 
-        verification_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-                //데이터가 쌓이기 때문에  clear()
-
-                    verification=dataSnapshot.getValue(VerificationData.class);
-
-                    if(verification!=null && getActivity()!=null){
-                        if(verification.getTrigger()==true && verification.getState()!=null){
-                            if(verification.getState().equals("success")){
-                                Toast.makeText(getActivity(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
-                            }
-                            else if(verification.getState().equals("room_manager_not_here")){
-                                Toast.makeText(getActivity(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                String noshow="";
-                                if(verification.getComment()!=null){
-                                    noshow=verification.getComment();
-                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
-                                }
-                                else{
-                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다",Toast.LENGTH_LONG).show();Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
-                                }
-
-                            }
-                        }
-                    }
-
-                }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
+//        verification_ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+//                //데이터가 쌓이기 때문에  clear()
+//
+//                    verification=dataSnapshot.getValue(VerificationData.class);
+//
+//                    if(verification!=null && getActivity()!=null){
+//                        if(verification.getTrigger()==true && verification.getState()!=null){
+//                            if(verification.getState().equals("success")){
+//                                Toast.makeText(getActivity(),"방장 지갑으로 송금 완료되었습니다",Toast.LENGTH_LONG).show();
+//                            }
+//                            else if(verification.getState().equals("room_manager_not_here")){
+//                                Toast.makeText(getActivity(),"전부 환불되었습니다",Toast.LENGTH_LONG).show();
+//                            }
+//                            else{
+//                                String noshow="";
+//                                if(verification.getComment()!=null){
+//                                    noshow=verification.getComment();
+//                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+//                                }
+//                                else{
+//                                    Toast.makeText(getActivity(),"No-show 인원이 있습니다",Toast.LENGTH_LONG).show();Toast.makeText(getActivity(),"No-show 인원이 있습니다 : "+noshow,Toast.LENGTH_LONG).show();
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//
+//                }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) { }
+//        });
 
 
 

@@ -17,6 +17,8 @@ public class PeopleItem implements Serializable {
     private Double x;
     private Double y;
 
+    private boolean sendToManager=false;
+
     public  PeopleItem(){
 
     }
@@ -27,6 +29,7 @@ public class PeopleItem implements Serializable {
         this.menu_name=name;
         this.menu_price=price;
     }
+
     public PeopleItem(String id, boolean status, String name, int price, boolean location_verification_status){
         this.id=id;
         this.status=status;
@@ -34,6 +37,7 @@ public class PeopleItem implements Serializable {
         this.menu_price=price;
         this.location_verification_status=location_verification_status;
     }
+
     public PeopleItem(String id, boolean status, String name, int price, int expiration_time){
         this.id=id;
         this.status=status;
@@ -62,6 +66,7 @@ public class PeopleItem implements Serializable {
         this.sendingStatus=sending_status;
         this.verification_status=verification_status;
     }
+
     public PeopleItem(String id, boolean status, String name, int price, int expiration_time, String tx_hash, String sending_status, boolean verification_status, boolean location_verification_status){
         this.id=id;
         this.status=status;
@@ -112,6 +117,23 @@ public class PeopleItem implements Serializable {
     }
 
 
+
+    public PeopleItem(String id, boolean status, String name, int price, int expiration_time,String tx_hash, String sending_status, boolean verification_status, boolean location_verification_status,boolean sendToManager,double x, double y){
+        this.id=id;
+        this.status=status;
+        this.menu_name=name;
+        this.menu_price=price;
+        this.expiration_time=expiration_time;
+        this.tx_hash=tx_hash;
+        this.sendingStatus=sending_status;
+        this.verification_status=verification_status;
+        this.location_verification_status=location_verification_status;
+        this.x=x;
+        this.y=y;
+        this.sendToManager=sendToManager;
+    }
+
+
     public String getId(){return id;}
     public boolean getStatus(){return status;}
     public String getMenu_name(){return menu_name;}
@@ -134,6 +156,9 @@ public class PeopleItem implements Serializable {
     public Double getX(){return this.x;}
     public Double getY(){
         return this.y;
+    }
+    public boolean getSendToManager(){
+        return this.sendToManager;
     }
 
     public void setMenu_name(String menu_name){

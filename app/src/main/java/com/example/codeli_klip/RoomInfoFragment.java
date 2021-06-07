@@ -206,6 +206,7 @@ public class RoomInfoFragment extends Fragment {
 
                                     // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
 
+                                    delivery_price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
                                     int total=my_menu_item.getMenu_price()+delivery_price_per_person;
                                     double klay_price=total/klay_flow;
                                     double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
@@ -363,23 +364,21 @@ public class RoomInfoFragment extends Fragment {
             }
         });
 
-//        //백그라운드 실행
-//        Handler mHandler = new Handler(Looper.getMainLooper());
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                try{
-//                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-//                    System.out.println("service start");
-//                    getActivity().stopService(intent);
-//
-//                    //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-//                    getActivity().startService(intent);
-//                }catch (Exception e){
-//                    Log.i("main service error", e.toString());
-//                }
-//            }
-//        }, 2000);
+        //백그라운드 실행
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+                    System.out.println("service start");
+                    getActivity().stopService(intent);
+                    getActivity().startService(intent);
+                }catch (Exception e){
+                    Log.i("main service error", e.toString());
+                }
+            }
+        }, 2000);
 
         //위경도 보내기
         room_arrive_button=root.findViewById(R.id.room_arrive_button);
@@ -388,8 +387,10 @@ public class RoomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                my_menu_item.setX(MainActivity.longtitude);
-                my_menu_item.setY(MainActivity.latitude);
+//                my_menu_item.setX(MainActivity.longtitude);
+//                my_menu_item.setY(MainActivity.latitude);
+                my_menu_item.setX(BackgroundGPS.longtitude);
+                my_menu_item.setY(BackgroundGPS.latitude);
                 chat_user_Ref.setValue(my_menu_item);
 
 //                timer trigger가 true가 되면 위경도 업데이트
@@ -401,12 +402,12 @@ public class RoomInfoFragment extends Fragment {
                         @Override
                         public void run() {
                             try{
-                                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
-                                System.out.println("service start");
-                                getActivity().stopService(intent);
-
-                                //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
-                                getActivity().startService(intent);
+//                                Intent intent =new Intent(getActivity(), BackgroundGPS.class);
+//                                System.out.println("service start");
+//                                getActivity().stopService(intent);
+//
+//                                //stopService를 주석처리할 경우 강제종료 할 때만 gps 백그라운드 종료
+//                                getActivity().startService(intent);
 
                                 if(my_menu_item.getLocation_verification_status()==true) {
                                     room_arrive_button.setVisibility(View.INVISIBLE);
@@ -576,6 +577,7 @@ public class RoomInfoFragment extends Fragment {
                         }
                         else{
                             my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status(),partition.getLocation_verification_status(),partition.getX(),partition.getY());
+                            my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status(),partition.getLocation_verification_status(),partition.getSendToManager(),partition.getX(),partition.getY());
                         }
                         if(my_menu_item.getId()!=null){
                             if(my_menu_item.getStatus()==false){

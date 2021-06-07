@@ -218,7 +218,7 @@ public class PayActivity extends AppCompatActivity {
 
 
                 //item=new MyItem(my_data_peopleitem.getId(),my_data_peopleitem.getStatus(),my_data_peopleitem.getMenu_name(),my_data_peopleitem.getMenu_price(),my_data_peopleitem.getExpiration_time(),txHash,"success",my_data_peopleitem.getVerification_status());
-
+                
                 item=new MyItem(item.getId(),item.getStatus(),item.getMenu_name(),item.getMenu_price(),item.getExpiration_time(),txHash,"success",item.getVerification_status(),item.getLocation_verification_status());
                 chat_user_Ref.setValue(item);
                 txHash="";
