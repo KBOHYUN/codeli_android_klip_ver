@@ -3,7 +3,7 @@
 
 
 
-##### * Manual
+##### + Manual
 
 
 
