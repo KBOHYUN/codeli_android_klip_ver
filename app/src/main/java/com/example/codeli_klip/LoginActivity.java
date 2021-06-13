@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public static String email;
     public static String nickname;
     public static String name;
+
     public static String klip_address="";
 
 
