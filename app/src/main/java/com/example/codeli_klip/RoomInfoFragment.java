@@ -182,72 +182,74 @@ public class RoomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(getActivity()!=null){
-                    if(check_all_ready==false){ //모두 준비 안된 경우
-                        Toast.makeText(getActivity(), "모든 참여자가 준비되지 않았습니다", Toast.LENGTH_SHORT).show();
+                int total=my_menu_item.getMenu_price()+delivery_price_per_person;
+                double klay_price=total/klay_flow;
+                double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
 
-                    }else{
-                        KlayData trigger=new KlayData(true, "");
-                        klay_Ref.setValue(trigger);
-                        //클레이 시세 확인
-                        klay_Ref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-                                //데이터가 쌓이기 때문에  clear()
-
-                                //String value=ds.getValue(KlayData.class).getValue();
-                                KlayData klay=dataSnapshot.getValue(KlayData.class);
-
-                                if(klay.getTrigger()==false){
-                                    klayDataArrayList.add(klay);
+                //서버 시세 불러오지 않고 임시로 넘어가기
+                intent.putExtra("menu_price",my_menu_item.getMenu_price());
+                intent.putExtra("delivery_price",delivery_price_per_person);
+                intent.putExtra("room_id",""+pos); //방 번호
+                intent.putExtra("klay_flow",klay_flow); //클레이 시세
+                intent.putExtra("klay_total",total_klay_6);
+                intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+                intent.putExtra("position",pos);
+                startActivity(intent);
+                getActivity().finish();
 
 
-                                    klay_flow= Double.parseDouble(klayDataArrayList.get(0).getValue());
-
-                                    // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
-
-                                    delivery_price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
-                                    int total=my_menu_item.getMenu_price()+delivery_price_per_person;
-                                    double klay_price=total/klay_flow;
-                                    double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
-
-                                    if(getActivity()!=null){
-                                        intent.putExtra("menu_price",my_menu_item.getMenu_price());
-                                        intent.putExtra("delivery_price",delivery_price_per_person);
-                                        intent.putExtra("room_id",room_id); //방 번호
-                                        intent.putExtra("klay_flow",klay_flow); //클레이 시세
-                                        intent.putExtra("klay_total",total_klay_6);
-                                        intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-                                        intent.putExtra("position",pos);
-                                        startActivity(intent);
-                                        getActivity().finish();
-                                    }
-
-                                }
-
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) { }
-                        });
-
-                        //******* 임시로 넘어가기
-
-//                        int total=my_menu_item.getMenu_price()+delivery_price_per_person;
-//                        double klay_price=total/klay_flow;
-//                        double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
+//                if(getActivity()!=null){
+//                    if(check_all_ready==false){ //모두 준비 안된 경우
+//                        Toast.makeText(getActivity(), "모든 참여자가 준비되지 않았습니다", Toast.LENGTH_SHORT).show();
 //
-//                        intent.putExtra("menu_price",my_menu_item.getMenu_price());
-//                        intent.putExtra("delivery_price",delivery_price_per_person);
-//                        intent.putExtra("room_id",""+pos); //방 번호
-//                        intent.putExtra("klay_flow",klay_flow); //클레이 시세
-//                        intent.putExtra("klay_total",total_klay_6);
-//                        intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
-//                        intent.putExtra("position",pos);
-//                        startActivity(intent);
-//                        getActivity().finish();
-
-                    }
-                }
+//                    }else{
+//                        KlayData trigger=new KlayData(true, "");
+//                        klay_Ref.setValue(trigger);
+//                        //클레이 시세 확인
+//                        klay_Ref.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+//                                //데이터가 쌓이기 때문에  clear()
+//
+//                                //String value=ds.getValue(KlayData.class).getValue();
+//                                KlayData klay=dataSnapshot.getValue(KlayData.class);
+//
+//                                if(klay.getTrigger()==false){
+//                                    klayDataArrayList.add(klay);
+//
+//
+//                                    klay_flow= Double.parseDouble(klayDataArrayList.get(0).getValue());
+//
+//                                    // Toast.makeText(getApplicationContext(), "클레이 시세"+klay_flow, Toast.LENGTH_SHORT).show();
+//
+//                                    delivery_price_per_person=MainActivity.roomItemArrayList.get(pos).getDeliveryPrice()/MainActivity.roomItemArrayList.get(pos).getCurrentPeople();
+//                                    int total=my_menu_item.getMenu_price()+delivery_price_per_person;
+//                                    double klay_price=total/klay_flow;
+//                                    double total_klay_6=Double.parseDouble(String.format("%.6f",klay_price));
+//
+//                                    if(getActivity()!=null){
+//                                        intent.putExtra("menu_price",my_menu_item.getMenu_price());
+//                                        intent.putExtra("delivery_price",delivery_price_per_person);
+//                                        intent.putExtra("room_id",room_id); //방 번호
+//                                        intent.putExtra("klay_flow",klay_flow); //클레이 시세
+//                                        intent.putExtra("klay_total",total_klay_6);
+//                                        intent.putExtra("my_menu_item",my_menu_item); //메뉴 데이터
+//                                        intent.putExtra("position",pos);
+//                                        startActivity(intent);
+//                                        getActivity().finish();
+//                                    }
+//
+//                                }
+//
+//                            }
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) { }
+//                        });
+//
+//
+//
+//                    }
+//                }
 
             }
         });
@@ -573,7 +575,7 @@ public class RoomInfoFragment extends Fragment {
 
                     if(partition.getId()!=null&&partition.getId().equals(LoginActivity.nickname)){ //nickname이 자신일 경우
                         if(partition.getX()==null){
-                            my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status());
+                            my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status(),partition.getSendToManager());
                         }
                         else{
                             my_menu_item=new MyItem(partition.getId(),partition.getStatus(),partition.getMenu_name(),partition.getMenu_price(),partition.getExpiration_time(),partition.getTx_hash(),partition.getSendingStatus(),partition.getVerification_status(),partition.getLocation_verification_status(),partition.getX(),partition.getY());
