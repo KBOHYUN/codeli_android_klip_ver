@@ -133,7 +133,7 @@ public class PayActivity extends AppCompatActivity {
         //AuthRequest req = new AuthRequest();
 
         KlayTxRequest req = new KlayTxRequest.Builder()
-                .to("0x697e67f7767558dcc8ffee7999e05807da45002d") //서버 클립 주소..?
+                .to("") //서버 클립 주소
                 .amount(""+total_klay_6)
                 //.amount("0.00001")
                 .build();
